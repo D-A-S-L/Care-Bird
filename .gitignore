@@ -2,6 +2,7 @@
 ## Backup Files
 #################
 /developers/origs
+/developers/origs/*
 #################
 ## Eclipse
 #################
