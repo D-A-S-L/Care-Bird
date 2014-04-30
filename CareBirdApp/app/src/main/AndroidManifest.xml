@@ -16,6 +16,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.MainMenuActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.ErrorActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.ReminderActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.ChoiceActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
