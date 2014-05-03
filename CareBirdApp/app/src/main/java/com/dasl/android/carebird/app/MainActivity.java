@@ -59,6 +59,10 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
+        else if(id == R.id.action_qr_code) {
+            Intent i = new Intent(this, QRCodeActivity.class);
+            startActivity(i);
+        }
         return super.onOptionsItemSelected(item);
     }
 

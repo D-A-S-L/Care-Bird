@@ -1,5 +1,0 @@
-INDEX VERSION 1.126+C:\Users\crazz_000\Documents\GitHub\Care-Bird\.metadata\.plugins\org.eclipse.jdt.core
-3052676886.index
-2784893110.index
-3818489815.index
-1284074322.index
