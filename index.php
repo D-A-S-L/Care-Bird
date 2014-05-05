@@ -17,7 +17,8 @@ $result = pg_query($conn, $sql);
 
 while ($row = pg_fetch_row($result)) {
   echo "Name: $row[0]<br/>\n
-		LastName: $row[1] Coolness: $row[2] <br/>\n <br/>\n";
+		LastName: $row[1] <br/>\n
+		Coolness: $row[2] <br/>\n <br/>\n";
 }  
 
 pg_close ($conn);
