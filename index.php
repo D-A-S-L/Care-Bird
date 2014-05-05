@@ -16,6 +16,6 @@ $result = pg_query($conn, $sql);
 
 $row = pg_fetch_object($result, 0);   
 
-//echo "Record is: " .$row->'FName';   
+print_r($row);   
 
 ?>
