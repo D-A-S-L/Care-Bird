@@ -3,7 +3,6 @@ package com.dasl.android.carebird.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,13 +56,16 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivity(i);
             return true;
         }
         else if(id == R.id.action_qr_code) {
             Intent i = new Intent(this, QRCodeActivity.class);
             startActivity(i);
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
-
 }
