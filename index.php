@@ -1,5 +1,6 @@
 <?   
-echo "Hello World</br>\n";
+echo "Hello World <br/>\n";
+echo "The below values are pulled from the database  <br/>\n <br/>\n";
 $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
 
     port=5432    
