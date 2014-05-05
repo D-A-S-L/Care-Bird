@@ -14,8 +14,7 @@ $sql = "SELECT * from ourgroup";
 
 $result = pg_query($conn, $sql);
 
-foreach($result as $row)
-	print_r($row);
+print_r($result);
 
 $row = pg_fetch_object($result, 0);   
 
