@@ -25,7 +25,7 @@ function deliver_response($status, $status_message, $data){
 	$response['status_message']=$status_message;
 	$response['data']=$data;
 	
-	$responseArray=pg_fetch_all($result);
+	$responseArray=pg_fetch_all($data);
 	$json_response=json_encode($responseArray);
 	echo $json_response;
 }
