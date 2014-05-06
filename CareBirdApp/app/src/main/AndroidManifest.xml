@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dasl.android.carebird.app" >
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,11 +13,6 @@
         <activity
             android:name="com.dasl.android.carebird.app.MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.dasl.android.carebird.app.MainMenuActivity"
@@ -34,6 +29,11 @@
         <activity
             android:name="com.dasl.android.carebird.app.ChoiceActivity"
             android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.dasl.android.carebird.app.QRCodeActivity"
@@ -60,6 +60,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.LoginCRActivity"
+            android:label="@string/title_activity_login_cr"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity>
     </application>
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
 </manifest>

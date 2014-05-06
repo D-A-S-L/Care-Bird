@@ -23,7 +23,7 @@ public class MainMenuActivity extends Activity {
         // text view label
         TextView schedulesButton = (TextView) findViewById(R.id.Schedules);
         TextView careGiversButton = (TextView) findViewById(R.id.CareGivers);
-        TextView settingsButton = (TextView) findViewById(R.id.Settings);
+        TextView settingsButton = (TextView) findViewById(R.id.QRcode);
 
         // Loading Font Face
         Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
@@ -49,10 +49,10 @@ public class MainMenuActivity extends Activity {
             }
         });
 
-        final Button button3 = (Button) findViewById(R.id.Settings);
+        final Button button3 = (Button) findViewById(R.id.QRcode);
         button3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent myIntent = new Intent(v.getContext(), ChoiceActivity.class);
+                Intent myIntent = new Intent(v.getContext(), QRCodeActivity.class);
                 startActivityForResult (myIntent, 0);
             }
         });

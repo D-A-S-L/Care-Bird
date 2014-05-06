@@ -28,7 +28,7 @@ public class ChoiceActivity extends Activity {
         final Button button2 = (Button) findViewById(R.id.CareReceiverButton);
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent myIntent = new Intent(v.getContext(), MainMenuActivity.class);
+                Intent myIntent = new Intent(v.getContext(), LoginCRActivity.class);
                 startActivityForResult (myIntent, 0);
             }
         });
