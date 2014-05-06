@@ -17,7 +17,10 @@
         <activity
             android:name="com.dasl.android.carebird.app.MainMenuActivity"
             android:label="@string/app_name" >
-        </activity>
+        </activity><activity
+        android:name="com.dasl.android.carebird.app.MainCGActivity"
+        android:label="@string/app_name" >
+    </activity>
         <activity
             android:name="com.dasl.android.carebird.app.ErrorActivity"
             android:label="@string/app_name" >
@@ -61,9 +64,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.dasl.android.carebird.app.LoginCRActivity"
-            android:label="@string/title_activity_login_cr"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+        android:name="com.dasl.android.carebird.app.LoginCRActivity"
+        android:label="@string/title_activity_login_cr">
+        <!--android:windowSoftInputMode="adjustResize|stateVisible" -->
+    </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.LoginCGActivity"
+            android:label="@string/title_activity_login_cr">
+            <!--android:windowSoftInputMode="adjustResize|stateVisible" -->
         </activity>
     </application>
 
