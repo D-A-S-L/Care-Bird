@@ -31,13 +31,14 @@ else{
     $checkTokenRow = pg_fetch_row($checkTokenResponse);
     if($Token != $checkTokenRow[0]);
 	   deliver_response(200, "Invalid Authentication Token", NULL);
-    else
+    else{
         // User found, pass was correct, token was valid
         // So add a reference to the CanCare4Table (CRID, CGID)
         $addCareRefQuery="insert into CanCareFor values ('$crid',$'cgid')";
         $addCareRefResponse=pg_query($conn, $addCareRefQuery);
         $addCareRefRow = pg_fetch_row($addCareRefResponse);
         deliver_response(200, "addCareRef Query Result", $addCareRefRow);
+    }
 }
 
 
