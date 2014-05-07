@@ -26,7 +26,7 @@ else if($crpass != $authRow[0])
 else{
     // User found and Pass was correct
     // So add the Token to the QRToken's table.    
-    $addTokenQuery="insert into QRToken values ('$crid', '$Token')";
+    $addTokenQuery="inserft into QRToken values ('$crid', '$Token')";
     $addTokenResponse=pg_query($conn,$addTokenQuery);
     deliver_response(200, "addToken Query Result", $addTokenResponse);
 }
