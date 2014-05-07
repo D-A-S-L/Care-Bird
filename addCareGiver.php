@@ -21,8 +21,11 @@ $authRow = pg_fetch_row($authResponse);
 
 if(empty($authRow))
 	deliver_response(200, "No User with that username", NULL);
-else if($crpass != $authRow['pass'])
+else{
+    echo json_edcode($authRow);
+    if($crpass != $authRow['pass'])
 	   deliver_response(200, "Invalid password", NULL);
+}
 else{
     // User found and Pass was correct
     // So add the Token to the QRToken's table.    
