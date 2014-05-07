@@ -29,7 +29,8 @@ else{
     $checkTokenQuery="select Token from QRToken where UName='$crid'";
     $checkTokenResponse=pg_query($conn,$checkTokenQuery);
     $checkTokenRow = pg_fetch_row($checkTokenResponse);
-    echo json_encode($checkTokenRow);
+    $js = json_encode($checkTokenRow);
+    echo $js;
     if($Token != $checkTokenRow[0]);
 	   deliver_response(200, "Invalid Authentication Token", NULL);
     else{
