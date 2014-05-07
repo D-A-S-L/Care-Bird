@@ -7,6 +7,5 @@ global $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com
 
     user=yndbtfxmnwkcgi    
 
-    password=hiAXar8M6tn8OQNC1zrEDskrKO")
-	 or die("Could not connect");
+    password=hiAXar8M6tn8OQNC1zrEDskrKO");
 ?>
