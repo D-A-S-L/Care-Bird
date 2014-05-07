@@ -11,13 +11,13 @@ $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com
 
 header("Content-Type: application/json");
 
-$sql = "SELECT * from QRTokens";
+$sql = "SELECT * from QRToken";
 $result = pg_query($conn, $sql);
 
 if(empty($result))
-	deliver_response(200, "No entries in table 'QRTokens'", NULL);
+	deliver_response(200, "No entries in table 'QRToken'", NULL);
 else
-	deliver_response(200, "Table 'QRTokens'", $result);
+	deliver_response(200, "Table 'QRToken'", $result);
  
 function deliver_response($status, $status_message, $data){
 	header("HTTP/1.1 $status $status_message");
