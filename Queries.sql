@@ -33,11 +33,21 @@ create table CanCareFor
 ,primary key (CRID, CGID)
 );
 
+drop table QRToken;
+select * from QRToken;
+create table QRToken;
+( UName varchar(15)
+, Token varchar(100)
+, foreign key (UName) references Users(UName)
+)
+
+
 drop table fauxPillRecord;
 select * from fauxPillRecord;
 create table fauxPillRecord
-( UName foreign key references Users(UName)
-, SuperSecretPersonalReminderMessage varchar(200);
+( UName varchar(15)
+, SuperSecretPersonalReminderMessage varchar(200)
+, foreign key (UName) references Users(UName)
 );
 insert into fauxPillRecord values ('cdmurphy', 'Take the Blue pill');
 insert into fauxPillRecord values ('dnscianni', 'Take the Red pill');

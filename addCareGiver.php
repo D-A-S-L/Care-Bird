@@ -7,27 +7,26 @@
 // Pass values by doing:
 // caredb.herokuapp.com/addCareGiver.php?CRID=cdmurphy&CRPass=chris&CGID=dnscianni&Token='SuperSecret'
 
-    echo 'Before CONN<br/>';
 require 'dbconn.php';
-    echo 'After CONN<br/>';
-header("Content-Type: text/html");
-    echo $_GET["CRID"]."<br/>";
-    echo 'Either way... Hello World<br/>';
+$crid = $_GET["CRID"];
+$cgid = $_GET["CGID"];
+$crpass = $_GET["CRPass"];
+$Token = $_GET["Token"];
+    
+$authQuery="select Pass from Users where UName='$crid'";
+$authResponse=pg_query($conn,$authQuery);
+$authRow = pg_fetch_row($authResponse);
+
+
+if(empty($authQuery))
+	deliver_response(200, "No User with that username", NULL);
+else{
+	deliver_response(200, "User found", $authQuery);
+}
 
 
 
 
-
-
-
-/*$sql = "SELECT * from ourgroup";
-$result = pg_query($conn, $sql);
-
-if(empty($result))
-	deliver_response(200, "No entries in table 'ourgroup'", NULL);
-else
-	deliver_response(200, "Table 'ourgroup'", $result);
- 
 function deliver_response($status, $status_message, $data){
 	header("HTTP/1.1 $status $status_message");
 	$response['status']=$status;
@@ -37,6 +36,12 @@ function deliver_response($status, $status_message, $data){
 	$responseArray=pg_fetch_all($data);
 	$json_response=json_encode($responseArray);
 	echo $json_response;
-}*/
+}/**/
+/*$sql = "SELECT * from ourgroup";
+$result = pg_query($conn, $sql);*/
+
+
+ 
+
 pg_close ($conn);
 ?>
