@@ -8,6 +8,7 @@
 // caredb.herokuapp.com/addCareGiver.php?CRID=cdmurphy&CRPass=chris&CGID=dnscianni&Token='SuperSecret'
 
 require 'dbconn.php';
+header("Content-Type: application/json");
 $crid = $_GET["CRID"];
 $cgid = $_GET["CGID"];
 $crpass = $_GET["CRPass"];
