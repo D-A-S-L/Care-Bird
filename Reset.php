@@ -1,22 +1,17 @@
-﻿-- Database: d86fo56ie0kqjt
+<?   
+$conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
 
--- DROP DATABASE d86fo56ie0kqjt;
+    port=5432    
 
-CREATE DATABASE d86fo56ie0kqjt
-  WITH OWNER = yndbtfxmnwkcgi
-       ENCODING = 'UTF8'
-       TABLESPACE = pg_default
-       LC_COLLATE = 'en_US.UTF-8'
-       LC_CTYPE = 'en_US.UTF-8'
-       CONNECTION LIMIT = -1;
-GRANT ALL ON DATABASE d86fo56ie0kqjt TO yndbtfxmnwkcgi;
-REVOKE ALL ON DATABASE d86fo56ie0kqjt FROM public;
+    dbname=d86fo56ie0kqjt    
 
-select * from Users;
-select * from CanCareFor;
-select * from QRToken;
-select * from fauxPillRecord;
+    user=yndbtfxmnwkcgi    
 
+    password=hiAXar8M6tn8OQNC1zrEDskrKO");   
+
+header("Content-Type: application/json");
+
+$sql = "
 drop table CanCareFor;
 drop table fauxPillRecord;
 drop table QRToken;
@@ -52,3 +47,23 @@ create table fauxPillRecord
 );
 insert into fauxPillRecord values ('cdmurphy', 'Take the Blue pill');
 insert into fauxPillRecord values ('dnscianni', 'Take the Red pill');
+";
+$result = pg_query($conn, $sql);
+
+if(empty($result))
+	deliver_response(200, "No entries in table 'ourgroup'", NULL);
+else
+	deliver_response(200, "Table 'ourgroup'", $result);
+ 
+function deliver_response($status, $status_message, $data){
+	header("HTTP/1.1 $status $status_message");
+	$response['status']=$status;
+	$response['status_message']=$status_message;
+	$response['data']=$data;
+	
+	$responseArray=pg_fetch_all($data);
+	$json_response=json_encode($responseArray);
+	echo $json_response;
+}
+pg_close ($conn);
+?>
