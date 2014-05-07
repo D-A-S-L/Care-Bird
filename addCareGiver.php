@@ -11,7 +11,7 @@
 require 'dbconn.php';
     echo 'After CONN<br/>';
 header("Content-Type: text/html");
-    echo $_GET["CRID"];
+    echo $_GET["CRID"]."<br/>";
     echo 'Either way... Hello World<br/>';
 
 
