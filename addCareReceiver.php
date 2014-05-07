@@ -37,6 +37,7 @@ else{
         $addCareRefQuery="insert into CanCareFor values ('$crid','$cgid')";
         $addCareRefResponse=pg_query($conn, $addCareRefQuery);
         deliver_response(200, "addCareRef Query Result",  $addCareRefResponse);
+    }
 }
 
 
