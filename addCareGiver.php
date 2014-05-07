@@ -5,11 +5,11 @@
 // CGID - Password of the care receiver
 // Token - A secret "key" shared by the QRCode creator, with the QRScanner, to verify the authenticity of the request
 // Pass values by doing:
-// caredb.herokuapp.com/addCareGiver.php?#CRID=cdmurphy&CRPass=chris&CGID=dnscianni&Token='SuperSecret'
+// caredb.herokuapp.com/addCareGiver.php?CRID=cdmurphy&CRPass=chris&CGID=dnscianni&Token='SuperSecret'
 
 include ('dbconn.php');
 
-    echo $_GET['CRID'];
+    echo $_GET["CRID"];
 
 
 
