@@ -46,6 +46,10 @@
             android:name="com.dasl.android.carebird.app.SettingsActivity"
             android:label="@string/action_settings" >
         </activity>
+		<activity
+            android:name="com.dasl.android.carebird.app.ContactActivity"
+            android:label="@string/contact" >
+        </activity>
         <activity
             android:name="com.google.zxing.client.android.CaptureActivity"
             android:configChanges="orientation|keyboardHidden"

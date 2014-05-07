@@ -40,7 +40,6 @@ public class MainActivity extends Activity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -62,6 +61,11 @@ public class MainActivity extends Activity {
         }
         else if(id == R.id.action_qr_code) {
             Intent i = new Intent(this, QRCodeActivity.class);
+            startActivity(i);
+            return true;
+        }
+        else if(id == R.id.action_contacts) {
+            Intent i = new Intent(this, ContactActivity.class);
             startActivity(i);
             return true;
         }
