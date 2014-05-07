@@ -9,10 +9,8 @@
 
 include ('dbconn.php');
 
-if (!empty($_GET['CRID']))
     echo $_GET['CRID'];
-else
-    echo "No Result";
+
 
 
 
