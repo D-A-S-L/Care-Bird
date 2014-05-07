@@ -1,17 +1,22 @@
 <?   
-$conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
+// This service expects Four values
+// CRID - Username of the care receiver
+// CRPass - Password of the care receiver
+// CGID - Password of the care receiver
+// Token - A secret "key" shared by the QRCode creator, with the QRScanner, to verify the authenticity of the request
+// Pass values by doing:
+// caredb.herokuapp.com/addCareGiver.php?#CRID=cdmurphy&CRPass=chris&CGID=dnscianni&Token='SuperSecret'
 
-    port=5432    
+include ('dbconn.php');
 
-    dbname=d86fo56ie0kqjt    
+echo "$GET['CRID']";
 
-    user=yndbtfxmnwkcgi    
 
-    password=hiAXar8M6tn8OQNC1zrEDskrKO");   
 
-header("Content-Type: application/json");
 
-$sql = "SELECT * from ourgroup";
+
+
+/*$sql = "SELECT * from ourgroup";
 $result = pg_query($conn, $sql);
 
 if(empty($result))
@@ -28,6 +33,6 @@ function deliver_response($status, $status_message, $data){
 	$responseArray=pg_fetch_all($data);
 	$json_response=json_encode($responseArray);
 	echo $json_response;
-}
+}*/
 pg_close ($conn);
 ?>
