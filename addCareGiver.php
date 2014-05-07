@@ -22,7 +22,7 @@ $authRow = pg_fetch_row($authResponse);
 if(empty($authRow))
 	deliver_response(200, "No User with that username", NULL);
 else{
-    echo $authRow;
+    echo $authRow[0];
     if($crpass != $authRow['pass'])
 	   deliver_response(200, "Invalid password", NULL);
     else{
