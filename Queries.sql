@@ -33,6 +33,8 @@ create table CanCareFor
 ,primary key (CRID, CGID)
 );
 
+insert into CanCareFor values ('cdmurphy','dnscianni');
+
 drop table QRToken;
 select * from QRToken;
 create table QRToken
@@ -41,6 +43,8 @@ create table QRToken
 , foreign key (UName) references Users(UName)
 );
 insert into QRToken values ('cdmurphy', 'CoolTokenBro');
+select Token from QRToken;
+select Token from QRToken where UName='cdmurphy'
 
 drop table fauxPillRecord;
 select * from fauxPillRecord;
@@ -51,5 +55,3 @@ create table fauxPillRecord
 );
 insert into fauxPillRecord values ('cdmurphy', 'Take the Blue pill');
 insert into fauxPillRecord values ('dnscianni', 'Take the Red pill');
-
-select Pass from Users where UName='cdmurphy';

@@ -34,7 +34,7 @@ else{
     else{
         // User found, pass was correct, token was valid
         // So add a reference to the CanCare4Table (CRID, CGID)
-        $addCareRefQuery="insert into CanCareFor values ('$crid',$'cgid')";
+        $addCareRefQuery="insert into CanCareFor values ('$crid','$cgid')";
         $addCareRefResponse=pg_query($conn, $addCareRefQuery);
         $addCareRefRow = pg_fetch_row($addCareRefResponse);
         deliver_response(200, "addCareRef Query Result", $addCareRefRow);
