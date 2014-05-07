@@ -7,7 +7,9 @@
 // Pass values by doing:
 // caredb.herokuapp.com/addCareGiver.php?CRID=cdmurphy&CRPass=chris&CGID=dnscianni&Token='SuperSecret'
 
+    echo 'Before CONN';
 include ('dbconn.php');
+    echo 'After CONN';
 header("Content-Type: text/html");
     echo '$_GET["CRID"]';
     echo 'Either way... Hello World';
