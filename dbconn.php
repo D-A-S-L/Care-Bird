@@ -1,5 +1,5 @@
 <?   
-global $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
+$conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
 
     port=5432    
 
