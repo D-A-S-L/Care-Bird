@@ -8,7 +8,7 @@
 // caredb.herokuapp.com/addCareGiver.php?CRID=cdmurphy&CRPass=chris&CGID=dnscianni&Token='SuperSecret'
 
 include ('dbconn.php');
-header("Content-Type: test/html");
+header("Content-Type: text/html");
     echo '$_GET["CRID"]';
     echo 'Either way... Hello World';
 
