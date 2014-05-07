@@ -28,10 +28,8 @@ else{
     // So check the QRToken's if the token is there.  
     $checkTokenQuery="select Token from QRToken where UName='$crid'";
     $checkTokenResponse=pg_query($conn,$checkTokenQuery);
-    echo "fuckj";
-        /*
     $checkTokenRow = pg_fetch_row($checkTokenResponse);
-    if($Token != $checkTokenRow[0]);
+    if($Token != $checkTokenRow[0])
 	   deliver_response(200, "Invalid Authentication Token", NULL);
     else{
         // User found, pass was correct, token was valid
@@ -39,9 +37,7 @@ else{
         $addCareRefQuery="insert into CanCareFor values ('$crid','$cgid')";
         $addCareRefResponse=pg_query($conn, $addCareRefQuery);
         deliver_response(200, "addCareRef Query Result",  $addCareRefResponse);
-        echo "wtf valid token";
     }
-    */
 }
 
 
