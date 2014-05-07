@@ -29,6 +29,9 @@ create table Users
 );
 insert into users values ('Chris', 'Murphy', 'cdmurphy','chris');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
+insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
+insert into users values ('Alec', 'Shay', 'ashay', 'alec');
+insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
 
 create table CanCareFor
 ( CRID varchar(15) 
