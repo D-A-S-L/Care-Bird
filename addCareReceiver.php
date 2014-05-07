@@ -27,7 +27,7 @@ else{
     // User found and Pass was correct
     // So check the QRToken's if the token is there.    
     $checkTokenQuery="select token from QRToken where CRID='$crid'";
-    $checkTokenResponse=pg_query($conn,$addTokenQuery);
+    $checkTokenResponse=pg_query($conn,$checkTokenQuery);
     $checkTokenRow = pg_fetch_row($checkTokenResponse);
     if($Token != $checkTokenRow[0]);
 	   deliver_response(200, "Invalid Authentication Token", NULL);
