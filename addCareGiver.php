@@ -9,7 +9,8 @@
 
 include ('dbconn.php');
 header("Content-Type: test/html");
-    echo $_GET["CRID"];
+    echo '$_GET["CRID"]';
+    echo 'Either way... Hello World';
 
 
 
