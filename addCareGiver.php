@@ -26,13 +26,13 @@ else{
     echo $jr;
     if($crpass != $authRow['pass'])
 	   deliver_response(200, "Invalid password", NULL);
-}
-else{
-    // User found and Pass was correct
-    // So add the Token to the QRToken's table.    
-    $addTokenQuery="insert into QRToken values ('$crid', '$Token')";
-    $addTokenResponse=pg_query($conn,$addTokenQuery);
-    deliver_response(200, "addToken Query Result", $addTokenResponse);
+    else{
+        // User found and Pass was correct
+        // So add the Token to the QRToken's table.    
+        $addTokenQuery="insert into QRToken values ('$crid', '$Token')";
+        $addTokenResponse=pg_query($conn,$addTokenQuery);
+        deliver_response(200, "addToken Query Result", $addTokenResponse);
+    }
 }
 
 
