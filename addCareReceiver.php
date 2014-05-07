@@ -11,7 +11,7 @@ require 'dbconn.php';
 header("Content-Type: application/json");
 $crid = $_GET["CRID"];
 $cgid = $_GET["CGID"];
-$cgpass = $_GET["CRPass"];
+$cgpass = $_GET["CGPass"];
 $Token = $_GET["Token"];
     
 $authQuery="select Pass from Users where UName='$cgid'";
