@@ -35,12 +35,12 @@ create table CanCareFor
 
 drop table QRToken;
 select * from QRToken;
-create table QRToken;
+create table QRToken
 ( UName varchar(15)
 , Token varchar(100)
 , foreign key (UName) references Users(UName)
-)
-
+);
+insert into QRToken values ('cdmurphy', 'CoolTokenBro');
 
 drop table fauxPillRecord;
 select * from fauxPillRecord;
@@ -51,3 +51,5 @@ create table fauxPillRecord
 );
 insert into fauxPillRecord values ('cdmurphy', 'Take the Blue pill');
 insert into fauxPillRecord values ('dnscianni', 'Take the Red pill');
+
+select Pass from Users where UName='cdmurphy';

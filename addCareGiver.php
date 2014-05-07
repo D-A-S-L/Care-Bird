@@ -21,11 +21,19 @@ $authRow = pg_fetch_row($authResponse);
 
 if(empty($authRow))
 	deliver_response(200, "No User with that username", NULL);
+else if($crpass != $row['Pass'])
+	   deliver_response(200, "Invalid password", NULL);
 else{
-	deliver_response(200, "User found", $authResponse);
+    // User found and Pass was correct
+    // So add the Token to the QRToken's table.    
+    $addTokenQuery="insert into QRToken values ('$crid', '$Token')";
+    $addTokenResponse=pg_query($conn,$authQuery);
+    deliver_response(200, "addToken Query Result", $addTokenResponse);
 }
 
 
+
+	//deliver_response(200, "User found", $authResponse);
 
 
 function deliver_response($status, $status_message, $data){
