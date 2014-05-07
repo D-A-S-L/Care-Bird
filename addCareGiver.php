@@ -21,7 +21,7 @@ $authRow = pg_fetch_row($authResponse);
 
 if(empty($authRow))
 	deliver_response(200, "No User with that username", NULL);
-else if($crpass != $row['pass'])
+else if($crpass != $authRow['pass'])
 	   deliver_response(200, "Invalid password", NULL);
 else{
     // User found and Pass was correct
