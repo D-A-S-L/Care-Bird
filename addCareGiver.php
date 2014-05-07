@@ -22,7 +22,7 @@ $authRow = pg_fetch_row($authResponse);
 if(empty($authRow))
 	deliver_response(200, "No User with that username", NULL);
 else{
-	deliver_response(200, "User found", $authQuery);
+	deliver_response(200, "User found", $authResponse);
 }
 
 
