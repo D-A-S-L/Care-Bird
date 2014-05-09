@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -17,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -138,9 +140,19 @@ public class LoginCRActivity extends Activity implements LoaderCallbacks<Cursor>
 
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        } else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(name)) {
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
             cancel = true;
         }
 
@@ -165,6 +177,15 @@ public class LoginCRActivity extends Activity implements LoaderCallbacks<Cursor>
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, name, password);
             mAuthTask.execute((Void) null);
+
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("userName", userName).commit();
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("name", name).commit();
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("password", password).commit();
+
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putInt("firstboot", 2).commit();
+
+            TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("myPhoneNumber", tMgr.getLine1Number()).commit();
 
             Intent myIntent = new Intent(this, MainActivity.class);
             startActivityForResult (myIntent, 0);

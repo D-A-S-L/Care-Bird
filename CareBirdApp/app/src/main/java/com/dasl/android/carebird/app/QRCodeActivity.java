@@ -25,14 +25,16 @@ public class QRCodeActivity extends Activity {
         Button scanBtn = (Button) findViewById(R.id.scanCode);
         qrDecoded = (TextView) findViewById(R.id.qrDecoded);
 
-        String qrData = "CS356 Team DASL";
+        String qrData = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", null);
         int qrCodeDimension = 500;
 
         QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrData, null,
-                    Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), qrCodeDimension);
+                    Contents.Type.PHONE, BarcodeFormat.QR_CODE.toString(), qrCodeDimension);
 
-        if(contents != null)
+        if(contents != null) {
             qrDecoded.setText("QR Scan Result: " + contents);
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("otherPhoneNumber", contents);
+        }
         else
             qrDecoded.setText("QR Scan Result: ");
 
