@@ -18,9 +18,9 @@ if (empty($SessionKey) and empty($UName) and empty($Pass)){
 		deliver_response(200, "User is not logged in", $rTable);//Returns null
 	} else {deliver_response(200, "SessionKey valid", $rTable);//Returns false
 } else if(!(empty($UName) or empty($Pass))){
-	$query="select Pass from Users where UName='$UName';";
+	/*$query="select Pass from Users where UName='$UName';";
 	$rTable=pg_query($conn,$query);
-	/*if($rTable[0]!=$Pass){
+	if($rTable[0]!=$Pass){
 		deliver_response(200, "Username/password combo Not found", $rTable); //Returns false
 	} else {*/
 		$query="delete from SessionKeys where UName='$UName';";
