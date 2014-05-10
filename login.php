@@ -37,7 +37,8 @@ else if(!(empty($UName) or empty($Pass)))
 		$SessionKey=bin2hex(mcrypt_create_iv(128, MCRYPT_DEV_RANDOM));
 		$query="insert into SessionKeys values ('$UName','$SessionKey');";
 		$rTable=pg_query($conn,$query); 
-		$result="[{$UName:$SessionKey}]";
+		$query="select * from SessionKeys where UName='$UName';";
+		$rTable=pg_query($conn,$query); 
 		deliver_response(200, "Username found", $result);
 		//deliver_response(200, "Username found", $rTable); //returns null but stores a session key
 	}
