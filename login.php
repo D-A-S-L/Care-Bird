@@ -8,7 +8,7 @@ $UName = $_GET["UName"];
 $Pass = $_GET["Pass"];
 $SessionKey = $_GET["SessionKey"];
 
-if (isset($SessionKey) or (isset($UName) or isset($Pass))){
+if (empty($SessionKey) and empty($UName) and empty($Pass)){
 	deliver_response(200, "User is not logged in", false);
 } else if(!empty($SessionKey)){
 	$query="select SessionKey from SessionKeys where SessionKey='SessionKey';";
@@ -17,7 +17,7 @@ if (isset($SessionKey) or (isset($UName) or isset($Pass))){
 	if(empty($row)){
 		deliver_response(200, "User is not logged in", false);
 	} else {deliver_response(200, "SessionKey valid", true);}
-} else if(!(empty($UName) or empty($Pass))){
+} else if(!(empty($UName) and empty($Pass))){
 	$query="delete from SessionKeys where UName='$Uname';";
 	$rTable=pg_query($conn,$query);
 	$SessionKey=bin2hex(mcrypt_create_iv(128, MCRYPT_DEV_RANDOM));
