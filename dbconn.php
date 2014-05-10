@@ -1,4 +1,5 @@
 <?   
+echo getenv('DATABASE_URL');
 $conn = pg_connect(getenv('DATABASE_URL'));
 
 /*("host=ec2-54-225-136-187.compute-1.amazonaws.com    
