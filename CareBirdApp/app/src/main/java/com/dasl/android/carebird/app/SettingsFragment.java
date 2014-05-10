@@ -1,25 +1,33 @@
 package com.dasl.android.carebird.app;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.location.Address;
+import android.location.Geocoder;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.app.AlarmManager;
 import android.content.Intent;
+import android.util.Log;
+import android.widget.Toast;
 
 
 import java.util.Calendar;
 import java.util.Random;
-
+import java.io.IOException;
+import java.util.List;
 /**
  * Created by crazz_000 on 5/4/2014.
  */
-public class SettingsFragment extends PreferenceFragment {
+public class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
 
     /*
      * For testing purposes
      */
     private AlarmManager keeperOfAlarms;
+	public static final String KEY_PREF_HOME_ADDRESS= "pref_home_address";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,5 +69,42 @@ public class SettingsFragment extends PreferenceFragment {
 
         return;
 
+    }
+	
+	@Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        Log.i("SettingsFragment", "Start of onSharedPreferenceChanged");
+        if (s.equals(findPreference(KEY_PREF_HOME_ADDRESS).getKey())) {
+            Geocoder coder = new Geocoder(getActivity().getApplicationContext());
+            List<Address> address;
+            String strAddress = sharedPreferences.getString(KEY_PREF_HOME_ADDRESS, null);
+
+            try {
+                address = coder.getFromLocationName(strAddress,5);
+                if (address == null) {
+                    return;
+                }
+                Address location = address.get(0);
+                double lat = location.getLatitude();
+                double lon = location.getLongitude();
+                String coordinates = "Lat = " + lat + "  " + "Long = " + lon;
+                Toast.makeText(getActivity().getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
+
+            } catch(IOException e) {
+                Log.i("SettingsFragment", "FAILED");
+            }
+        }
+    }
+	
+	@Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        getPreferenceManager().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
     }
 }
