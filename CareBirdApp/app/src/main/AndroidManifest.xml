@@ -70,6 +70,14 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.dasl.android.carebird.app.CareGiversActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.CareReceiversActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
         android:name="com.dasl.android.carebird.app.LoginCRActivity"
         android:label="@string/title_activity_login_cr">
         <!--android:windowSoftInputMode="adjustResize|stateVisible" -->
