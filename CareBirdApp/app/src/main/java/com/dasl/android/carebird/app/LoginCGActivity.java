@@ -138,9 +138,19 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
 
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        } else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(name)) {
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
             cancel = true;
         }
 
@@ -165,6 +175,12 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, name, password);
             mAuthTask.execute((Void) null);
+
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("userName", userName).commit();
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("name", name).commit();
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("password", password).commit();
+
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putInt("firstboot", 2).commit();
 
             Intent myIntent = new Intent(this, MainCGActivity.class);
             startActivityForResult (myIntent, 0);

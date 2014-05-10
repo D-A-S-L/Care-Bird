@@ -1,7 +1,9 @@
 package com.dasl.android.carebird.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,26 +16,72 @@ import android.widget.TextView;
  * Created by David on 4/30/14.
  */
 public class ChoiceActivity extends Activity {
-
+  //  SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.choice_activity);
 
-        final Button button1 = (Button) findViewById(R.id.CareGiverButton);
-        button1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent myIntent = new Intent(v.getContext(), LoginCGActivity.class);
-                startActivityForResult (myIntent, 0);
-            }
-        });
 
-        final Button button2 = (Button) findViewById(R.id.CareReceiverButton);
-        button2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent myIntent = new Intent(v.getContext(), LoginCRActivity.class);
-                startActivityForResult (myIntent, 0);
+        int firstboot = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getInt("firstboot", 0);
+
+        if (firstboot == 0){
+            // 1) Launch the authentication activity
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.choice_activity);
+
+            final Button button1 = (Button) findViewById(R.id.CareGiverButton);
+            button1.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    SharedPreferences.Editor editor = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit();
+                    editor.putBoolean(getString(R.string.user_type), true);
+                    editor.commit();
+
+                    getSharedPreferences("BOOT_PREF", MODE_PRIVATE)
+                            .edit()
+                            .putInt("firstboot", 1)
+                            .commit();
+
+                    Intent myIntent = new Intent(v.getContext(), LoginCGActivity.class);
+                    startActivityForResult (myIntent, 0);
+                }
+            });
+
+            final Button button2 = (Button) findViewById(R.id.CareReceiverButton);
+            button2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    SharedPreferences.Editor editor = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit();
+                    editor.putBoolean(getString(R.string.user_type), false);
+                    editor.commit();
+
+                    getSharedPreferences("BOOT_PREF", MODE_PRIVATE)
+                            .edit()
+                            .putInt("firstboot", 1)
+                            .commit();
+
+                    Intent myIntent = new Intent(v.getContext(), LoginCRActivity.class);
+                    startActivityForResult (myIntent, 0);
+                }
+            });
+        } else if (firstboot == 1) {
+            super.onCreate(savedInstanceState);
+            if(getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getBoolean(getString(R.string.user_type), true)) {
+                Intent myIntent = new Intent(this, LoginCGActivity.class);
+                startActivityForResult(myIntent, 0);
+            } else {
+                Intent myIntent = new Intent(this, LoginCRActivity.class);
+                startActivityForResult(myIntent, 0);
             }
-        });
+        } else {
+            super.onCreate(savedInstanceState);
+            if(getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getBoolean(getString(R.string.user_type), true)) {
+                Intent myIntent = new Intent(this, MainCGActivity.class);
+                startActivityForResult(myIntent, 0);
+            } else {
+                Intent myIntent = new Intent(this, MainActivity.class);
+                startActivityForResult(myIntent, 0);
+            }
+        }
+
     }
 
     @Override

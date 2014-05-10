@@ -12,8 +12,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:text="Panic"
+        android:textSize="40dp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/Panic"
+        android:background="@drawable/button"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:text="Schedules"
         android:textSize="40dp"
         android:textColor="#FFFFFF"
@@ -23,8 +33,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:text="Care Givers"
         android:textSize="40dp"
         android:textColor="#FFFFFF"
@@ -34,8 +44,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:text="QR Code"
         android:textSize="40dp"
         android:textColor="#FFFFFF"
