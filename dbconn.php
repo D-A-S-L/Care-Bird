@@ -1,6 +1,6 @@
 <?  
 	
-	$DATABASE_URL=getenv('DATABASE_URL')
+	$DATABASE_URL=getenv('DATABASE_URL');
 	$explodedURL = array explode (':' , $DATABASE_URL);
 	$host;
 	$user;
