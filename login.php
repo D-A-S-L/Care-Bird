@@ -28,8 +28,8 @@ else if(!(empty($UName) or empty($Pass)))
 {
 	$query="select Pass from Users where UName='$UName';";
 	$rTable=pg_query($conn,$query);
-	if($rTable[0]!=$Pass){
-		deliver_response(200, "Username/password combo Not found", $rTable); //Returns false
+	if($rTable[0]['pass']!=$Pass){
+		deliver_response(200, "Username/password combo Not found", null); 
 	} else {
 		$query="delete from SessionKeys where UName='$UName';";
 		$rTable=pg_query($conn,$query);
@@ -38,6 +38,6 @@ else if(!(empty($UName) or empty($Pass)))
 		$rTable=pg_query($conn,$query); 
 		deliver_response(200, "Username found", $rTable); //Returns false
 	}
-} else {deliver_response(200,"Invalid authentication", NULL);}
+} else {deliver_response(200,"Invalid authentication", null);}
 pg_close($conn);
 ?>
