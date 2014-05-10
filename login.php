@@ -7,7 +7,8 @@ header("Content-Type: application/json");
 $UName = $_GET["UName"];
 $Pass = $_GET["Pass"];
 $SessionKey = $_GET["SessionKey"];
-echo empty($SessionKey).", ".empty($UName).", ".empty($Pass);
+
+// for debugging: echo empty($SessionKey).", ".empty($UName).", ".empty($Pass);
 
 if (empty($SessionKey) and empty($UName) and empty($Pass))
 {
@@ -22,7 +23,7 @@ else if(!empty($SessionKey))
 	{
 		deliver_response(200, "User is not logged in", $rTable);//Returns null
 	}
-	else {deliver_response(200, "SessionKey valid", $rTable);}//Returns false
+	else {deliver_response(200, "SessionKey response", $rTable);}//Returns false if found
 }
 else if(!(empty($UName) or empty($Pass)))
 {
