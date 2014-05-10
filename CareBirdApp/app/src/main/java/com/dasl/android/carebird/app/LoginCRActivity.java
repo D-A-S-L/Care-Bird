@@ -135,6 +135,13 @@ public class LoginCRActivity extends Activity implements LoaderCallbacks<Cursor>
         String name = mNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
+        // testing of user table create by Brian Saia
+        dbAdapter dba = new dbAdapter(this);
+        dba.open();
+        dba.addUser("Me", userName, password, name, "");
+        dba.close();
+        // end of test
+
         boolean cancel = false;
         View focusView = null;
 

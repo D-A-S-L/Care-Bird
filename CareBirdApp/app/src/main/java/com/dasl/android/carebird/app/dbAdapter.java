@@ -38,7 +38,8 @@ public class dbAdapter{
     //make sure this matches the
     //package com.MyPackage;
     //at the top of this file
-    private static String DB_PATH; // set in the constructor when the context is known
+    //set in the constructor when the context is known
+    private static String DB_PATH;
 
     //make sure this matches your database name in your assets folder
     // my database file does not have an extension on it
@@ -46,7 +47,7 @@ public class dbAdapter{
     // add the extention
     private static final String DATABASE_NAME = "configs.db";
 
-    //Im using an sqlite3 database, I have no clue if this makes a difference or not
+    //versions will change when major modifications to the database occur like new tables or new columns in tables
     private static final int DATABASE_VERSION = 1;
 
     private final Context adapterContext;
@@ -116,69 +117,56 @@ public class dbAdapter{
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            createPillLogTable(db);
-            createPedometerLogTable(db);
-            createGlucoseLogTable(db);
-            createLocationLogTable(db);
-            createScheduleTable(db);
-            createUsersTable(db);
+            db.execSQL(PillLogTable());
+            db.execSQL(PedometerLogTable());
+            db.execSQL(GlucoseLogTable());
+            db.execSQL(LocationLogTable());
+            db.execSQL(ScheduleTable());
+            db.execSQL(UsersTable());
         }
 
         //creates the pill logger table with the below column names
-        private void createPillLogTable(SQLiteDatabase db){
-            String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + PILL_LOGGER_TABLE +
+        private String PillLogTable(){
+            return "CREATE TABLE" + "IF NOT EXIST" + DATABASE_NAME + "." + PILL_LOGGER_TABLE +
                     "(" + ID + ORIGINAL_ALERT_TIME + LOG_TIME + " message TEXT, action_taken TEXT);";
-            db.execSQL(query);
-        }
-
-        public void addPillLog(Date orginalAlertTime, String message, String action){
-            Date date = new Date();
-            String query = "INSERT INTO" + db + "." + PILL_LOGGER_TABLE +
-                    "(alert_time, log_time, message, action_taken)" +
-                    "VALUES" +
-                    "(" + orginalAlertTime + ", " + new Date() + ", " + message + ", " +action + ");";
-            db.execSQL(query);
         }
 
         //creates the pedometer logging table with the below columns. duration i.e. month or week specifies the time duration of the steps_taken value
-        private void createPedometerLogTable(SQLiteDatabase db){
-            String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + PEDOMETER_LOGGER_TABLE +
-                    "(" + ID + LOG_TIME + " duration TEXT, steps_taken NUMBER);";
-            db.execSQL(query);
+        private String PedometerLogTable(){
+            return "CREATE TABLE" + "IF NOT EXIST" + DATABASE_NAME + "." + PEDOMETER_LOGGER_TABLE +
+                    "(" + ID + LOG_TIME + " duration TEXT, steps_taken INTEGER);";
         }
 
         /*creates the glucose logging table with the below values. "snooze" is determined by a null value in the glucose_value.
         "dismiss" is determined by a null value in the glucose_value and the last entry for the specifies ORIGINAL_ALERT_TIME.
         */
-        private void createGlucoseLogTable(SQLiteDatabase db) {
-            String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + GLUCOSE_LOGGER_TABLE +
-                    "(" + ID + ORIGINAL_ALERT_TIME + LOG_TIME + " glucose_value NUMBER);";
-            db.execSQL(query);
+        private String GlucoseLogTable() {
+            return "CREATE TABLE" + "IF NOT EXIST" + DATABASE_NAME + "." + GLUCOSE_LOGGER_TABLE +
+                    "(" + ID + ORIGINAL_ALERT_TIME + LOG_TIME + " glucose_value REAL);";
         }
 
         //creates the location log table
-        private void createLocationLogTable(SQLiteDatabase db) {
-            String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + LOCATION_LOGGER_TABLE +
-                    "(" + ID + ORIGINAL_ALERT_TIME + LOG_TIME + " location TEXT, distance_from_home NUMBER);";
-            db.execSQL(query);
+        private String LocationLogTable() {
+            return "CREATE TABLE" + "IF NOT EXIST" + DATABASE_NAME + "." + LOCATION_LOGGER_TABLE +
+                    "(" + ID + ORIGINAL_ALERT_TIME + LOG_TIME + " location TEXT, distance_from_home REAL);";
         }
 
         //creates the schedule table so alerts are persistent. column names will be the inputs to what ever scheduler we use
-        private void createScheduleTable(SQLiteDatabase db) {
-            String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + SCHEDULE_TABLE +
-                    "(" + ID + ORIGINAL_ALERT_TIME + " type TEXT, optional_message TEXT, optional_repeats NUMBER);";
-            db.execSQL(query);
+        private String ScheduleTable() {
+            return "CREATE TABLE" + "IF NOT EXIST" + DATABASE_NAME + "." + SCHEDULE_TABLE +
+                    "(" + ID + ORIGINAL_ALERT_TIME + " type TEXT, optional_message TEXT, optional_repeats INTEGER);";
         }
 
-        private void createUsersTable(SQLiteDatabase db) {
-            String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + USERS_TABLE +
-                    "(" + ID + " type TEXT, user_name TEXT, password TEXT, first_name TEXT, last_name TEXT,);";
-            db.execSQL(query);
+        private String UsersTable() {
+            return "CREATE TABLE" + "IF NOT EXIST" + DATABASE_NAME + "." + USERS_TABLE +
+                    "(" + ID + LOG_TIME + " type TEXT, user_name TEXT, password TEXT, first_name TEXT, last_name TEXT,);";
         }
+
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             //this is version one there is nothing to update
+
             /*
             Log.w(TAG, "Upgrading database!!!!!");
             //db.execSQL("");
@@ -188,9 +176,7 @@ public class dbAdapter{
 
         public void createDataBase() throws IOException {
             boolean dbExist = checkDataBase();
-            if (dbExist) {
-            } else {
-
+            if (!dbExist) {
                 //make sure your database has this table already created in it
                 //this does not actually work here
                 /*
@@ -225,7 +211,7 @@ public class dbAdapter{
             if (checkDB != null) {
                 checkDB.close();
             }
-            return checkDB != null ? true : false;
+            return checkDB != null;
         }
 
         private void copyDataBase() throws IOException {
@@ -268,6 +254,20 @@ public class dbAdapter{
             super.close();
 
         }
+    }
+
+    public void addPillLog(Date orginalAlertTime, String message, String action){
+        db.execSQL("INSERT INTO" + DATABASE_NAME + "." + PILL_LOGGER_TABLE +
+                "(alert_time, log_time, message, action_taken)" +
+                "VALUES" +
+                "(" + orginalAlertTime + ", " + new Date() + ", " + message + ", " +action + ");");
+    }
+
+    public void addUser(String type, String userName, String password, String firstName, String lastName){
+        db.execSQL("INSERT INTO" + DATABASE_NAME + "." + USERS_TABLE +
+                "(log_time, type, user_name, password, first_name, last_name)" +
+                "VALUES" +
+                "(" +  new Date() + ", " + type + ", " + userName + ", " + password + ", " + firstName + ", " + lastName + ");");
     }
 
 }
