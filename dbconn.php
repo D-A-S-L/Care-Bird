@@ -14,7 +14,7 @@ $conn = pg_connect(
     port=$port
     user=$user
     password=$pass
-	dbname=$database");
+	 dbname=$database");
 
 function deliver_response($status, $status_message, $data){
 header("HTTP/1.1 $status $status_message");
