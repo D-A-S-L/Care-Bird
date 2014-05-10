@@ -1,13 +1,12 @@
 <?  
-	$host=getenv('POSTGRES_HOST');
-	$user=getenv('POSTGRES_USER');
-	$pass=getenv('POSTGRES_PASSWORD');
-	$database=getenv('POSTGRES_DATABASE');
+	
+	$DATABASE_URL=getenv('DATABASE_URL')
+	$host;
+	$user;
+	$pass;
+	$database;
 	$port=5432;
-	echo $host;
-	echo $user;
-	echo $pass;
-	echo $database;
+	echo $DATABASE_URL;
 	
 $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
 
