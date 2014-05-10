@@ -1,4 +1,4 @@
-<?   
+<?php   
 // This service expects Four values
 // CRID - Username of the care receiver
 // CGPass - Password of the care Giver

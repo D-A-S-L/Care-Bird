@@ -1,4 +1,4 @@
-<?
+<?php
 require 'dbconn.php';
 $sql = "SELECT * from QRToken";
 $result = pg_query($conn, $sql);
