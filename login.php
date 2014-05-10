@@ -16,14 +16,11 @@ if (empty($SessionKey) and empty($UName) and empty($Pass))
 }
 else if(!empty($SessionKey))
 {
-	$query="select SessionKey from SessionKeys where SessionKey='$SessionKey';";
+	$query="select UName from SessionKeys where SessionKey='$SessionKey';";
 	$rTable=pg_query($conn,$query);
 	$row = pg_fetch_row($rTable);
-	if(empty($row))
-	{
-		deliver_response(200, "User is not logged in", null);
-	}
-	else {echo "yolo";deliver_response(200, "SessionKey response", $rTable);}//Returns false if found
+	if(empty($row)){deliver_response(200, "User is not logged in", null);}
+	else {deliver_response(200, "SessionKey response", $rTable);}//Returns Username if found
 }
 else if(!(empty($UName) or empty($Pass)))
 {
