@@ -7,7 +7,8 @@ header("Content-Type: application/json");
 $UName = $_GET["UName"];
 $Pass = $_GET["Pass"];
 $SessionKey = $_GET["SessionKey"];
-if (empty($SessionKey) and (empty($UName) or empty($Pass)){	
+
+if (empty($SessionKey) and (empty($UName) or empty($Pass))){
 	deliver_response(200, "User is not logged in", false);
 } else if(!empty($SessionKey)){
 	$query="select SessionKey from SessionKeys where SessionKey='SessionKey';";
