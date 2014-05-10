@@ -9,7 +9,7 @@
 	$host=$passAndHostExplodedURL[1];
 	$port=$portAndDatabaseExplodedURL[0];
 	$database=$portAndDatabaseExplodedURL[1];
-	echo ' $user $pass $host $port $database ';
+	echo " $user $pass $host $port $database ";
 	
 $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
 
