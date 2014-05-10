@@ -1,8 +1,8 @@
 <?  
-	$host=getenv('host');
-	$user=getenv('user');
-	$pass=getenv('password');
-	$database=getenv('database');
+	$host=getenv('POSTGRES_HOST');
+	$user=getenv('POSTGRES_USER');
+	$pass=getenv('POSTGRES_PASSWORD');
+	$database=getenv('POSTGRES_DATABASE');
 	$port=5432;
 	echo $host;
 	echo $user;
