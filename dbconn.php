@@ -12,9 +12,9 @@
 	
 $conn = pg_connect(
 	"host=$host  
-    port=$o56ie0kqjt
-    user=yndbtfxmnwkcgi
-    password=hiAXar8M6tn8OQNC1zrEDskrKO");
+    port=$port
+    user=$user
+    password=$pass");
 
 function deliver_response($status, $status_message, $data){
 header("HTTP/1.1 $status $status_message");
