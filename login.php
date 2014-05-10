@@ -23,7 +23,7 @@ else if(!empty($SessionKey))
 	{
 		deliver_response(200, "User is not logged in", $rTable);//Returns null
 	}
-	else { echo "YOLO"; deliver_response(200, "SessionKey response", $rTable);}//Returns false if found
+	else {deliver_response(200, "SessionKey response", $rTable);}//Returns false if found
 }
 else if(!(empty($UName) or empty($Pass)))
 {
@@ -31,7 +31,7 @@ else if(!(empty($UName) or empty($Pass)))
 	$rTable=pg_query($conn,$query);
 	$row = pg_fetch_row($rTable);
 	if($row[0]!=$Pass){
-		 echo "YOO"; deliver_response(200, "Username/password combo Not found", $rTable); 
+		deliver_response(200, "Username/password combo Not found", null); 
 	} else {
 		$query="delete from SessionKeys where UName='$UName';";
 		$rTable=pg_query($conn,$query);
@@ -41,9 +41,9 @@ else if(!(empty($UName) or empty($Pass)))
 		// This query can probably be avoided...
 		$query="select * from SessionKeys where UName='$UName';";
 		$rTable=pg_query($conn,$query);
-		 echo "OLO";deliver_response(200, "New session key created", $rTable);
+		deliver_response(200, "New session key created", $rTable); //returns the new session key
 		//deliver_response(200, "Username found", $rTable); //returns null but stores a session key
 	}
-} else { echo "YOL";deliver_response(200,"Invalid authentication", null);}
+} else {deliver_response(200,"Invalid authentication", null);}
 pg_close($conn);
 ?>
