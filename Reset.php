@@ -6,7 +6,10 @@ $sql = "
 drop table CanCareFor;
 drop table fauxPillRecord;
 drop table QRToken;
+drop table SessionKeys;
 drop table Users;
+
+
 create table Users
 ( FName varchar(15) not null
 , LName varchar(15) not null
@@ -19,6 +22,14 @@ insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
 insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
 
+create table SessionKeys
+( UName varchar(15)primary key
+, SessionKey varchar(256) unique
+, foreign key (UName) references Users(UName) on delete cascade
+);
+
+/*insert into SessionKeys values ('cdmurphy','CoolKeyBro');*/
+
 create table CanCareFor
 ( CRID varchar(15) 
 , CGID varchar(15) 
@@ -29,8 +40,8 @@ create table CanCareFor
 
 
 create table QRToken
-( UName varchar(15)
-, Token varchar(100)
+( UName varchar(15) not null
+, Token varchar(100) not null
 , foreign key (UName) references Users(UName)
 );
 

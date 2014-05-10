@@ -20,7 +20,7 @@ else if(!empty($SessionKey))
 	$rTable=pg_query($conn,$query);
 	$row = pg_fetch_row($rTable);
 	if(empty($row)){deliver_response(200, "User is not logged in", null);}
-	else {deliver_response(200, "SessionKey response", $rTable);}//Returns Username if found
+	else {deliver_response(200, "User is logged in", $rTable);}//Returns Username if found
 }
 else if(!(empty($UName) or empty($Pass)))
 {
@@ -36,10 +36,10 @@ else if(!(empty($UName) or empty($Pass)))
 		$query="insert into SessionKeys values ('$UName','$SessionKey');";
 		$rTable=pg_query($conn,$query);
 		// This query can probably be avoided...
-		$query="select * from SessionKeys where UName='$UName';";
+		$query="select SessionKey from SessionKeys where UName='$UName';";
 		$rTable=pg_query($conn,$query);
-		deliver_response(200, "New session key created", $rTable); //returns the new session key
-		//deliver_response(200, "Username found", $rTable); //returns null but stores a session key
+		//stores a session key & returns the new session key
+		deliver_response(200, "New session key created", $rTable);
 	}
 } else {deliver_response(200,"Invalid authentication", null);}
 pg_close($conn);
