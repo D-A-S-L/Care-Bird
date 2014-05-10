@@ -7,7 +7,7 @@ header("Content-Type: application/json");
 $UName = $_GET["UName"];
 $Pass = $_GET["Pass"];
 $SessionKey = $_GET["SessionKey"];
-    echo "before function";
+    echo "before function";/*
 function notLoggedIn(){
 	deliver_response(200, "User is not logged in", false);
 }
@@ -30,6 +30,6 @@ if (empty($SessionKey) and (empty($UName) or empty($Pass)){
 	$rTable=pg_query($conn,$query);
 	deliver_response(200, "Username not found", $SessionKey);
 } else {deliver_response(200,"Invalid authentication", NULL);}
-*/
+
 pg_close($conn);
 ?>
