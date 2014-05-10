@@ -36,12 +36,8 @@ else if(!(empty($UName) or empty($Pass)))
 		$rTable=pg_query($conn,$query);
 		$SessionKey=bin2hex(mcrypt_create_iv(128, MCRYPT_DEV_RANDOM));
 		$query="insert into SessionKeys values ('$UName','$SessionKey');";
-		$rTable=pg_query($conn,$query);
-		// This query can probably be avoided...
-		$query="select * from SessionKeys where UName='$UName';";
-		$rTable=pg_query($conn,$query);
-		deliver_response(200, "New session key created", $rTable);
-		//deliver_response(200, "Username found", $rTable); //returns null but stores a session key
+		$rTable=pg_query($conn,$query); 
+		deliver_response(200, "Username found", $rTable); //returns null but stores a session key
 	}
 } else {deliver_response(200,"Invalid authentication", null);}
 pg_close($conn);
