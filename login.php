@@ -4,15 +4,16 @@
 
 require 'dbconn.php';
 header("Content-Type: application/json");
-$UName = $_GET["UName"];
-$Pass = $_GET["Pass"];
-$SessionKey = $_GET["SessionKey"];
+$UName = $_GET["uname"];
+$Pass = $_GET["pass"];
+$SessionKey = $_GET["sessionkey"];
     echo "before function";
 function notLoggedIn(){
 	deliver_response(200, "User is not logged in", false);
 }
-	 
+	 echo "after function";
 if (empty($SessionKey) and (empty($UName) or empty($Pass)){
+	echo "first if";
 	notLoggedIn();
 } else if(!empty($SessionKey)){
 	$query="select SessionKey from SessionKeys where SessionKey='SessionKey';";
