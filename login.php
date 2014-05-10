@@ -8,28 +8,36 @@ $UName = $_GET["UName"];
 $Pass = $_GET["Pass"];
 $SessionKey = $_GET["SessionKey"];
 echo empty($SessionKey).", ".empty($UName).", ".empty($Pass);
-if (empty($SessionKey) and empty($UName) and empty($Pass)){
+
+if (empty($SessionKey) and empty($UName) and empty($Pass))
+{
 	deliver_response(200, "User is not logged in", null);
-} else if(!empty($SessionKey)){
+}
+else if(!empty($SessionKey))
+{
 	$query="select SessionKey from SessionKeys where SessionKey='SessionKey';";
 	$rTable=pg_query($conn,$query);
 	$row = pg_fetch_row($rTable);
-	if(empty($row)){
+	if(empty($row))
+	{
 		deliver_response(200, "User is not logged in", $rTable);//Returns null
-	} else {deliver_response(200, "SessionKey valid", $rTable);//Returns false
-} else if(!(empty($UName) or empty($Pass))){
+	}
+	else {deliver_response(200, "SessionKey valid", $rTable);//Returns false
+}
+else if(!(empty($UName) or empty($Pass)))
+{
 	/*$query="select Pass from Users where UName='$UName';";
 	$rTable=pg_query($conn,$query);
 	if($rTable[0]!=$Pass){
 		deliver_response(200, "Username/password combo Not found", $rTable); //Returns false
-	} else {*/
+	} else {
 		$query="delete from SessionKeys where UName='$UName';";
 		$rTable=pg_query($conn,$query);
 		$SessionKey=bin2hex(mcrypt_create_iv(128, MCRYPT_DEV_RANDOM));
 		$query="insert into SessionKeys values ('$UName','$SessionKey');";
 		$rTable=pg_query($conn,$query); 
 		deliver_response(200, "Username found", $rTable); //Returns false
-	//}
+	//}*/
 } else {deliver_response(200,"Invalid authentication", NULL);}
 pg_close($conn);
 ?>
