@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.SystemClock;
 import android.util.Log;
 
 public class dbAdapter{
@@ -23,6 +25,7 @@ public class dbAdapter{
     private static final String GLUCOSE_LOGGER_TABLE = "Glucose_Logger";
     private static final String LOCATION_LOGGER_TABLE = "Location_Logger";
     private static final String SCHEDULE_TABLE = "Schedules";
+    private static final String USERS_TABLE = "Users";
 
     private static final String ID = "_ID INTEGER PRIMARY KEY AUTOINCREMENT,";
     private static final String ORIGINAL_ALERT_TIME = " alert_time DATE,";
@@ -118,12 +121,22 @@ public class dbAdapter{
             createGlucoseLogTable(db);
             createLocationLogTable(db);
             createScheduleTable(db);
+            createUsersTable(db);
         }
 
         //creates the pill logger table with the below column names
         private void createPillLogTable(SQLiteDatabase db){
             String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + PILL_LOGGER_TABLE +
                     "(" + ID + ORIGINAL_ALERT_TIME + LOG_TIME + " message TEXT, action_taken TEXT);";
+            db.execSQL(query);
+        }
+
+        public void addPillLog(Date orginalAlertTime, String message, String action){
+            Date date = new Date();
+            String query = "INSERT INTO" + db + "." + PILL_LOGGER_TABLE +
+                    "(alert_time, log_time, message, action_taken)" +
+                    "VALUES" +
+                    "(" + orginalAlertTime + ", " + new Date() + ", " + message + ", " +action + ");";
             db.execSQL(query);
         }
 
@@ -157,9 +170,9 @@ public class dbAdapter{
             db.execSQL(query);
         }
 
-        private void createScheduleTable(SQLiteDatabase db) {
-            String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + SCHEDULE_TABLE +
-                    "(" + ID + ORIGINAL_ALERT_TIME + " type TEXT, optional_message TEXT, optional_repeats NUMBER);";
+        private void createUsersTable(SQLiteDatabase db) {
+            String query = "CREATE TABLE" + "IF NOT EXIST" + db + "." + USERS_TABLE +
+                    "(" + ID + " type TEXT, user_name TEXT, password TEXT, first_name TEXT, last_name TEXT,);";
             db.execSQL(query);
         }
 
