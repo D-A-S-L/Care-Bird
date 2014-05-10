@@ -11,6 +11,7 @@
 
     <TextView
         android:id="@+id/Reminder"
+        android:text="This is an example of a reminder page."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
@@ -19,23 +20,12 @@
         android:textSize="40dp"/>
 
     <Button
-        android:id="@+id/YesOpt"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:text="Yes"
+        android:text="Main Menu"
         android:textSize="40dp"
         android:textColor="#FFFFFF"
-        android:background="@drawable/button"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="25dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="80dp"
-        android:text="Not Yet"
-        android:textSize="40dp"
-        android:textColor="#FFFFFF"
-        android:id="@+id/NoOpt"
+        android:id="@+id/MainMenu"
         android:background="@drawable/button"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="25dp" />
