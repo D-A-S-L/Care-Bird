@@ -40,8 +40,7 @@ else if(!(empty($UName) or empty($Pass)))
 		// This query can probably be avoided...
 		$query="select * from SessionKeys where UName='$UName';";
 		$rTable=pg_query($conn,$query);
-		echo "hello";
-		deliver_response(200, "New session key created", rTable);
+		deliver_response(200, "New session key created", $rTable);
 		//deliver_response(200, "Username found", $rTable); //returns null but stores a session key
 	}
 } else {deliver_response(200,"Invalid authentication", null);}
