@@ -4,9 +4,9 @@
 
 require 'dbconn.php';
 header("Content-Type: application/json");
-$UName = $_GET["uname"];
-$Pass = $_GET["pass"];
-$SessionKey = $_GET["sessionkey"];
+$UName = $_GET["UName"];
+$Pass = $_GET["Pass"];
+$SessionKey = $_GET["SessionKey"];
     echo "before function";
 function notLoggedIn(){
 	deliver_response(200, "User is not logged in", false);
@@ -14,7 +14,7 @@ function notLoggedIn(){
 	 echo "after function";
 if (empty($SessionKey) and (empty($UName) or empty($Pass)){
 	echo "first if";
-	notLoggedIn();
+	notLoggedIn();/*
 } else if(!empty($SessionKey)){
 	$query="select SessionKey from SessionKeys where SessionKey='SessionKey';";
 	$rTable=pg_query($conn,$query);
@@ -30,6 +30,6 @@ if (empty($SessionKey) and (empty($UName) or empty($Pass)){
 	$rTable=pg_query($conn,$query);
 	deliver_response(200, "Username not found", $SessionKey);
 } else {deliver_response(200,"Invalid authentication", NULL);}
-
+*/
 pg_close($conn);
 ?>
