@@ -21,9 +21,9 @@ else if(!empty($SessionKey))
 	$row = pg_fetch_row($rTable);
 	if(empty($row))
 	{
-		deliver_response(200, "User is not logged in", $rTable);//Returns null
+		deliver_response(200, "User is not logged in", null);
 	}
-	else {deliver_response(200, "SessionKey response", $rTable);}//Returns false if found
+	else {echo "yolo";deliver_response(200, "SessionKey response", $rTable);}//Returns false if found
 }
 else if(!(empty($UName) or empty($Pass)))
 {
