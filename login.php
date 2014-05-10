@@ -30,7 +30,7 @@ else if(!(empty($UName) or empty($Pass)))
 	$query="select Pass from Users where UName='$UName';";
 	$rTable=pg_query($conn,$query);
 	if($rTable[0]['pass']!=$Pass){
-		deliver_response(200, "Username/password combo Not found", null); 
+		 echo "YOO"; deliver_response(200, "Username/password combo Not found", null); 
 	} else {
 		$query="delete from SessionKeys where UName='$UName';";
 		$rTable=pg_query($conn,$query);
@@ -40,9 +40,9 @@ else if(!(empty($UName) or empty($Pass)))
 		// This query can probably be avoided...
 		$query="select * from SessionKeys where UName='$UName';";
 		$rTable=pg_query($conn,$query);
-		deliver_response(200, "New session key created", $rTable);
+		 echo "OLO";deliver_response(200, "New session key created", $rTable);
 		//deliver_response(200, "Username found", $rTable); //returns null but stores a session key
 	}
-} else {deliver_response(200,"Invalid authentication", null);}
+} else { echo "YOL";deliver_response(200,"Invalid authentication", null);}
 pg_close($conn);
 ?>
