@@ -8,15 +8,15 @@ $UName = $_GET["UName"];
 $Pass = $_GET["Pass"];
 $SessionKey = $_GET["SessionKey"];
 echo empty($SessionKey)." ".empty($UName)." ".empty($Pass);
-if (empty($SessionKey) && empty($UName) && empty($Pass)){
-	deliver_response(200, "User is not logged in", false);
+if (empty($SessionKey) and empty($UName) and empty($Pass)){
+	deliver_response(200, "User is not logged in", null);
 } else if(!empty($SessionKey)){
 	$query="select SessionKey from SessionKeys where SessionKey='SessionKey';";
 	$rTable=pg_query($conn,$query);
 	$row = pg_fetch_row($rTable);
 	if(empty($row)){
-		deliver_response(200, "User is not logged in", false);
-	} else {deliver_response(200, "SessionKey valid", true);}
+		deliver_response(200, "User is not logged in", $rTable);
+	} else {deliver_response(200, "SessionKey valid", $rTable);}
 } else if(!(empty($UName) and empty($Pass))){
 	$query="delete from SessionKeys where UName='$Uname';";
 	$rTable=pg_query($conn,$query);
