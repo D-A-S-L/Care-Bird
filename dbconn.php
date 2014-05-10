@@ -8,7 +8,7 @@
 	$database;
 	$port=5432;
 	echo $DATABASE_URL;
-	echo $explodedURL;
+	print_r($explodedURL);
 	
 $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
 
