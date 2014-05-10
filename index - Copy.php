@@ -1,4 +1,4 @@
-<?php
+<?   
 $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
 
     port=5432    
@@ -11,13 +11,13 @@ $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com
 
 header("Content-Type: application/json");
 
-$sql = "SELECT * from Users";
+$sql = "SELECT * from ourgroup";
 $result = pg_query($conn, $sql);
 
 if(empty($result))
-	deliver_response(200, "No entries in table 'Users'", NULL);
+	deliver_response(200, "No entries in table 'ourgroup'", NULL);
 else
-	deliver_response(200, "Table 'Users'", $result);
+	deliver_response(200, "Table 'ourgroup'", $result);
  
 function deliver_response($status, $status_message, $data){
 	header("HTTP/1.1 $status $status_message");
