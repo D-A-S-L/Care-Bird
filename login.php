@@ -8,7 +8,7 @@ $UName = $_GET["UName"];
 $Pass = $_GET["Pass"];
 $SessionKey = $_GET["SessionKey"];
 echo empty($SessionKey)." ".empty($UName)." ".empty($Pass);
-if (empty($SessionKey) and empty($UName) and empty($Pass)){
+if (empty($SessionKey) && empty($UName) && empty($Pass)){
 	deliver_response(200, "User is not logged in", false);
 } else if(!empty($SessionKey)){
 	$query="select SessionKey from SessionKeys where SessionKey='SessionKey';";
