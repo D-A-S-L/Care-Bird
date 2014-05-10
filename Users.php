@@ -1,4 +1,5 @@
 <?php
+/*
 $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
 
     port=5432    
@@ -7,8 +8,8 @@ $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com
 
     user=yndbtfxmnwkcgi    
 
-    password=hiAXar8M6tn8OQNC1zrEDskrKO");   
-
+    password=hiAXar8M6tn8OQNC1zrEDskrKO"); */  
+require 'dbconn.php';
 header("Content-Type: application/json");
 
 $sql = "SELECT * from Users";
