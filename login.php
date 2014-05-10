@@ -18,10 +18,11 @@ if (empty($SessionKey) and empty($UName) and empty($Pass)){
 		deliver_response(200, "User is not logged in", $rTable);
 	} else {deliver_response(200, "SessionKey valid", $rTable);}
 } else if(!(empty($UName) or empty($Pass))){
+	// This is wrong, it needs to verify pass...
 	$query="delete from SessionKeys where UName='$Uname';";
 	$rTable=pg_query($conn,$query);
 	$SessionKey=bin2hex(mcrypt_create_iv(128, MCRYPT_DEV_RANDOM));
-	$query="insert into SessionKeys values ('$Uname','$SessionKey');";
+	$query="insert into SessionKeys values ('$UName','$SessionKey');";
 	$rTable=pg_query($conn,$query);
 	deliver_response(200, "Username not found", $rTable);
 } else {deliver_response(200,"Invalid authentication", NULL);}
