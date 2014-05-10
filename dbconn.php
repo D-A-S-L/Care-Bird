@@ -3,11 +3,12 @@
 	$DATABASE_URL=getenv('DATABASE_URL');
 	$explodedURL = explode(':' , $DATABASE_URL);
 	$host;
-	$user;
+	$user=trim($explodedURL[0], '//');
 	$pass;
 	$database;
 	$port=5432;
 	echo $DATABASE_URL;
+	echo $host;
 	print_r($explodedURL);
 	
 $conn = pg_connect("host=ec2-54-225-136-187.compute-1.amazonaws.com    
