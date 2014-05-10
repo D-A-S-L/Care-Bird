@@ -39,27 +39,5 @@ else{
         deliver_response(200, "addCareRef Query Result",  $addCareRefResponse);
     }
 }
-
-
-
-	//deliver_response(200, "User found", $authResponse);
-
-
-function deliver_response($status, $status_message, $data){
-	header("HTTP/1.1 $status $status_message");
-	$response['status']=$status;
-	$response['status_message']=$status_message;
-	$response['data']=$data;
-	
-	$responseArray=pg_fetch_all($data);
-	$json_response=json_encode($responseArray);
-	echo $json_response;
-}/**/
-/*$sql = "SELECT * from ourgroup";
-$result = pg_query($conn, $sql);*/
-
-
- 
-
 pg_close ($conn);
 ?>

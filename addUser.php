@@ -21,16 +21,5 @@ $authRow = pg_fetch_row($authResponse);
 
 deliver_response(200, "User added if it could", NULL);
 
-function deliver_response($status, $status_message, $data){
-	header("HTTP/1.1 $status $status_message");
-	$response['status']=$status;
-	$response['status_message']=$status_message;
-	$response['data']=$data;
-	
-	$responseArray=pg_fetch_all($data);
-	$json_response=json_encode($responseArray);
-	echo $json_response;
-}
-
 pg_close ($conn);
 ?>
