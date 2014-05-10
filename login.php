@@ -15,7 +15,7 @@ if (empty($SessionKey) and empty($UName) and empty($Pass))
 }
 else if(!empty($SessionKey))
 {
-	$query="select SessionKey from SessionKeys where SessionKey='SessionKey';";
+	$query="select SessionKey from SessionKeys where SessionKey='$SessionKey';";
 	$rTable=pg_query($conn,$query);
 	$row = pg_fetch_row($rTable);
 	if(empty($row))
@@ -36,7 +36,7 @@ else if(!(empty($UName) or empty($Pass)))
 		$SessionKey=bin2hex(mcrypt_create_iv(128, MCRYPT_DEV_RANDOM));
 		$query="insert into SessionKeys values ('$UName','$SessionKey');";
 		$rTable=pg_query($conn,$query); 
-		deliver_response(200, "Username found", $rTable); //Returns false
+		deliver_response(200, "Username found", $rTable); //returns null but stores a session key
 	}
 } else {deliver_response(200,"Invalid authentication", null);}
 pg_close($conn);
