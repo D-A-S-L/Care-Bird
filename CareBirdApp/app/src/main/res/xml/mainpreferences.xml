@@ -6,4 +6,12 @@
         android:title="@string/pref_title_test"
         android:defaultValue="true"
         android:summary="@string/pref_summ_test" />
+    <EditTextPreference
+        android:key="pref_wifi_ssid"
+        android:title="@string/pref_title_wifi" />
+    <EditTextPreference
+        android:key="pref_home_address"
+        android:title="@string/pref_title_address" />
+
+
 </PreferenceScreen>
