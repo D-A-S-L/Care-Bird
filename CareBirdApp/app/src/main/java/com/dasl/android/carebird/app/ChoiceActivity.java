@@ -31,9 +31,7 @@ public class ChoiceActivity extends Activity {
             button1.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    SharedPreferences.Editor editor = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit();
-                    editor.putBoolean(getString(R.string.user_type), true);
-                    editor.commit();
+                    getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putBoolean(getString(R.string.user_type), true).commit();
 
                     getSharedPreferences("BOOT_PREF", MODE_PRIVATE)
                             .edit()
@@ -49,9 +47,7 @@ public class ChoiceActivity extends Activity {
             button2.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    SharedPreferences.Editor editor = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit();
-                    editor.putBoolean(getString(R.string.user_type), false);
-                    editor.commit();
+                    getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putBoolean(getString(R.string.user_type), false).commit();
 
                     getSharedPreferences("BOOT_PREF", MODE_PRIVATE)
                             .edit()

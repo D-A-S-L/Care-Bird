@@ -32,6 +32,7 @@ package com.dasl.android.carebird.app;
  * limitations under the License.
  */
 
+import android.content.SharedPreferences;
 import android.provider.ContactsContract;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -59,9 +60,9 @@ public final class QRCodeEncoder {
     private BarcodeFormat format = null;
     private boolean encoded = false;
 
-    public QRCodeEncoder(String data, Bundle bundle, String type, String format, int dimension) {
+    public QRCodeEncoder(String data, Bundle bundle, String type, String format, int dimension, SharedPreferences sharedPrefs) {
         this.dimension = dimension;
-        encoded = encodeContents(data, bundle, type, format);
+        encoded = encodeContents(data, bundle, type, format, sharedPrefs);
     }
 
     public String getContents() {
@@ -76,7 +77,7 @@ public final class QRCodeEncoder {
         return title;
     }
 
-    private boolean encodeContents(String data, Bundle bundle, String type, String formatString) {
+    private boolean encodeContents(String data, Bundle bundle, String type, String formatString, SharedPreferences sharedPrefs) {
         // Default to QR_CODE if no format given.
         format = null;
         if (formatString != null) {
@@ -88,7 +89,7 @@ public final class QRCodeEncoder {
         }
         if (format == null || format == BarcodeFormat.QR_CODE) {
             this.format = BarcodeFormat.QR_CODE;
-            encodeQRCodeContents(data, bundle, type);
+            encodeQRCodeContents(data, bundle, type, sharedPrefs);
         } else if (data != null && data.length() > 0) {
             contents = data;
             displayContents = data;
@@ -97,7 +98,7 @@ public final class QRCodeEncoder {
         return contents != null && contents.length() > 0;
     }
 
-    private void encodeQRCodeContents(String data, Bundle bundle, String type) {
+    private void encodeQRCodeContents(String data, Bundle bundle, String type, SharedPreferences sharedPrefs) {
         if (type.equals(Contents.Type.TEXT)) {
             if (data != null && data.length() > 0) {
                 contents = data;
@@ -132,53 +133,23 @@ public final class QRCodeEncoder {
 
                 newContents.append("MECARD:");
 
-                String name = trim(bundle.getString(ContactsContract.Intents.Insert.NAME));
+                String name = sharedPrefs.getString("name", null);
                 if (name != null) {
                     newContents.append("N:").append(escapeMECARD(name)).append(';');
                     newDisplayContents.append(name);
                 }
 
-                String address = trim(bundle.getString(ContactsContract.Intents.Insert.POSTAL));
-                if (address != null) {
-                    newContents.append("ADR:").append(escapeMECARD(address)).append(';');
-                    newDisplayContents.append('\n').append(address);
+                String userName = sharedPrefs.getString("userName", null);
+                if (userName != null) {
+                    newContents.append("USR:").append(escapeMECARD(userName)).append(';');
+                    newDisplayContents.append('\n').append(userName);
                 }
 
-                Collection<String> uniquePhones = new HashSet<String>(Contents.PHONE_KEYS.length);
-                for (int x = 0; x < Contents.PHONE_KEYS.length; x++) {
-                    String phone = trim(bundle.getString(Contents.PHONE_KEYS[x]));
-                    if (phone != null) {
-                        uniquePhones.add(phone);
-                    }
-                }
-                for (String phone : uniquePhones) {
-                    newContents.append("TEL:").append(escapeMECARD(phone)).append(';');
-                    newDisplayContents.append('\n').append(PhoneNumberUtils.formatNumber(phone));
-                }
-
-                Collection<String> uniqueEmails = new HashSet<String>(Contents.EMAIL_KEYS.length);
-                for (int x = 0; x < Contents.EMAIL_KEYS.length; x++) {
-                    String email = trim(bundle.getString(Contents.EMAIL_KEYS[x]));
-                    if (email != null) {
-                        uniqueEmails.add(email);
-                    }
-                }
-                for (String email : uniqueEmails) {
-                    newContents.append("EMAIL:").append(escapeMECARD(email)).append(';');
-                    newDisplayContents.append('\n').append(email);
-                }
-
-                String url = trim(bundle.getString(Contents.URL_KEY));
-                if (url != null) {
+                String phone = data;
+                if (phone != null) {
                     // escapeMECARD(url) -> wrong escape e.g. http\://zxing.google.com
-                    newContents.append("URL:").append(url).append(';');
-                    newDisplayContents.append('\n').append(url);
-                }
-
-                String note = trim(bundle.getString(Contents.NOTE_KEY));
-                if (note != null) {
-                    newContents.append("NOTE:").append(escapeMECARD(note)).append(';');
-                    newDisplayContents.append('\n').append(note);
+                    newContents.append("tel:").append(phone).append(';');
+                    newDisplayContents.append('\n').append(phone);
                 }
 
                 // Make sure we've encoded at least one field.

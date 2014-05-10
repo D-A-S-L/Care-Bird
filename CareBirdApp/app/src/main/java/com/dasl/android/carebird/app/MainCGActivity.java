@@ -25,10 +25,10 @@ public class MainCGActivity extends Activity {
             }
         });
 
-        final Button button2 = (Button) findViewById(R.id.CareGivers);
+        final Button button2 = (Button) findViewById(R.id.CareReceivers);
         button2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent myIntent = new Intent(v.getContext(), ReminderActivity.class);
+                Intent myIntent = new Intent(v.getContext(), CareReceiversActivity.class);
                 startActivityForResult (myIntent, 0);
             }
         });

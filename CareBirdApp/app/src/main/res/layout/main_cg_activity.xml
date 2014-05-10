@@ -25,10 +25,10 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:text="Care Givers"
+        android:text="Care Receivers"
         android:textSize="20dp"
         android:textColor="#FFFFFF"
-        android:id="@+id/CareGivers"
+        android:id="@+id/CareReceivers"
         android:background="@drawable/button2"/>
 
     <Button

@@ -20,27 +20,35 @@ public class QRCodeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qrcode);
+        if(getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getBoolean(getString(R.string.user_type), true)) {
+            setContentView(R.layout.activity_qrcode_cg);
+        } else {
+            setContentView(R.layout.activity_qrcode);
+        }
         ImageView qrImage = (ImageView) findViewById(R.id.qrCode);
         Button scanBtn = (Button) findViewById(R.id.scanCode);
         qrDecoded = (TextView) findViewById(R.id.qrDecoded);
 
         String qrData = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", null);
         int qrCodeDimension = 500;
+        Bundle bundle = new Bundle();
 
-        QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrData, null,
-                    Contents.Type.PHONE, BarcodeFormat.QR_CODE.toString(), qrCodeDimension);
+        final QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(qrData, bundle,
+                    Contents.Type.CONTACT, BarcodeFormat.QR_CODE.toString(), qrCodeDimension, getSharedPreferences("BOOT_PREF", MODE_PRIVATE));
 
         if(contents != null) {
             qrDecoded.setText("QR Scan Result: " + contents);
-            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("otherPhoneNumber", contents);
         }
         else
             qrDecoded.setText("QR Scan Result: ");
 
         try {
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
-            qrImage.setImageBitmap(bitmap);
+            if(bitmap != null) {
+                qrImage.setImageBitmap(bitmap);
+            } else {
+                qrDecoded.setText("INVALID");
+            }
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -63,6 +71,12 @@ public class QRCodeActivity extends Activity {
                 intent.getStringExtra("SCAN_RESULT_FORMAT");
                 qrDecoded.setText("QR Scan Result: " + capturedQrValue);
                 contents = capturedQrValue;
+                String[] items = contents.split(";");
+                String[] items2 = items[0].split(":");
+                getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("otherName", items2[2]).commit();
+                items2 = items[1].split(":");
+                getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("otherUserName", items2[1]).commit();
+                getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("otherPhoneNumber", items[2]).commit();
             } else if (resultCode == RESULT_CANCELED) {
                 // Handle cancel
 

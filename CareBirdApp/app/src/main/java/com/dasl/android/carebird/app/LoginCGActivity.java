@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -17,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -181,6 +183,9 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("password", password).commit();
 
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putInt("firstboot", 2).commit();
+
+            TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("myPhoneNumber", tMgr.getLine1Number()).commit();
 
             Intent myIntent = new Intent(this, MainCGActivity.class);
             startActivityForResult (myIntent, 0);
