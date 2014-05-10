@@ -8,7 +8,7 @@ $UName = $_GET["UName"];
 $Pass = $_GET["Pass"];
 $SessionKey = $_GET["SessionKey"];
     
-function() notLoggedIn(){
+function notLoggedIn(){
 	deliver_response(200, "User is not logged in", false);
 }
 	 
