@@ -29,7 +29,8 @@ else if(!(empty($UName) or empty($Pass)))
 {
 	$query="select Pass from Users where UName='$UName';";
 	$rTable=pg_query($conn,$query);
-	if($rTable[0]['pass']!=$Pass){
+	$row = pg_fetch_row($rTable);
+	if($row[0]!=$Pass){
 		 echo "YOO"; deliver_response(200, "Username/password combo Not found", $rTable); 
 	} else {
 		$query="delete from SessionKeys where UName='$UName';";
