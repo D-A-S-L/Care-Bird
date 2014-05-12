@@ -18,7 +18,7 @@
 		 dbname=$database"
 	);
 */
-
+/*
 function connect() {
 $dburl;
 	if ($_ENV['DATABASE_URL']){
@@ -35,7 +35,7 @@ $dburl;
   return $conn;
 }
 $conn = connect();
-
+*/
 
 
 
