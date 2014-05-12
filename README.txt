@@ -28,7 +28,7 @@ CRID=Username
 &Token="TokenReceivedFromQRCode
 
 Some TEMPORARY web services you can use for testing are:
-https://caredb.herokuapp.com/Users.php
-https://caredb.herokuapp.com/CanCareFor.php
-https://caredb.herokuapp.com/QRTokens.php
-https://caredb.herokuapp.com/Reset.php # Which will drop all dables and reset the database to a default (empty) state.
+https://caredb.herokuapp.com/devutils/Users.php
+https://caredb.herokuapp.com/devutils/CanCareFor.php
+https://caredb.herokuapp.com/devutils/QRTokens.php
+https://caredb.herokuapp.com/devutils/Reset.php # Which will drop all dables and reset the database to a default (empty) state.
