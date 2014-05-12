@@ -1,5 +1,5 @@
 <?php  	
-/*
+
 	$DATABASE_URL=getenv('DATABASE_URL');
 	$explodedURL = explode(':' , $DATABASE_URL);
 	$passAndHostExplodedURL = explode('@', $explodedURL[2]);
@@ -17,7 +17,7 @@
 		 password=$pass
 		 dbname=$database"
 	);
-*/
+
 /*
 function connect() {
 $dburl;
