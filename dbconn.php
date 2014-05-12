@@ -21,10 +21,10 @@
 
 function connect() {
 $dburl;
-	if (in_array ('DATABASE_URL', $_ENV)){
+	if ($_ENV['DATABASE_URL']){
 		$dburl = $_ENV['DATABASE_URL'];
 		extract(parse_url($dburl));
-		$conn=pg_connect("user=$user password=$pass host=$host dbname=" . substr($path, 1)); //"sslmode=require"
+		$conn=pg_connect("sslmode=require user=$user password=$pass host=$host dbname=" . substr($path, 1));
 	}
 	else{
 		$dburl="postgres://caredb:caredb@localhost:5432/cdb";
