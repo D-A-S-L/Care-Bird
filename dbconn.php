@@ -25,6 +25,7 @@ $dburl;
 		$dburl = $_ENV['DATABASE_URL'];
 		extract(parse_url($dburl));
 		$conn=pg_connect("user=$user password=$pass host=$host dbname=" . substr($path, 1));
+		echo "$user $pass $host ".substr($path,1);
 	}
 	else{
 		$dburl="postgres://caredb:caredb@localhost:5432/cdb";
