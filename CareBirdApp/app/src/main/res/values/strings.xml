@@ -11,6 +11,7 @@
 	<string name="contact">Contacts</string>
 	<string name="pref_title_wifi">Home Wifi SSID</string>
     <string name="pref_title_address">Home Address</string>
+    <string name="pref_title_location">Enable Proximity Alert</string>
 	
 	
 

@@ -1,21 +1,24 @@
 package com.dasl.android.carebird.app;
 
+import android.content.ComponentName;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.app.AlarmManager;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
-
 import java.util.Calendar;
-import java.util.Random;
 import java.io.IOException;
 import java.util.List;
 /**
@@ -28,6 +31,12 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
      */
     private AlarmManager keeperOfAlarms;
 	public static final String KEY_PREF_HOME_ADDRESS= "pref_home_address";
+    public static final String KEY_PREF_LOCATION_NOTIFY = "pref_location_notify";
+    private static final long POINT_RADIUS = 150; // in Meters
+    private static final long PROX_ALERT_EXPIRATION = -1; // will not expire
+    private static final String PROX_ALERT_INTENT = "com.dasl.android.carebird.app.ALERT_PROX";
+    private LocationManager locationManager;
+    double latitude = 34.146201, longitude = -117.495614;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +53,6 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
         keeperOfAlarms = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
         exampleSchedulerMethod(a);
         exampleSchedulerMethod(b);
-
-
     }
 
     public void exampleSchedulerMethod(ReminderSchedule exampleSchedule) {
@@ -73,25 +80,47 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 	
 	@Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        Log.i("SettingsFragment", "Start of onSharedPreferenceChanged");
+        Log.i("SettingsFragment", "inside onSharedPrefernce");
         if (s.equals(findPreference(KEY_PREF_HOME_ADDRESS).getKey())) {
             Geocoder coder = new Geocoder(getActivity().getApplicationContext());
             List<Address> address;
             String strAddress = sharedPreferences.getString(KEY_PREF_HOME_ADDRESS, null);
+            Preference add = findPreference(KEY_PREF_HOME_ADDRESS);
+
 
             try {
                 address = coder.getFromLocationName(strAddress,5);
                 if (address == null) {
+                    add.setSummary("GPS Coordinates not set");
                     return;
                 }
                 Address location = address.get(0);
                 double lat = location.getLatitude();
                 double lon = location.getLongitude();
-                String coordinates = "Lat = " + lat + "  " + "Long = " + lon;
-                Toast.makeText(getActivity().getApplicationContext(), coordinates, Toast.LENGTH_SHORT).show();
+                String coordinates = "Lat: " + lat + "  " + "Long: " + lon;
+                add.setSummary("Found - " + coordinates);
 
             } catch(IOException e) {
                 Log.i("SettingsFragment", "FAILED");
+            }
+        }
+        else if(s.equals(findPreference(KEY_PREF_LOCATION_NOTIFY).getKey())) {
+            CheckBoxPreference check = (CheckBoxPreference)findPreference(KEY_PREF_LOCATION_NOTIFY);
+            if(check.isChecked()) {
+                Log.i("SettingsFragment", "Adding proximity alert");
+                locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+                Intent intent = new Intent(PROX_ALERT_INTENT);
+                PendingIntent proximityIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), 0, intent, 0);
+                locationManager.addProximityAlert(latitude, longitude, POINT_RADIUS, PROX_ALERT_EXPIRATION, proximityIntent);
+            }
+            else {
+                Log.i("SettingsFragment", "Removing proximity alert");
+                locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+                Intent intent = new Intent(PROX_ALERT_INTENT);
+                PendingIntent proximityIntent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), 0, intent, 0);
+                locationManager.removeProximityAlert(proximityIntent);
             }
         }
     }

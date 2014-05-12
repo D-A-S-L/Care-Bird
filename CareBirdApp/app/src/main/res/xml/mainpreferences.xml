@@ -12,6 +12,10 @@
     <EditTextPreference
         android:key="pref_home_address"
         android:title="@string/pref_title_address" />
+    <CheckBoxPreference
+        android:key="pref_location_notify"
+        android:title="@string/pref_title_location"
+        android:defaultValue="false" />
 
 
 </PreferenceScreen>
