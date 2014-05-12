@@ -21,7 +21,7 @@
 
 function connect() {
 $dburl;
-	if (in_array ('DATABASE_URL', $_ENV)){
+	if ($_ENV['DATABASE_URL']){
 		$dburl = $_ENV['DATABASE_URL'];
 		extract(parse_url($dburl));
 		$conn=pg_connect("user=$user password=$pass host=$host dbname=" . substr($path, 1));
