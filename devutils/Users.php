@@ -1,5 +1,5 @@
 <?php
-require 'dbconn.php';
+require '../dbconn.php';
 header("Content-Type: application/json");
 
 $sql = "SELECT * from Users";
