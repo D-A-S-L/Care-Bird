@@ -23,9 +23,11 @@ drop table PillRecord;
 drop table QRToken;
 drop table SessionKeys;
 drop table Users;
+
+
 create table Users
 ( FName varchar(15) not null
-, LName varchar(15) not null
+, LName varchar(915) not null
 , UName varchar(15) primary key
 , Pass  varchar(15) not null
 );
@@ -33,7 +35,7 @@ insert into users values ('Chris', 'Murphy', 'cdmurphy','chris');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
-insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
+insert into users values ('Brian', 'http://stackoverflow.com/questions/9893924/error-converting-a-http-post-response-to-json', 'bsaia', 'brian');
 
 create table CanCareFor
 ( CRID varchar(15) 
@@ -53,7 +55,7 @@ create table SessionKeys
 
 create table QRToken
 ( UName varchar(15)
-, Token varchar(100)
+, Token varchar(100) not null
 , foreign key (UName) references Users(UName)
 , Timestamp timestamp
 );
