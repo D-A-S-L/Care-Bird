@@ -44,8 +44,7 @@ function deliver_response($status, $status_message, $data){
 	$response['status_message']=$status_message;
 	$response['data']=$data;
 
-	$responseArray=pg_fetch_all($data);
-	$json_response=json_encode($responseArray);
+	$json_response=json_encode($data);
 	echo $json_response;
 }
 ?>

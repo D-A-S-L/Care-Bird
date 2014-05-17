@@ -2,22 +2,27 @@
 require '../dbconn.php';
 header("Content-Type: application/json");
 
-$sql = "drop table CanCareFor;
+$sql = "
+
+drop table CanCareFor;
 drop table PillRecord;
 drop table QRToken;
 drop table SessionKeys;
 drop table Users;
+
+
 create table Users
-( FName varchar(15) not null
-, LName varchar(15) not null
-, UName varchar(15) primary key
-, Pass  varchar(15) not null
+( FName varchar(915) not null
+, LName varchar(915) not null
+, UName varchar(915) primary key
+, Pass  varchar(915) not null      /* All fields made large to make notes easility, will be changed later */
 );
 insert into users values ('Chris', 'Murphy', 'cdmurphy','chris');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
 insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
+insert into users values ('Apache', 'http://stackoverflow.com/questions/9893924/error-converting-a-http-post-response-to-json', 'http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/', 'brian');
 
 create table CanCareFor
 ( CRID varchar(15) 
@@ -37,7 +42,7 @@ create table SessionKeys
 
 create table QRToken
 ( UName varchar(15)
-, Token varchar(100)
+, Token varchar(100) not null
 , foreign key (UName) references Users(UName)
 , Timestamp timestamp
 );
