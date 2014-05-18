@@ -12,6 +12,11 @@
 	<string name="pref_title_wifi">Home Wifi SSID</string>
     <string name="pref_title_address">Home Address</string>
     <string name="pref_title_location">Enable Proximity Alert</string>
+
+        <string-array name="schedule_type">
+            <item>Glucose</item>
+            <item>Pill</item>
+        </string-array>
 	
 	
 

@@ -46,13 +46,13 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 
         // everything below here is just for testing use of Schedules
         // can be removed later
-        ReminderSchedule a,b;
-        a = new ReminderSchedule(21, 2, "penicillin");
-        b = new ReminderSchedule(20, 4, "glucose");
+        //ReminderSchedule a,b;
+        //a = new ReminderSchedule(21, 2, "penicillin");
+        //b = new ReminderSchedule(20, 4, "glucose");
 
-        keeperOfAlarms = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
-        exampleSchedulerMethod(a);
-        exampleSchedulerMethod(b);
+        //keeperOfAlarms = (AlarmManager) this.getActivity().getSystemService(Context.ALARM_SERVICE);
+        //exampleSchedulerMethod(a);
+        //exampleSchedulerMethod(b);
     }
 
     public void exampleSchedulerMethod(ReminderSchedule exampleSchedule) {

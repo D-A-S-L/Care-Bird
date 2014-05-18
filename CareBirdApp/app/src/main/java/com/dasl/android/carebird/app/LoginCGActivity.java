@@ -350,6 +350,3 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
         }
     }
 }
-
-
-

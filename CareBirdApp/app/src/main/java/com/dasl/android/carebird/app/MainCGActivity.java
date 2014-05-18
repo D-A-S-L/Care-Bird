@@ -20,7 +20,7 @@ public class MainCGActivity extends Activity {
         final Button button1 = (Button) findViewById(R.id.Schedules);
         button1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent myIntent = new Intent(v.getContext(), ErrorActivity.class);
+                Intent myIntent = new Intent(v.getContext(), SchedulerCGActivity.class);
                 startActivityForResult (myIntent, 0);
             }
         });

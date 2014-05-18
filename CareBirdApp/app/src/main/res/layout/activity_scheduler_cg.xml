@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <Button
+        style="?android:textAppearanceLarge"
+        android:layout_width="270dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_height="80dp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:text="Select a time"
+        android:onClick="showTimePickerDialog"
+        android:background="@drawable/button2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\nSelect a Reminder Type"
+        android:textSize="20dp"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"/>
+
+    <Spinner
+        android:id="@+id/Schedule_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:id="@+id/pill_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pill Name"
+        android:imeActionId="@+id/pillName"
+        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeOptions="actionUnspecified"
+        android:inputType="text"
+        android:textColor="#FFFFFF"
+        android:maxLines="1"
+        android:singleLine="true"/>
+
+</LinearLayout>
