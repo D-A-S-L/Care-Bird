@@ -18,6 +18,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.SystemClock;
 import android.util.Log;
 
+
 public class dbAdapter{
 
     private static final String PILL_LOGGER_TABLE = "Pill_Logger";

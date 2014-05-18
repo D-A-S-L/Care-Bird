@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +30,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,12 +139,31 @@ public class LoginCRActivity extends Activity implements LoaderCallbacks<Cursor>
         String name = mNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        // testing of user table create by Brian Saia
-        dbAdapter dba = new dbAdapter(this);
-        dba.open();
-        dba.addUser("Me", userName, password, name, "");
-        dba.close();
-        // end of test
+        // testing of user table create by Brian Saia-----------------------------------------------
+        // this async task is needed because we are using an a
+        class PostTask extends AsyncTask<String, Integer, String>{
+            @Override
+            protected String doInBackground(String... params) {
+                Database.User me = new Database().new User(params[0],params[1],"","");
+                com.dasl.android.carebird.app.Status response;
+                String result;
+                try {
+                    response = Database.login(me);
+                    result = response.getMessage();
+                }catch (IOException error){
+                    result = "failure in try catch";
+                };
+                return result;
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                Context context = getApplicationContext();
+                Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                Log.v("carebird", result);
+            }
+        }
+        new PostTask().execute(new String[]{userName, password});
+        // end of test------------------------------------------------------------------------------
 
         boolean cancel = false;
         View focusView = null;
