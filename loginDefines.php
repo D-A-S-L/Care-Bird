@@ -23,11 +23,11 @@ function logIn(){
 			
 			// Find out the password associated with that user
 			$query="select Pass from Users where UName='$UName';";
-			$rTable=pg_query($conn,$query);
-			$row = pg_fetch_row($rTable);
+			$result=pg_query($conn,$query);
+			$row = pg_fetch_row($result);
 			
 			//  Bad Username/Password Combination
-			if(empty($rTable) or ($row[0]!=$Pass)){
+			if(empty($result) or ($row[0]!=$Pass)){
 				$status =400;
 				$status_Message = "No user found with that combination";
 				$data=false;
@@ -36,16 +36,31 @@ function logIn(){
 			else {
 				// User and Pass validated, Delete old SessionToken
 				$query="delete from SessionTokens where UName='$UName';";
-				$rTable=pg_query($conn,$query);
+				$result=pg_query($conn,$query);
 				$SessionToken=bin2hex(mcrypt_create_iv(128, MCRYPT_DEV_RANDOM));			
 				
 				//stores a session key & returns the new session key
-				$query="insert into SessionTokens values ('$UName','$SessionToken');";
-				$rTable=pg_query($conn,$query);
-				
-				$status=200;
-				$status_Message="User logged in.";
-				$data=$SessionToken;
+				$query="insert into SessionTokens values ('$UName','$SessionToken')
+						returning UName;";
+				$result=pg_query($conn,$query);
+				if(!$result){
+					$status=400;
+					$statusMessage="An error occured";
+					$data=$result;
+				}else{
+					$user=pg_fetch_row($result);
+					$user=$user[0];  
+					if ($UName==$user){
+						$status=200;
+						$statusMessage="The Query was a success.";
+						$data=$SessionToken;
+					}
+					else{
+						$status=400;
+						$statusMessage="An error occured";
+						$data=$result;
+					}
+				}
 				
 			}
 		}
@@ -69,11 +84,11 @@ function loggedIn(){
 			
 			// Find out if that SessionToken is in use
 			$query="select UName from SessionTokens where SessionToken='$SessionToken';";
-			$rTable=pg_query($conn,$query);
-			$row = pg_fetch_row($rTable);
+			$result=pg_query($conn,$query);
+			$row = pg_fetch_row($result);
 			
 				//  Bad Session Key
-				if(empty($rTable)){
+				if(empty($result)){
 					$status =204;
 					$status_Message = "Invalid Session Key";
 					$data=false;
