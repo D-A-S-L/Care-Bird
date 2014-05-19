@@ -1,13 +1,13 @@
 <?php
-require '../dbconn.php';
+require '../loginDefines.php';
+$conn=connect();
 header("Content-Type: application/json");
 
 $sql = "
-
 drop table CanCareFor;
 drop table PillRecord;
-drop table QRToken;
-drop table SessionKeys;
+drop table QRTokens;
+drop table SessionTokens;
 drop table Users;
 
 
@@ -32,20 +32,28 @@ create table CanCareFor
 ,primary key (CRID, CGID)
 );
 
-create table SessionKeys
+create table SessionTokens
 ( UName varchar(15)primary key
-, SessionKey varchar(256) unique
+, SessionToken varchar(256) unique
 , foreign key (UName) references Users(UName) on delete cascade
 );
 
-/*insert into SessionKeys values ('cdmurphy','CoolKeyBro');*/
+insert into SessionTokens values ('cdmurphy','somekey');
 
-create table QRToken
+create table QRTokens
 ( UName varchar(15)
 , Token varchar(100) not null
 , foreign key (UName) references Users(UName)
 , Timestamp timestamp
 );
+
+
+/*
+insert into QRTokens
+select UName, 'somekey' as Token from Users
+where UName in (select UName from SessionTokens where SessionToken='somekey');
+*/
+
 
 create table PillRecord
 ( UName varchar(15)
@@ -56,6 +64,7 @@ create table PillRecord
 );
 insert into PillRecord values ('cdmurphy','Mon May 12 00:31:00 GMT 2014', 'Mon May 12 00:36:00 GMT 2014', 'Take the Blue pill','Red Pill Taken');
 insert into PillRecord values ('dnscianni','Mon May 12 00:32:00 GMT 2014','Mon May 12 00:37:00 GMT 2014',  'Take the Red pill','Blue Pill Taken');
+
 ";
 $result = pg_query($conn, $sql);
 

@@ -1,13 +1,14 @@
 <?php
-require '../dbconn.php';
+require '../loginDefines.php';
+$conn=connect();
 header("Content-Type: application/json");
 
 $sql = "SELECT * from Users";
 $result = pg_query($conn, $sql);
-
-if(empty($result))
-	deliver_response(200, "No entries in table 'Users'", NULL);
-else
-	deliver_response(200, "Table 'Users'", $result);
+$result = pg_fetch_all($result);
+if(empty($result)){
+	echo deliver_response(200, "No entries in table 'Users'", NULL);
+}else
+	echo deliver_response(200, "Table 'Users'", $result);
 pg_close ($conn);
 ?>

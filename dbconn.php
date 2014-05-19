@@ -33,18 +33,18 @@ $dburl;
 	}
   return $conn;
 }
-$conn = connect();
 
 
 
 
 function deliver_response($status, $status_message, $data){
+	header("Content-Type: application/json");
 	header("HTTP/1.1 $status $status_message");
 	$response['status']=$status;
 	$response['status_message']=$status_message;
 	$response['data']=$data;
 
 	$json_response=json_encode($data);
-	echo $json_response;
+	return $json_response;
 }
 ?>

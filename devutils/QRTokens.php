@@ -1,12 +1,14 @@
 <?php
-require '../dbconn.php';
-$sql = "SELECT * from QRToken";
+require '../loginDefines.php';
+$conn = connect();
+$sql = "SELECT * from QRTokens";
 $result = pg_query($conn, $sql);
+$result = pg_fetch_all($result);
 
 if(empty($result))
-	deliver_response(200, "No entries in table 'QRToken'", NULL);
+	echo deliver_response(200, "No entries in table 'QRTokens'", NULL);
 else
-	deliver_response(200, "Table 'QRToken'", $result);
+	echo deliver_response(200, "Table 'QRTokens'", $result);
 
 pg_close($conn);
 ?>

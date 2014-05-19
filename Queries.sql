@@ -13,23 +13,25 @@ GRANT ALL ON DATABASE d86fo56ie0kqjt TO yndbtfxmnwkcgi;
 REVOKE ALL ON DATABASE d86fo56ie0kqjt FROM public;
 
 select * from Users;
+delete from Users where FName = ''
 select * from CanCareFor;
-select * from QRToken;
+delete from CanCareFor;
+select * from QRTokens;
 select * from PillRecord;
-select * from SessionKeys;
+select * from SessionTokens;
 
 drop table CanCareFor;
 drop table PillRecord;
-drop table QRToken;
-drop table SessionKeys;
+drop table QRTokens;
+drop table SessionTokens;
 drop table Users;
 
 
 create table Users
-( FName varchar(915) not null
-, LName varchar(915) not null
-, UName varchar(915) primary key
-, Pass  varchar(915) not null      /* All fields made large to make notes easility, will be changed later */
+( FName varchar(915) not null CHECK (FName ~ '^[a-zA-Z]+$')
+, LName varchar(915) not null CHECK (FName ~ '^[a-zA-Z]+$')
+, UName varchar(915) primary key CHECK (FName ~ '^[a-zA-Z]+$')
+, Pass  varchar(915) not null CHECK (FName ~ '^[a-zA-Z]+$')   /* All fields made large to make notes easility, will be changed later */
 );
 insert into users values ('Chris', 'Murphy', 'cdmurphy','chris');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
@@ -39,27 +41,43 @@ insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
 insert into users values ('Apache', 'http://stackoverflow.com/questions/9893924/error-converting-a-http-post-response-to-json', 'http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/', 'brian');
 
 create table CanCareFor
-( CRID varchar(15) 
-, CGID varchar(15) 
+( CGID varchar(15) 
+, CRID varchar(15) 
 ,foreign key (CRID) references Users(UName) on delete cascade
 ,foreign key (CGID) references Users(UName) on delete cascade
 ,primary key (CRID, CGID)
 );
 
-create table SessionKeys
+		/*	select receiver.CRID, giver.CGID
+			from (select UName as CRID from QRTokens where Token='pkey') as receiver
+			    ,(select UName as CGID from SessionTokens where SessionToken='ptoken') as giver
+																*/
+
+create table SessionTokens
 ( UName varchar(15)primary key
-, SessionKey varchar(256) unique
+, SessionToken varchar(256) unique not null
 , foreign key (UName) references Users(UName) on delete cascade
 );
 
-/*insert into SessionKeys values ('cdmurphy','CoolKeyBro');*/
+insert into SessionTokens values ('cdmurphy','somekey');
+insert into SessionTokens values ('dnscianni','ptoken');
 
-create table QRToken
+create table QRTokens
 ( UName varchar(15)
-, Token varchar(100) not null
+, Token varchar(100)  unique not null
 , foreign key (UName) references Users(UName)
 , Timestamp timestamp
 );
+
+
+/*
+
+
+insert into QRTokens
+select UName, 'pkey' as Token from Users
+where UName in (select UName from SessionTokens where SessionToken='somekey');
+*/
+
 
 create table PillRecord
 ( UName varchar(15)
