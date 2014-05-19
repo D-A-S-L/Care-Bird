@@ -13,7 +13,7 @@
 require 'dbconn.php';
 function logIn(){	
 	$conn = connect();
-	$status=0;
+	$status=400;
 	$statusMessage="Default Message";
 	$data=null;
 		if($_POST["UName"] and $_POST["Pass"])
@@ -28,7 +28,7 @@ function logIn(){
 			
 			//  Bad Username/Password Combination
 			if(empty($result) or ($row[0]!=$Pass)){
-				$status =400;
+				$status =203;
 				$status_Message = "No user found with that combination";
 				$data=false;
 			}
@@ -51,7 +51,7 @@ function logIn(){
 					$user=pg_fetch_row($result);
 					$user=$user[0];  
 					if ($UName==$user){
-						$status=200;
+						$status=202;
 						$statusMessage="The Query was a success.";
 						$data=$SessionToken;
 					}
@@ -75,7 +75,7 @@ function logIn(){
 
 function loggedIn(){
 	$conn = connect();
-	$status=0;
+	$status=400;
 	$statusMessage="Default Message";
 	$data=null;
 		if($_POST["SessionToken"])
@@ -89,19 +89,19 @@ function loggedIn(){
 			
 				//  Bad Session Key
 				if(empty($result)){
-					$status =204;
+					$status =203;
 					$status_Message = "Invalid Session Key";
 					$data=false;
 				}
 				// Good SessionToken
 				else {
-					$status=200;
+					$status=202;
 					$status_Message="User logged in.";
 					$data=true;
 					
 				}
 		}
-		// Username or Password were not entered
+		// SessionToken was not entered
 		else {
 			$status=400;
 			$data=false;

@@ -14,7 +14,7 @@ $statusMessage="Default Message";
 $data=null;
 
 if(!$loggedIn){
-	$status =400;
+	$status =203;
 	$status_Message = "No user found with that combination";
 	$data = false;
 }else{
@@ -31,7 +31,6 @@ if(!$loggedIn){
 	else{	
 		$pToken=$_POST["PermissionToken"];
 		$SessionToken=$_POST["SessionToken"];
-	    // Temporary solution to "cannot redeclare connect() error"
 		$conn=connect();
 		$query="		
 			insert into QRTokens
@@ -45,7 +44,7 @@ if(!$loggedIn){
 			$statusMessage="An error occured: Possibly record already exists";
 			$data=$response;
 		}else{
-			$status=200;
+			$status=202;
 			$statusMessage="The Query was a success. Either nothing was added, or a new QRToken was";
 			$data=true;
 		}

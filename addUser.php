@@ -18,7 +18,7 @@ $query="insert into users values ('$fname', '$lname', '$user','$pass');";
 $response=pg_query($conn,$query);
 pg_close ($conn);
 if(!$response){
-	$status=400;
+	$status=406;
 	$statusMessage="An error occured: Possibly record already exists";
 	$data=$response;
 }else{

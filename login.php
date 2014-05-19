@@ -18,6 +18,6 @@ if($key){
 	echo $key;
 }
 else {
-	echo deliver_response(400, "Log In Error", false);
+	echo deliver_response(404, "Log In Error", false);
 }
 ?>
