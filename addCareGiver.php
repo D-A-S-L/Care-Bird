@@ -9,7 +9,7 @@
 require 'loginDefines.php';
 
 $loggedIn = loggedIn();
-$status=0;
+$status=400;
 $statusMessage="Default Message";
 $data=null;
 

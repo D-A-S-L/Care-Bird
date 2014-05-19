@@ -13,5 +13,11 @@
 
 
 require 'loginDefines.php';
-echo logIn();
+$key=logIn();
+if($key){
+	echo $key;
+}
+else {
+	echo deliver_response(400, "Log In Error", false);
+}
 ?>
