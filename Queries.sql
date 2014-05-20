@@ -19,27 +19,30 @@ delete from CanCareFor;
 select * from QRTokens;
 select * from PillRecord;
 select * from SessionTokens;
+select * from Reminders
 
 drop table CanCareFor;
 drop table PillRecord;
 drop table QRTokens;
 drop table SessionTokens;
+drop table Reminders
 drop table Users;
 
 
 create table Users
-( FName varchar(915) not null CHECK (FName ~ '^[a-zA-Z]+$')
-, LName varchar(915) not null CHECK (FName ~ '^[a-zA-Z]+$')
-, UName varchar(915) primary key CHECK (FName ~ '^[a-zA-Z]+$')
-, Pass  varchar(915) not null CHECK (FName ~ '^[a-zA-Z]+$')   /* All fields made large to make notes easility, will be changed later */
+( FName varchar(15) not null CHECK (FName ~ '^[a-zA-Z]+$')
+, LName varchar(15) not null CHECK (FName ~ '^[a-zA-Z]+$')
+, UName varchar(15) primary key CHECK (FName ~ '^[a-zA-Z]+$')
+, Pass  varchar(15) not null CHECK (FName ~ '^[a-zA-Z]+$')   /* All fields made large to make notes easility, will be changed later */
 );
 insert into users values ('Chris', 'Murphy', 'cdmurphy','chris');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
 insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
+/*
 insert into users values ('Apache', 'http://stackoverflow.com/questions/9893924/error-converting-a-http-post-response-to-json', 'http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/', 'brian');
-
+*/
 create table CanCareFor
 ( CGID varchar(15) 
 , CRID varchar(15) 
@@ -78,6 +81,14 @@ select UName, 'pkey' as Token from Users
 where UName in (select UName from SessionTokens where SessionToken='somekey');
 */
 
+create table Reminder
+( UName varchar(15) not null
+, name varchar(25) not null check name!=''
+, minute int not null
+, hour int not null
+, interval int not null
+, foreign key (UName) references Users(UName)
+);
 
 create table PillRecord
 ( UName varchar(15)

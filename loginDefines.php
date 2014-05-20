@@ -29,7 +29,7 @@ function logIn(){
 			//  Bad Username/Password Combination
 			if(empty($result) or ($row[0]!=$Pass)){
 				$status =203;
-				$status_Message = "No user found with that combination";
+				$statusMessage = "No user found with that combination";
 				$data=false;
 			}
 			// Good Username/Password Combination
@@ -52,7 +52,7 @@ function logIn(){
 					$user=$user[0];  
 					if ($UName==$user){
 						$status=202;
-						$statusMessage="The Query was a success.";
+						$statusMessage="User logged in.";
 						$data=$SessionToken;
 					}
 					else{

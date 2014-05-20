@@ -20,9 +20,9 @@ pg_close ($conn);
 if(!$response){
 	$status=406;
 	$statusMessage="An error occured: Possibly record already exists";
-	$data=$response;
+	$data=false;
 }else{
-	$status=200;
+	$status=202;
 	$statusMessage="The Query was a success. New User added.";
 	$data=true;
 }
