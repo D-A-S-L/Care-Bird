@@ -19,13 +19,14 @@ delete from CanCareFor;
 select * from QRTokens;
 select * from PillRecord;
 select * from SessionTokens;
-select * from Reminders
+select * from ReminderSchedules;
+delete from ReminderSchedules;
 
 drop table CanCareFor;
 drop table PillRecord;
 drop table QRTokens;
 drop table SessionTokens;
-drop table Reminders
+drop table ReminderSchedules;
 drop table Users;
 
 
@@ -51,10 +52,14 @@ create table CanCareFor
 ,primary key (CRID, CGID)
 );
 
-		/*	select receiver.CRID, giver.CGID
-			from (select UName as CRID from QRTokens where Token='pkey') as receiver
-			    ,(select UName as CGID from SessionTokens where SessionToken='ptoken') as giver
-																*/
+insert into CanCareFor values('cdmurphy','dnscianni');
+/*			    
+			select COUNT(*) as CanCareFor from CanCareFor
+				where  CRID in (select UName as CRID from SessionTokens where SessionToken='ptoken')
+					and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey')
+					
+					*/
+																
 
 create table SessionTokens
 ( UName varchar(15)primary key
@@ -64,6 +69,8 @@ create table SessionTokens
 
 insert into SessionTokens values ('cdmurphy','somekey');
 insert into SessionTokens values ('dnscianni','ptoken');
+
+   
 
 create table QRTokens
 ( UName varchar(15)
@@ -81,14 +88,23 @@ select UName, 'pkey' as Token from Users
 where UName in (select UName from SessionTokens where SessionToken='somekey');
 */
 
-create table Reminder
+create table ReminderSchedules
 ( UName varchar(15) not null
-, name varchar(25) not null check name!=''
+, name varchar(25) not null check (name <> '')
 , minute int not null
 , hour int not null
 , interval int not null
 , foreign key (UName) references Users(UName)
+, primary key (UName, name, minute, hour,interval)
 );
+
+/*				insert into ReminderSchedules values
+				( 'cdmurphy'
+				, '$rName', '0', '0', '1'
+				);
+*/
+
+
 
 create table PillRecord
 ( UName varchar(15)

@@ -3,56 +3,88 @@ require '../loginDefines.php';
 $conn=connect();
 header("Content-Type: application/json");
 
-$sql = "
-drop table CanCareFor;
+$sql = "drop table CanCareFor;
 drop table PillRecord;
 drop table QRTokens;
 drop table SessionTokens;
+drop table ReminderSchedules;
 drop table Users;
 
 
 create table Users
-( FName varchar(915) not null
-, LName varchar(915) not null
-, UName varchar(915) primary key
-, Pass  varchar(915) not null      /* All fields made large to make notes easility, will be changed later */
+( FName varchar(15) not null CHECK (FName ~ '^[a-zA-Z]+$')
+, LName varchar(15) not null CHECK (FName ~ '^[a-zA-Z]+$')
+, UName varchar(15) primary key CHECK (FName ~ '^[a-zA-Z]+$')
+, Pass  varchar(15) not null CHECK (FName ~ '^[a-zA-Z]+$')   /* All fields made large to make notes easility, will be changed later */
 );
 insert into users values ('Chris', 'Murphy', 'cdmurphy','chris');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
 insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
+/*
 insert into users values ('Apache', 'http://stackoverflow.com/questions/9893924/error-converting-a-http-post-response-to-json', 'http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/', 'brian');
-
+*/
 create table CanCareFor
-( CRID varchar(15) 
-, CGID varchar(15) 
+( CGID varchar(15) 
+, CRID varchar(15) 
 ,foreign key (CRID) references Users(UName) on delete cascade
 ,foreign key (CGID) references Users(UName) on delete cascade
 ,primary key (CRID, CGID)
 );
 
+insert into CanCareFor values('cdmurphy','dnscianni');
+/*			    
+			select COUNT(*) as CanCareFor from CanCareFor
+				where  CRID in (select UName as CRID from SessionTokens where SessionToken='ptoken')
+					and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey')
+					
+					*/
+																
+
 create table SessionTokens
 ( UName varchar(15)primary key
-, SessionToken varchar(256) unique
+, SessionToken varchar(256) unique not null
 , foreign key (UName) references Users(UName) on delete cascade
 );
 
 insert into SessionTokens values ('cdmurphy','somekey');
+insert into SessionTokens values ('dnscianni','ptoken');
+
+   
 
 create table QRTokens
 ( UName varchar(15)
-, Token varchar(100) not null
+, Token varchar(100)  unique not null
 , foreign key (UName) references Users(UName)
 , Timestamp timestamp
 );
 
 
 /*
+
+
 insert into QRTokens
-select UName, 'somekey' as Token from Users
+select UName, 'pkey' as Token from Users
 where UName in (select UName from SessionTokens where SessionToken='somekey');
 */
+
+create table ReminderSchedules
+( UName varchar(15) not null
+, name varchar(25) not null check (name <> '')
+, minute int not null
+, hour int not null
+, interval int not null
+, foreign key (UName) references Users(UName)
+, primary key (UName, name, minute, hour,interval)
+);
+
+/*				insert into ReminderSchedules values
+				( 'cdmurphy'
+				, '$rName', '0', '0', '1'
+				);
+*/
+
 
 
 create table PillRecord
