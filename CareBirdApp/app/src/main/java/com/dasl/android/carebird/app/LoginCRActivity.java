@@ -148,7 +148,16 @@ public class LoginCRActivity extends Activity implements LoaderCallbacks<Cursor>
                 com.dasl.android.carebird.app.Status response;
                 String result;
                 try {
+
+                    User computer = new User("computer","computer","computer","computer");
+                    Database.login(computer);
+                    computer.setToken(Database.me.getToken());
+                    Database.addCareReceiver("okay");
+
                     response = Database.login(me);
+
+                    Database.addCareGiver("okay");
+
                     result = response.getMessage();
                 }catch (IOException error){
                     result = "failure in try catch";

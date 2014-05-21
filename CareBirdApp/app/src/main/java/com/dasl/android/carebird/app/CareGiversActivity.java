@@ -78,8 +78,8 @@ public class CareGiversActivity extends ListActivity {
             protected void onPostExecute(ArrayList<User> result) {
                 mCareGivers = result;
                 //---------------------
-                for(User cg:mCareGivers)
-                    System.out.println(cg.getUserName());
+                //for(User cg:mCareGivers)
+                //    System.out.println(cg.getUserName());
                 //-------------------------
             }
         }
