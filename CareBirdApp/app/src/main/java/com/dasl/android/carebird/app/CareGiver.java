@@ -6,9 +6,24 @@ package com.dasl.android.carebird.app;
 public class CareGiver {
     private int phoneNumber;
     private String userName;
-    private String name;
+    private String fname;
+    private String lname;
     private int StartTime;
     private int endTime;
 
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
 
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
 }
