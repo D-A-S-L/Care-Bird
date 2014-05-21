@@ -77,6 +77,10 @@ public class CareGiversActivity extends ListActivity {
             @Override
             protected void onPostExecute(ArrayList<User> result) {
                 mCareGivers = result;
+                //---------------------
+                for(User cg:mCareGivers)
+                    System.out.println(cg.getUserName());
+                //-------------------------
             }
         }
         new getCG().execute(Database.me);

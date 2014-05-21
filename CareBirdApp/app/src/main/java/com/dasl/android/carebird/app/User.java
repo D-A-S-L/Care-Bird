@@ -38,4 +38,7 @@ public class User {
     public String getToken(){
         return this.token;
     }
+    public String toString(){
+        return FName + " " + LName;
+    }
 }

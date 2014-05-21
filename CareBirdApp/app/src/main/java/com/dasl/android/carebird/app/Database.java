@@ -214,6 +214,8 @@ public class Database {
         if(responseString != "false") {
             //return new Gson().fromJson(responseString, new TypeToken<ArrayList<User>>() {}.getType());
             System.out.println(responseString);
+            if(responseString.equals("false"))
+                return null;
             User[] careGivers = new Gson().fromJson(responseString, User[].class);
             ArrayList<User> temp = new ArrayList<User>();
             for(User careGiver:careGivers)
