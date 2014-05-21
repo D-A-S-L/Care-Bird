@@ -13,6 +13,7 @@ import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.FragmentActivity;
@@ -48,7 +49,7 @@ public class CareGiversActivity extends ListActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        /*
         try {
             mCareGivers = ((GlobalApplication) getApplication()).getDatabase().getCareGivers(((GlobalApplication) getApplication()).getMe());
             mCareGivers.add(new User("username", "pass", "first", "last"));
@@ -57,6 +58,29 @@ public class CareGiversActivity extends ListActivity {
         }
         CGAdapter adapter = new CGAdapter(mCareGivers);
         setListAdapter(adapter);
+        */
+        class getCG extends AsyncTask<User, String, ArrayList<User>> {
+            @Override
+            protected ArrayList<User> doInBackground(User... params) {
+                User me = params[0];
+                ArrayList<User> response = null;
+                //ArrayList<User> result;
+                try {
+                    Database db = new Database();
+                    response = db.getCareGivers(me);
+                    //result = response.getMessage();
+                }catch (IOException error){
+                    //result = "failure in try catch";
+                }
+                return response;
+            }
+            @Override
+            protected void onPostExecute(ArrayList<User> result) {
+                mCareGivers = result;
+            }
+        }
+        new getCG().execute(Database.me);
+
     }
 
     @Override
