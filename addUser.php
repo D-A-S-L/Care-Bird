@@ -16,6 +16,12 @@ $fname = $_POST["FName"];
 $lname = $_POST["LName"];
 $query="insert into users values ('$fname', '$lname', '$user','$pass');";
 $response=pg_query($conn,$query);
+$query="select from Users
+		 where FName='$fname'
+		 	and LName='$lname'
+		 	and UName='$user'
+		 	and Pass='$pass'";
+$response=pg_query($conn,$query);
 pg_close ($conn);
 if(!$response){
 	$status=406;

@@ -1,24 +1,11 @@
 <?php  
-/** This class, addReminderSchedule will add a single reminder schedule 
- * 
- * If the user is adding a schedule for himself, The SessionToken and the
- * UName passed will be associated in the SessionTable.
- * 
- * If the user is adding a schedule for one of his CareReceivers, the UName
- * passed will be associated to his on UName in the CanCareFor table
- * 
- * Otherwise the server should reject this request
- * Parameters:
- * // Who is making the request?
- * SessionToken = 'The SessionToken of whoever is doing the add request'
- * // Who is the request for?
- * UName = 'The UName of the intended recipient of the schedule
- * // Fields in a ReminderSchedule class
- * name = 'The name of the reminder schedule'
- * hour; 
- * minute;
- * interval;
- */
+// This service expects Four values
+// CRID - Username of the care receiver
+// CRPass - Password of the care receiver
+// CGID - Password of the care receiver
+// Token - A secret "key" shared by the QRCode creator, with the QRScanner, to verify the authenticity of the request
+// Pass values by doing:
+// caredb.herokuapp.com/addCareGiver.php?SessionToken=somekey&PermissionToken'
 require 'loginDefines.php';
 
 $loggedIn = loggedIn();
