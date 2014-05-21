@@ -8,7 +8,7 @@ public class User {
     private String pass;
     private String FName;
     private String LName;
-    private transient  String token;
+    private transient  String token = "";
 
     public User(){
         //no argument constructor, required for the Gson serializer

@@ -197,11 +197,13 @@ public class Database {
 
     /** This method will return an arraylist of User objects
      *  representing the careReceiver's careGivers*/
-    public ArrayList<User> getCareGivers(User careReceiver)throws IOException{
+    public static ArrayList<User> getCareGivers(User careReceiver)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/getCareGivers.php");
 
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        if(me.getToken().equals(""))
+            login();
         urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
@@ -210,8 +212,13 @@ public class Database {
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
         if(responseString != "false") {
-            return new Gson().fromJson(responseString
-                    , new TypeToken<ArrayList<User>>() {}.getType());
+            //return new Gson().fromJson(responseString, new TypeToken<ArrayList<User>>() {}.getType());
+            System.out.println(responseString);
+            User[] careGivers = new Gson().fromJson(responseString, User[].class);
+            ArrayList<User> temp = new ArrayList<User>();
+            for(User careGiver:careGivers)
+                temp.add(careGiver);
+            return temp;
         }
         return new ArrayList<User>();
     }

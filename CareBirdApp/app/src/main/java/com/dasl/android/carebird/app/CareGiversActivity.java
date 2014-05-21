@@ -66,8 +66,8 @@ public class CareGiversActivity extends ListActivity {
                 ArrayList<User> response = null;
                 //ArrayList<User> result;
                 try {
-                    Database db = new Database();
-                    response = db.getCareGivers(me);
+                    //Database db = new Database();
+                    response = Database.getCareGivers(me);
                     //result = response.getMessage();
                 }catch (IOException error){
                     //result = "failure in try catch";
