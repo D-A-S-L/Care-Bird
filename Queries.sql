@@ -98,19 +98,19 @@ create table ReminderSchedules
 , primary key (UName, name, minute, hour,interval)
 );
 
-/*				insert into ReminderSchedules values
+				insert into ReminderSchedules values
 				( 'cdmurphy'
-				, '$rName', '0', '0', '1'
+				, 'rName', '0', '0', '1'
 				);
 				insert into ReminderSchedules values
 				( 'dnscianni'
-				, '$rName', '10', '110', '11111'
+				, 'rName', '10', '110', '11111'
 				);
 				insert into ReminderSchedules values
 				( 'bsaia'
-				, '$rName', '1', '11', '00000'
+				, 'rName', '1', '11', '00000'
 				);
-*/
+
 
 
 

@@ -3,7 +3,9 @@ require '../loginDefines.php';
 $conn=connect();
 header("Content-Type: application/json");
 
-$sql = "drop table CanCareFor;
+$sql = "
+
+drop table CanCareFor;
 drop table PillRecord;
 drop table QRTokens;
 drop table SessionTokens;
@@ -79,11 +81,19 @@ create table ReminderSchedules
 , primary key (UName, name, minute, hour,interval)
 );
 
-/*				insert into ReminderSchedules values
+				insert into ReminderSchedules values
 				( 'cdmurphy'
-				, '$rName', '0', '0', '1'
+				, 'rName', '0', '0', '1'
 				);
-*/
+				insert into ReminderSchedules values
+				( 'dnscianni'
+				, 'rName', '10', '110', '11111'
+				);
+				insert into ReminderSchedules values
+				( 'bsaia'
+				, 'rName', '1', '11', '00000'
+				);
+
 
 
 
