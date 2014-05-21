@@ -174,7 +174,7 @@ public class Database {
     /** This method will return an arraylist of ReminderSchedules associated with the passed User object
      * When it speaks with the webserver it will also use the currently logged in user (a careGiver)
      * So that the webServer can check the Permissions*/
-    public ArrayList getReminderSchedules(User careReceiver)throws IOException {
+    public ArrayList<ReminderSchedule> getReminderSchedules(User careReceiver)throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/getReminderSchedules.php");
 
