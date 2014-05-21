@@ -126,7 +126,7 @@ public class SignUpCRActivity extends Activity implements LoaderManager.LoaderCa
                 com.dasl.android.carebird.app.Status response;
                 String result;
                 try {
-                    response = Database.addUser(me);
+                    response = ((GlobalApplication) getApplication()).getDatabase().addUser(me);
                     result = response.getMessage();
                 }catch (IOException error){
                     result = "failure in try catch";

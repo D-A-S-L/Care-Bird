@@ -1,90 +1,102 @@
 package com.dasl.android.carebird.app;
 
 import android.app.Activity;
+import android.app.ListActivity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 /**
  * Created by David on 5/9/2014.
  */
-public class CareGiversActivity extends Activity {
+public class CareGiversActivity extends ListActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    // This is the Adapter being used to display the list's data
+    SimpleCursorAdapter mAdapter;
+
+    // These are the Contacts rows that we will retrieve
+    static final String[] PROJECTION = new String[] {ContactsContract.Data._ID,
+            ContactsContract.Data.DISPLAY_NAME};
+
+    // This is the select criteria
+    static final String SELECTION = "((" +
+            ContactsContract.Data.DISPLAY_NAME + " NOTNULL) AND (" +
+            ContactsContract.Data.DISPLAY_NAME + " != '' ))";
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.care_givers_activity);
 
-        TextView tview1 = (TextView) findViewById(R.id.CareGiver1Name);
-        tview1.setText("Name: " + getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("otherName", "Null"));
+        // Create a progress bar to display while the list loads
+        ProgressBar progressBar = new ProgressBar(this);
+        progressBar.setLayoutParams(new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+        progressBar.setIndeterminate(true);
+        getListView().setEmptyView(progressBar);
 
-        TextView tview2 = (TextView) findViewById(R.id.CareGiver1UserName);
-        tview2.setText("User Name: " + getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("otherUserName", "Null"));
+        // Must add the progress bar to the root of the layout
+        ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
+        root.addView(progressBar);
 
-        TextView tview3 = (TextView) findViewById(R.id.CareGiver1Phone);
-        tview3.setText("Phone: " + getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("otherPhoneNumber", "Null").substring(4, 7) + ") " + getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("otherPhoneNumber", "Null").substring(7, 10) + "-" + getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("otherPhoneNumber", "Null").substring(10));
+        // For the cursor adapter, specify which columns go into which views
+        String[] fromColumns = {ContactsContract.Data.DISPLAY_NAME};
+        int[] toViews = {android.R.id.text1}; // The TextView in simple_list_item_1
 
-        PhoneCallListener phoneListener = new PhoneCallListener();
-        TelephonyManager telephonyManager = (TelephonyManager) this
-                .getSystemService(this.TELEPHONY_SERVICE);
-        telephonyManager.listen(phoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        // Create an empty adapter we will use to display the loaded data.
+        // We pass null for the cursor, then update it in onLoadFinished()
+        mAdapter = new SimpleCursorAdapter(this,
+                android.R.layout.simple_list_item_1, null,
+                fromColumns, toViews, 0);
+        setListAdapter(mAdapter);
 
-        final Button button = (Button) findViewById(R.id.CallButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Intent.ACTION_CALL, Uri.parse(getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("otherPhoneNumber", "tel:1111111")));
-                startActivityForResult (myIntent, 0);
-            }
-        });
+        // Prepare the loader.  Either re-connect with an existing one,
+        // or start a new one.
+        getLoaderManager().initLoader(0, null, this);
     }
 
-    private class PhoneCallListener extends PhoneStateListener {
-
-        private boolean isPhoneCalling = false;
-
-        String LOG_TAG = "LOGGING 123";
-
-        @Override
-        public void onCallStateChanged(int state, String incomingNumber) {
-
-            if (TelephonyManager.CALL_STATE_RINGING == state) {
-                // phone ringing
-                Log.i(LOG_TAG, "RINGING, number: " + incomingNumber);
-            }
-
-            if (TelephonyManager.CALL_STATE_OFFHOOK == state) {
-                // active
-                Log.i(LOG_TAG, "OFFHOOK");
-
-                isPhoneCalling = true;
-            }
-
-            if (TelephonyManager.CALL_STATE_IDLE == state) {
-                // run when class initial and phone call ended,
-                // need detect flag from CALL_STATE_OFFHOOK
-                Log.i(LOG_TAG, "IDLE");
-
-                if (isPhoneCalling) {
-
-                    Log.i(LOG_TAG, "restart app");
-
-                    // restart app
-                    Intent i = getBaseContext().getPackageManager()
-                            .getLaunchIntentForPackage(
-                                    getBaseContext().getPackageName());
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-
-                    isPhoneCalling = false;
-                }
-
-            }
-        }
+    // Called when a new Loader needs to be created
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        return new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
+                PROJECTION, SELECTION, null, null);
     }
 
+    // Called when a previously created loader has finished loading
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Swap the new cursor in.  (The framework will take care of closing the
+        // old cursor once we return.)
+        mAdapter.swapCursor(data);
+    }
+
+    // Called when a previously created loader is reset, making the data unavailable
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // This is called when the last Cursor provided to onLoadFinished()
+        // above is about to be closed.  We need to make sure we are no
+        // longer using it.
+        mAdapter.swapCursor(null);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // Do something when a list item is clicked
+    }
 }
