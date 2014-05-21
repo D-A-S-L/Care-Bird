@@ -40,7 +40,7 @@ public class ChoiceActivity extends Activity {
                             .putInt("firstboot", 1)
                             .commit();
 
-                    Intent myIntent = new Intent(v.getContext(), LoginCGActivity.class);
+                    Intent myIntent = new Intent(v.getContext(), SignUpCGActivity.class);
                     startActivityForResult (myIntent, 0);
                 }
             });
@@ -56,17 +56,17 @@ public class ChoiceActivity extends Activity {
                             .putInt("firstboot", 1)
                             .commit();
 
-                    Intent myIntent = new Intent(v.getContext(), LoginCRActivity.class);
+                    Intent myIntent = new Intent(v.getContext(), SignUpCRActivity.class);
                     startActivityForResult (myIntent, 0);
                 }
             });
         } else if (firstboot == 1) {
             super.onCreate(savedInstanceState);
             if(getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getBoolean(getString(R.string.user_type), true)) {
-                Intent myIntent = new Intent(this, LoginCGActivity.class);
+                Intent myIntent = new Intent(this, SignUpCGActivity.class);
                 startActivityForResult(myIntent, 0);
             } else {
-                Intent myIntent = new Intent(this, LoginCRActivity.class);
+                Intent myIntent = new Intent(this, SignUpCRActivity.class);
                 startActivityForResult(myIntent, 0);
             }
         } else {

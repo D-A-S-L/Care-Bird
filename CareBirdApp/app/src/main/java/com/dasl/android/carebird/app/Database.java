@@ -108,7 +108,7 @@ public class Database {
     /** addUser will accept a User object and will check for the existence of that user in the Database
      * Upon successful account creation, a new user will be added to the users table on the webservice.
      * The new user will automatically be logged in*/
-    public Status addUser(User newUser)throws IOException{
+    public static Status addUser(User newUser)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/addUser.php");
 
