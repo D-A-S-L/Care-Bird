@@ -187,10 +187,14 @@ public class Database {
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-        if (responseString != "false") {
-            return new Gson().fromJson(responseString
-                    , new TypeToken<ArrayList<ReminderSchedule>>() {
-            }.getType());
+        if (!responseString.equals("false")) {
+            ReminderSchedule[] reminders = new Gson().fromJson(responseString, ReminderSchedule[].class);
+            //new Gson().fromJson(responseString, ReminderSchedule[].class);
+            //User[] careGivers = new Gson().fromJson(responseString, User[].class);
+            ArrayList<ReminderSchedule> temp = new ArrayList<ReminderSchedule>();
+            for(ReminderSchedule reminder:reminders)
+                temp.add(reminder);
+            return temp;
         }
         return new ArrayList<ReminderSchedule>();
     }

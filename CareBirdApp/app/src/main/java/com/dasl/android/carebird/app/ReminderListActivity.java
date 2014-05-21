@@ -1,6 +1,7 @@
 package com.dasl.android.carebird.app;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,10 +16,76 @@ import java.util.ArrayList;
  * Created by Alec on 5/21/2014.
  */
 public class ReminderListActivity extends Activity {
+    private final ArrayList<ReminderSchedule> toView = new ArrayList<ReminderSchedule>();
+    class getReminders extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
+        @Override
+        protected ArrayList<ReminderSchedule> doInBackground(String... params) {
+            User me = new User(params[0],params[1],"","");
+            //com.dasl.android.carebird.app.Status response;
+            ArrayList<ReminderSchedule> result = null;
+            try {
 
+                //User computer = new User("computer","computer","computer","computer");
+                //Database.login(computer);
+                //computer.setToken(Database.me.getToken());
+                //Database.addCareReceiver("okay");
+
+                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
+
+                //Database.addCareGiver("okay");
+
+                //result = response.getMessage();
+            }catch (IOException error){
+                //result = "failure in try catch";
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<ReminderSchedule> results) {
+            //Context context = getApplicationContext();
+            //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+            //Log.v("carebird", result);
+            for(ReminderSchedule result:results)
+                toView.add(result);
+        }
+    }
+       /*
+    class setReminders extends AsyncTask<ArrayList<ReminderSchedule>, Integer,String > {
+        @Override
+        protected String doInBackground(ArrayList<ReminderSchedule>... params) {
+            User me = new User(params[0],params[1],"","");
+            //com.dasl.android.carebird.app.Status response;
+            ArrayList<ReminderSchedule> result = null;
+            try {
+
+                //User computer = new User("computer","computer","computer","computer");
+                //Database.login(computer);
+                //computer.setToken(Database.me.getToken());
+                //Database.addCareReceiver("okay");
+
+                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
+
+                //Database.addCareGiver("okay");
+
+                //result = response.getMessage();
+            }catch (IOException error){
+                //result = "failure in try catch";
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<ReminderSchedule> results) {
+            //Context context = getApplicationContext();
+            //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+            //Log.v("carebird", result);
+            for(ReminderSchedule result:results)
+                toView.add(result);
+        }
+    }
+    */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ArrayList toView;
+
 
         setContentView(R.layout.activity_reminder_list);
 
@@ -39,13 +106,16 @@ public class ReminderListActivity extends Activity {
             }
         });
 
+
+        new getReminders().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
+        /*
         try
         {
             toView = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
         } catch (IOException e) {
             return;
         }
-
+        */
         ListView remList = (ListView) findViewById(R.id.listView);
 
         if (toView == null)
@@ -74,14 +144,17 @@ public class ReminderListActivity extends Activity {
 
     public void refreshList() {
         ListView remList = (ListView) findViewById(R.id.listView);
-        ArrayList<ReminderSchedule> toView;
+        //ArrayList<ReminderSchedule> toView;
 
+        new getReminders().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
+        /*
         try {
             toView = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
+
         } catch (IOException e) {
             return;
         }
-
+        */
         remList.removeAllViews();
 
         for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
