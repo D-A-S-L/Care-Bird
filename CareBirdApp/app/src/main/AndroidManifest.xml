@@ -39,6 +39,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.dasl.android.carebird.app.ReminderListActivity"
+            android:label="Care Bird" >
+        </activity>
+        <activity
             android:name="com.dasl.android.carebird.app.ReminderActivity"
             android:label="@string/app_name" >
         </activity>

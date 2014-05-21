@@ -1,20 +1,30 @@
 package com.dasl.android.carebird.app;
 
+import android.app.AlarmManager;
+
 /**
  * Created by Alec on 5/9/2014.
  */
 public class ReminderSchedule {
 
-    private int minute;
+        public transient final static long ONCE = 0;
 
-    private int hour;
+        public transient final static long DAILY = AlarmManager.INTERVAL_DAY;
 
-    /*
-     * Name would be name of medication, "glucose", etc.
-     */
-    private String name;
+        public transient final static long TWICE_DAILY = AlarmManager.INTERVAL_HALF_DAY;
 
-    private boolean active;
+        public transient final static long WEEKLY = AlarmManager.INTERVAL_DAY * 7;
+
+        private int minute;
+
+        private int hour;
+
+        private long interval;
+
+        /*
+         * Name would be name of medication, "glucose", etc.
+         */
+        private String name;
 
 
     /*
@@ -22,15 +32,21 @@ public class ReminderSchedule {
      * the Reminder is to be used for.
      *
      */
-    public ReminderSchedule(int h, int m, String n) {
+    public ReminderSchedule(int h, int m, String n, long i) {
         minute = m;
         hour = h;
         name = n;
-        active = false;
+        interval = i;
     }
 
-    public String getKey() {
-        return ((name + minute) + hour);
+    //public int getKey() {
+        //return ((name + minute) + hour);
+    //}
+
+    public String toString() {
+        String toRet = name + ": set at " + hour + ":" + minute + " at interval " + interval;
+
+        return toRet;
     }
 
     public String getMessage() {
@@ -50,13 +66,5 @@ public class ReminderSchedule {
 
     public String getName() {
         return name;
-    }
-
-    public void setActive(boolean a) {
-        active = a;
-    }
-
-    public boolean isActive() {
-        return active;
     }
 }
