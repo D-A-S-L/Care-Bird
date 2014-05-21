@@ -186,9 +186,9 @@ public class Database {
         HttpResponse response = client.execute(post);
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
-        String jsonResponseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
         if (responseString != "false") {
-            return new Gson().fromJson(jsonResponseString
+            return new Gson().fromJson(responseString
                     , new TypeToken<ArrayList<ReminderSchedule>>() {
             }.getType());
         }
@@ -208,12 +208,12 @@ public class Database {
         HttpResponse response = client.execute(post);
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
-        String jsonResponseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
         if(responseString != "false") {
-            return new Gson().fromJson(jsonResponseString
+            return new Gson().fromJson(responseString
                     , new TypeToken<ArrayList<User>>() {}.getType());
         }
-        return new ArrayList<Users>();
+        return new ArrayList<User>();
     }
 
     /** This method will return an arraylist of User objects
@@ -229,12 +229,12 @@ public class Database {
         HttpResponse response = client.execute(post);
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
-        String jsonResponseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
         if(responseString != "false") {
-            return new Gson().fromJson(jsonResponseString
+            return new Gson().fromJson(responseString
                     , new TypeToken<ArrayList<User>>() {}.getType());
         }
-        return new ArrayList<Users>();
+        return new ArrayList<User>();
     }
 
 
