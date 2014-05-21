@@ -51,8 +51,10 @@ public class Database {
             Log.v("carebird1", "data is null");
         */
 
-        me.setToken(EntityUtils.toString(response.getEntity(),"UTF-8"));
+        String responseString=(EntityUtils.toString(response.getEntity(),"UTF-8"));
 
+        responseString=responseString.substring(1,responseString.length()-1);
+        me.setToken(responseString);
 
 
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
@@ -80,7 +82,7 @@ public class Database {
 
         //responseString is either "true" or "false"
         String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
-
+        System.out.println("ResponseString: "+responseString);
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }
 
@@ -213,7 +215,7 @@ public class Database {
 
         HttpResponse response = client.execute(post);
 
-        // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
+        // This string needs to be converted with gson into an ArrayList<CareGivers>
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
         if(!responseString.equals("false")) {
             //return new Gson().fromJson(responseString, new TypeToken<ArrayList<User>>() {}.getType());
