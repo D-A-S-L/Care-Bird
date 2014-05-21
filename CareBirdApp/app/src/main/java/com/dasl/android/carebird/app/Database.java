@@ -192,7 +192,7 @@ public class Database {
                     , new TypeToken<ArrayList<ReminderSchedule>>() {
             }.getType());
         }
-        return new ArrayList<Users>();
+        return new ArrayList<ReminderSchedule>();
     }
 
     /** This method will return an arraylist of User objects
