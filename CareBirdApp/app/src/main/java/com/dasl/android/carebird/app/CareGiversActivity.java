@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -41,45 +42,51 @@ public class CareGiversActivity extends ListActivity {
 
     Activity act = this;
 
-    private ArrayList<CareGiver> mCareGivers;
+    private ArrayList<User> mCareGivers;
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
 
-            CGAdapter adapter = new CGAdapter(mCareGivers);
-            setListAdapter(adapter);
+        try {
+            mCareGivers = ((GlobalApplication) getApplication()).getDatabase().getCareGivers(((GlobalApplication) getApplication()).getMe());
+            mCareGivers.add(new User("username", "pass", "first", "last"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        @Override
-        public void onListItemClick(ListView l, View v, int position, long id) {
-
-        }
-
-        @Override
-        public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            // TODO Auto-generated method stub
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-
-private class CGAdapter extends ArrayAdapter<CareGiver> {
-    public CGAdapter(ArrayList<CareGiver> taqs) {
-        super(act, android.R.layout.simple_list_item_1, taqs);
+        CGAdapter adapter = new CGAdapter(mCareGivers);
+        setListAdapter(adapter);
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        if(convertView == null) {
-            convertView = act.getLayoutInflater().inflate(R.layout.list_item_cg, null);
+    public void onListItemClick(ListView l, View v, int position, long id) {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private class CGAdapter extends ArrayAdapter<User> {
+        public CGAdapter(ArrayList<User> taqs) {
+            super(act, android.R.layout.simple_list_item_1, taqs);
         }
 
-        final CareGiver c = mCareGivers.get(position);
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = act.getLayoutInflater().inflate(R.layout.list_item_cg, null);
+            }
 
-        TextView txt = (TextView)convertView.findViewById(R.id.cg_list_text);
-        txt.setText(c.getFname() + " " + c.getLname() + "\n" + c.getPhoneNumber());
+            final User c = mCareGivers.get(position);
 
-        return convertView;
+            TextView txt = (TextView) convertView.findViewById(R.id.cg_list_text);
+            txt.setText(c.getFirstName() + " " + c.getLastName());
+
+            return convertView;
+        }
     }
-}
 }

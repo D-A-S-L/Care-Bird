@@ -124,6 +124,7 @@ public class SignUpCGActivity extends Activity implements LoaderManager.LoaderCa
             @Override
             protected String doInBackground(String... params) {
                 User me = new User(params[0],params[1],params[2],params[3]);
+                ((GlobalApplication) getApplication()).setMe(me);
                 com.dasl.android.carebird.app.Status response;
                 String result;
                 try {

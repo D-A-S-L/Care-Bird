@@ -7,9 +7,18 @@ import android.app.Application;
  */
 public class GlobalApplication extends Application{
 
-    private Database db = new Database();
+    private static Database db = new Database();
+    private static User me;
 
     public Database getDatabase() {
         return db;
+    }
+
+    public void setMe(User me) {
+        this.me = me;
+    }
+
+    public User getMe() {
+        return me;
     }
 }
