@@ -1,5 +1,5 @@
 <?php  
-/** This service expects the SessionToken of the user who wants to know who his CareGivers are
+/** This service expects the SessionToken of the user who wants to know who his CareReceivers are
  * @param string SessionToken
  */
  
@@ -16,14 +16,14 @@ if(!$loggedIn){
 	$data = false;
 }else{
 	// Valid Session Token
-	// Find and return a list of his CareGivers
+	// Find and return a list of his CareReceivers
 		$SessionToken=$_POST["SessionToken"];
 		$conn=connect();
 		$query="
 			select FName,LName,UName, null as pass from Users
 			where UName in 
-				(select CGID as UName from CanCareFor where CRID in 
-					(select UName as CRID from SessionTokens where SessionToken='$SessionToken'));
+				(select CRID as UName from CanCareFor where CGID in 
+					(select UName as CGID from SessionTokens where SessionToken='$SessionToken'));
 		";
 		$response=pg_query($conn,$query);
 		pg_close ($conn);
