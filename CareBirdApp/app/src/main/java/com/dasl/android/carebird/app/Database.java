@@ -1,5 +1,6 @@
 package com.dasl.android.carebird.app;
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -164,9 +165,6 @@ public class Database {
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }
 
-    /** METHODS BELOW THIS LINE DO NOT HAVE AN EQUIVALENT ON THE WEBSERVER
-     *  THEY ARE PROTOTYPES BASED ON EXPECTED FUNCTIONALITY
-     */
 
     /** This method will return an arraylist of ReminderSchedules associated with the currently logged in user */
     public ArrayList<ReminderSchedule> getReminderSchedules()throws IOException{
@@ -183,15 +181,37 @@ public class Database {
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
         urlParameters.add(new BasicNameValuePair("CRName", careReceiver.getUserName()));
-
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
         HttpResponse response = client.execute(post);
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
         String jsonResponseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-        return new Gson().fromJson(jsonResponseString, new ArrayList<ReminderSchedule>().getClass());
+        return new Gson().fromJson(jsonResponseString
+                , new TypeToken<ArrayList<ReminderSchedule>>(){}.getType());
     }
+
+    /** This method will return an arraylist of User objects associated with the current User (me)*/
+    public ArrayList getCareGivers(User careReceiver)throws IOException{
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(BASE_URL + "/getCareGivers.php");
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+
+        // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
+        String jsonResponseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        return new Gson().fromJson(jsonResponseString
+                , new TypeToken<ArrayList<User>>(){}.getType());
+    }
+
+
+    /** METHODS BELOW THIS LINE DO NOT HAVE AN EQUIVALENT ON THE WEBSERVER
+     *  THEY ARE PROTOTYPES BASED ON EXPECTED FUNCTIONALITY
+     */
 
     /** This is the same concept as addReminderSchedule, only it will remove the ReminderSchedule */
     public Status removeReminderSchedule(ReminderSchedule reminder)throws IOException{
