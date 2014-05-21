@@ -58,7 +58,13 @@ insert into CanCareFor values('cdmurphy','dnscianni');
 				where  CRID in (select UName as CRID from SessionTokens where SessionToken='ptoken')
 					and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey')
 					
-					*/
+			select * from Users
+			where UName in 
+				(select CGID as UName from CanCareFor where CRID in 
+					(select UName as CRID from SessionTokens where SessionToken='ptoken'));
+
+
+*/
 																
 
 create table SessionTokens
