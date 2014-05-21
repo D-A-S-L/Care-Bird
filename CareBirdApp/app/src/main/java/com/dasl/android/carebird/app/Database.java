@@ -125,7 +125,7 @@ public class Database {
 
         //responseString is either "true" or "false"
         String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
-        if(responseString != "false"){
+        if(true || responseString != "false"){
             me=newUser;
             login(me);
         }
