@@ -125,7 +125,7 @@ public class Database {
 
         //responseString is either "true" or "false"
         String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
-        if(responseString != "false"){
+        if(!responseString.equals("false")){
             me=newUser;
             login(me);
         }
@@ -211,18 +211,16 @@ public class Database {
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-        if(responseString != "false") {
+        if(!responseString.equals("false")) {
             //return new Gson().fromJson(responseString, new TypeToken<ArrayList<User>>() {}.getType());
             System.out.println(responseString);
-            if(responseString.equals("false"))
-                return null;
             User[] careGivers = new Gson().fromJson(responseString, User[].class);
             ArrayList<User> temp = new ArrayList<User>();
             for(User careGiver:careGivers)
                 temp.add(careGiver);
             return temp;
-        }
-        return new ArrayList<User>();
+        }else
+            return new ArrayList<User>();
     }
 
     /** This method will return an arraylist of User objects

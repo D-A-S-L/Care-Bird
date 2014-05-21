@@ -149,14 +149,14 @@ public class LoginCRActivity extends Activity implements LoaderCallbacks<Cursor>
                 String result;
                 try {
 
-                    User computer = new User("computer","computer","computer","computer");
-                    Database.login(computer);
-                    computer.setToken(Database.me.getToken());
-                    Database.addCareReceiver("okay");
+                    //User computer = new User("computer","computer","computer","computer");
+                    //Database.login(computer);
+                    //computer.setToken(Database.me.getToken());
+                    //Database.addCareReceiver("okay");
 
                     response = Database.login(me);
 
-                    Database.addCareGiver("okay");
+                    //Database.addCareGiver("okay");
 
                     result = response.getMessage();
                 }catch (IOException error){
