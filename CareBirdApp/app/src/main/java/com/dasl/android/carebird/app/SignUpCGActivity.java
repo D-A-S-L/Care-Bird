@@ -1,43 +1,42 @@
 package com.dasl.android.carebird.app;
 
-        import android.animation.Animator;
-        import android.animation.AnimatorListenerAdapter;
-        import android.annotation.TargetApi;
-        import android.app.Activity;
-        import android.app.LoaderManager.LoaderCallbacks;
-        import android.content.ContentResolver;
-        import android.content.Context;
-        import android.content.CursorLoader;
-        import android.content.Intent;
-        import android.content.Loader;
-        import android.database.Cursor;
-        import android.graphics.Typeface;
-        import android.net.Uri;
-        import android.os.AsyncTask;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.Context;
+import android.content.CursorLoader;
+import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import android.os.Build;
-        import android.os.Bundle;
-        import android.provider.ContactsContract;
-        import android.telephony.TelephonyManager;
-        import android.text.TextUtils;
-        import android.view.KeyEvent;
-        import android.view.View;
-        import android.view.View.OnClickListener;
-        import android.view.inputmethod.EditorInfo;
-        import android.widget.ArrayAdapter;
-        import android.widget.AutoCompleteTextView;
-        import android.widget.Button;
-        import android.widget.EditText;
-        import android.widget.TextView;
-        import java.util.ArrayList;
-        import java.util.List;
-
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A login screen that offers login via email/password.
-
+ * Created by David on 5/20/2014.
  */
-public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>{
+public class SignUpCGActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -53,7 +52,8 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
-    private EditText mNameView;
+    private EditText mFNameView;
+    private EditText mLNameView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -61,31 +61,15 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_cg);
+        setContentView(R.layout.activity_signup_cg);
 
-        // Font path
-        String fontPath = "fonts/APHont-Regular_q15c.ttf";
-
-        // text view label
-        TextView userNameText = (TextView) findViewById(R.id.username);
-        TextView nameText = (TextView) findViewById(R.id.name);
-        TextView passwordText = (TextView) findViewById(R.id.password);
-        TextView loginButtonText = (TextView) findViewById(R.id.email_sign_in_button);
-
-        // Loading Font Face
-        Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
-
-        // Applying font
-        userNameText.setTypeface(tf);
-        nameText.setTypeface(tf);
-        passwordText.setTypeface(tf);
-        loginButtonText.setTypeface(tf);
 
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
 
-        mNameView = (EditText) findViewById(R.id.name);
+        mFNameView = (EditText) findViewById(R.id.fname);
+        mLNameView = (EditText) findViewById(R.id.lname);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -100,7 +84,7 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
@@ -132,8 +116,32 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
 
         // Store values at the time of the login attempt.
         String userName = mUsernameView.getText().toString();
-        String name = mNameView.getText().toString();
+        String fname = mFNameView.getText().toString();
+        String lname = mLNameView.getText().toString();
         String password = mPasswordView.getText().toString();
+
+        class PostTask extends AsyncTask<String, Integer, String>{
+            @Override
+            protected String doInBackground(String... params) {
+                User me = new User(params[0],params[1],params[2],params[3]);
+                com.dasl.android.carebird.app.Status response;
+                String result;
+                try {
+                    response = Database.addUser(me);
+                    result = response.getMessage();
+                }catch (IOException error){
+                    result = "failure in try catch";
+                };
+                return result;
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                Context context = getApplicationContext();
+                Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                Log.v("carebird", result);
+            }
+        }
+        new PostTask().execute(new String[]{userName, password, fname, lname});
 
         boolean cancel = false;
         View focusView = null;
@@ -150,9 +158,15 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
             cancel = true;
         }
 
-        if (TextUtils.isEmpty(name)) {
-            mNameView.setError(getString(R.string.error_field_required));
-            focusView = mNameView;
+        if (TextUtils.isEmpty(fname)) {
+            mFNameView.setError(getString(R.string.error_field_required));
+            focusView = mFNameView;
+            cancel = true;
+        }
+
+        if (TextUtils.isEmpty(lname)) {
+            mLNameView.setError(getString(R.string.error_field_required));
+            focusView = mLNameView;
             cancel = true;
         }
 
@@ -175,11 +189,12 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(userName, name, password);
+            mAuthTask = new UserLoginTask(userName, fname, lname, password);
             mAuthTask.execute((Void) null);
 
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("userName", userName).commit();
-            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("name", name).commit();
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("fname", fname).commit();
+            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("lname", lname).commit();
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("password", password).commit();
 
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putInt("firstboot", 2).commit();
@@ -285,7 +300,7 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginCGActivity.this,
+                new ArrayAdapter<String>(SignUpCGActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mUsernameView.setAdapter(adapter);
@@ -298,12 +313,14 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUserName;
-        private final String mName;
+        private final String mFName;
+        private final String mLName;
         private final String mPassword;
 
-        UserLoginTask(String userName, String name, String password) {
+        UserLoginTask(String userName, String fname, String lname, String password) {
             mUserName = userName;
-            mName = name;
+            mFName = fname;
+            mLName = lname;
             mPassword = password;
         }
 
