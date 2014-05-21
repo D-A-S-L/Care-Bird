@@ -53,7 +53,7 @@ if(!$loggedIn){
 		$conn=connect();
 		// Find out if the CareGiver can actually care for the CareReceiver
 		// If so, return the UName of the CareReceiver so we can add reminders for him
-		$himself = $cgToken=$crToken;
+		$himself = ($cgToken==$crToken);
 		$crUName="";
 		$legit=false;
 		if(!$himself){
@@ -74,19 +74,19 @@ if(!$loggedIn){
 			$response=pg_query($conn,$query);
 			$resArray = pg_fetch_row($response);
 			$crUName=$resArray[0];			
-		}
-		if(!$himself && !$legit){
-			$status=203;
-			$statusMessage="CareGiver does not have the priveledge to care";
-			$data=false;
-		}else{
-			// CareGiver is legit, add the ReminderSchedule
-			$query="		
-				insert into ReminderSchedules values
-				( '$crUName'
-				, '$name', '$minute', '$hour', '$interval'
-				);
-			";
+			}
+			if(!$himself && !$legit){
+				$status=203;
+				$statusMessage="CareGiver does not have the priveledge to care";
+				$data=false;
+			}else{
+				// CareGiver is legit, add the ReminderSchedule
+				$query="		
+					insert into ReminderSchedules values
+					( '$crUName'
+					, '$name', '$minute', '$hour', '$interval'
+					);
+				";
 			$response=pg_query($conn,$query);
 			$resArray = pg_fetch_row($response);
 			

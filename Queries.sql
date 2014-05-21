@@ -102,6 +102,14 @@ create table ReminderSchedules
 				( 'cdmurphy'
 				, '$rName', '0', '0', '1'
 				);
+				insert into ReminderSchedules values
+				( 'dnscianni'
+				, '$rName', '10', '110', '11111'
+				);
+				insert into ReminderSchedules values
+				( 'bsaia'
+				, '$rName', '1', '11', '00000'
+				);
 */
 
 

@@ -1,11 +1,20 @@
 <?php  
-// This service expects Four values
-// CRID - Username of the care receiver
-// CRPass - Password of the care receiver
-// CGID - Password of the care receiver
-// Token - A secret "key" shared by the QRCode creator, with the QRScanner, to verify the authenticity of the request
-// Pass values by doing:
-// caredb.herokuapp.com/addCareGiver.php?SessionToken=somekey&PermissionToken'
+/** This class, getReminderSchedules will return all reminder schedules
+ * for the specified UName to the requestor with the specified SessionKey 
+ * 
+ * If the user is requesting a schedule for himself, The SessionToken and the
+ * UName passed will be associated in the SessionTable.
+ * 
+ * If the user is adding a schedule for one of his CareReceivers, the UName
+ * passed will be associated to his on UName in the CanCareFor table
+ * 
+ * Otherwise the server should reject this request
+ * Parameters:
+ * // Who is making the request?
+ * SessionToken = 'The SessionToken of whoever is doing the add request'
+ * // Who is the request for?
+ * CRName = 'The UName of the intended recipient of the schedule
+ */
 require 'loginDefines.php';
 
 $loggedIn = loggedIn();
@@ -19,9 +28,7 @@ if(!$loggedIn){
 	$data = false;
 }else{
 	// Valid Session Token but no Permission Token Provided...
-	if(!($_POST["CareGiverSessionToken"]
-	 && $_POST["CareReceiverSessionToken"]
-	  && $_POST["name"] && $_POST["hour"] && $_POST["minute"] && $_POST["interval"]))
+	if(!($_POST["SessionToken"] && $_POST["CRName"]) )
 	{		
 		$status=400;
 		$data=false;
@@ -31,56 +38,47 @@ if(!$loggedIn){
 	// And assume that there isn't already a token for that user
 	// Multiple Permission Tokens are allowed for a user because they are short lived and they may have more than 1 caregiver
 	else{	
-		$cgToken=$_POST["CareGiverSessionToken"];
-		$crToken=$_POST["CareReceiverSessionToken"];
-		$name=$_POST["name"];
-		$hour=$_POST["hour"];
-		$minute=$_POST["minute"];
-		$interval=$_POST["interval"];
+		$sToken=$_POST["SessionToken"];
+		$CRName=$_POST["CRName"];
 		$conn=connect();
 		// Find out if the CareGiver can actually care for the CareReceiver
-		// If so, return the UName of the CareReceiver so we can add reminders for him
-		$himself = $cgToken=$crToken;
-		$crUName="";
+		// If so, return the CRName's Reminder Schedules
+		$query="		
+				select UName from SessionTokens where SessionToken='$sToken'
+		";
+			$response=pg_query($conn,$query);
+			$resArray = pg_fetch_row($response);
+		$UName=$resArray[0];
+		$himself = ($CRName==$UName);
 		$legit=false;
 		if(!$himself){
 			$query="		
-					select CRID as CanCareFor from CanCareFor
-						where  CRID in (select UName as CRID from SessionTokens where SessionToken='$crToken')
-						and CGID in (select UName as CGID from SessionTokens where SessionToken='$cgToken');
+					select CRID from CanCareFor
+						where  CRID ='$CRName'
+						and CGID in (select UName as CGID from SessionTokens where SessionToken='$sToken');
 			";
-			$response=pg_query($conn,$query);
-			$resArray = pg_fetch_row($response);
+				$response=pg_query($conn,$query);
+				$resArray = pg_fetch_row($response);
 			$crUName=$resArray[0];
-			$legit = (!$response || !$crUName);
-		}
-		else{
-			$query="		
-					select UName from SessionTokens where SessionToken='$crToken';
-			";
-			$response=pg_query($conn,$query);
-			$resArray = pg_fetch_row($response);
-			$crUName=$resArray[0];			
-		}
+			$legit = (!$response && ($crUName == $CRName));
+		}	
 		if(!$himself && !$legit){
 			$status=203;
 			$statusMessage="CareGiver does not have the priveledge to care";
 			$data=false;
 		}else{
-			// CareGiver is legit, add the ReminderSchedule
+			// CareGiver is legit, get the ReminderSchedules
+
 			$query="		
-				insert into ReminderSchedules values
-				( '$crUName'
-				, '$name', '$minute', '$hour', '$interval'
-				);
+					select name,hour,minute,interval from ReminderSchedules where UName='$CRName';
 			";
 			$response=pg_query($conn,$query);
-			$resArray = pg_fetch_row($response);
+			$resArray = pg_fetch_all($response);
 			
 						
 			$status=202;
 			$statusMessage="ReminderSchedule added";
-			$data=true;
+			$data=$resArray;
 		}
 	}
 }
