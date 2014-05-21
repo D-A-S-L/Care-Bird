@@ -174,7 +174,7 @@ public class Database {
     /** This method will return an arraylist of ReminderSchedules associated with the passed User object
      * When it speaks with the webserver it will also use the currently logged in user (a careGiver)
      * So that the webServer can check the Permissions*/
-    public ArrayList getReminderSchedules(User careReceiver)throws IOException{
+    public ArrayList getReminderSchedules(User careReceiver)throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/getReminderSchedules.php");
 
@@ -187,12 +187,17 @@ public class Database {
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
         String jsonResponseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-        return new Gson().fromJson(jsonResponseString
-                , new TypeToken<ArrayList<ReminderSchedule>>(){}.getType());
+        if (responseString != "false") {
+            return new Gson().fromJson(jsonResponseString
+                    , new TypeToken<ArrayList<ReminderSchedule>>() {
+            }.getType());
+        }
+        return new ArrayList<Users>();
     }
 
-    /** This method will return an arraylist of User objects associated with the current User (me)*/
-    public ArrayList getCareGivers(User careReceiver)throws IOException{
+    /** This method will return an arraylist of User objects
+     *  representing the careReceiver's careGivers*/
+    public ArrayList<User> getCareGivers(User careReceiver)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/getCareGivers.php");
 
@@ -204,8 +209,32 @@ public class Database {
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
         String jsonResponseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-        return new Gson().fromJson(jsonResponseString
-                , new TypeToken<ArrayList<User>>(){}.getType());
+        if(responseString != "false") {
+            return new Gson().fromJson(jsonResponseString
+                    , new TypeToken<ArrayList<User>>() {}.getType());
+        }
+        return new ArrayList<Users>();
+    }
+
+    /** This method will return an arraylist of User objects
+     *  representing the careGiver's careReceivers*/
+    public ArrayList<User> getCareReceivers(User careGiver)throws IOException{
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(BASE_URL + "/getCareReceivers.php");
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+
+        // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
+        String jsonResponseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        if(responseString != "false") {
+            return new Gson().fromJson(jsonResponseString
+                    , new TypeToken<ArrayList<User>>() {}.getType());
+        }
+        return new ArrayList<Users>();
     }
 
 
