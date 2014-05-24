@@ -46,8 +46,8 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="QR Code"
-        android:textSize="40dp"
+        android:text="Add CareGiver"
+        android:textSize="38dp"
         android:textColor="#FFFFFF"
         android:id="@+id/QRcode"
         android:background="@drawable/button"/>

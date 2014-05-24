@@ -36,7 +36,7 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:text="QR Code"
+        android:text="Add CareReceiver"
         android:textSize="20dp"
         android:textColor="#FFFFFF"
         android:id="@+id/QRcode"
