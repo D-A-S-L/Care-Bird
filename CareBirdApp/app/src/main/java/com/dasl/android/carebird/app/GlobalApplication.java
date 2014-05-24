@@ -8,17 +8,17 @@ import android.app.Application;
 public class GlobalApplication extends Application{
 
     private static Database db = new Database();
-    private static User me;
+    //private static User me;
 
     public Database getDatabase() {
         return db;
     }
 
     public void setMe(User me) {
-        this.me = me;
+       db.me = me;
     }
 
     public User getMe() {
-        return me;
+        return db.me;
     }
 }

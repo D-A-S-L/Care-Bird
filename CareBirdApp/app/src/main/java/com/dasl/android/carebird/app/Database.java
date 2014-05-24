@@ -142,7 +142,7 @@ public class Database {
 
     /** This method accepts a ReminderSchedule object and
      * assumes the reminder is intended for the currently logged in user */
-    public Status addReminderSchedule(ReminderSchedule reminder)throws IOException{
+    public static Status addReminderSchedule(ReminderSchedule reminder)throws IOException{
         return addReminderSchedule(reminder,me);
     }
 
@@ -150,7 +150,7 @@ public class Database {
      * assumes the reminder is intended for the passed User object (a careReceiver)
      * When it speaks with the webserver it will also use the currently logged in user (a careGiver)
      * So that the webServer can check the Permissions*/
-    public Status addReminderSchedule(ReminderSchedule reminder, User user)throws IOException{
+    public static Status addReminderSchedule(ReminderSchedule reminder, User user)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/addReminderSchedule.php");
 
@@ -174,14 +174,14 @@ public class Database {
 
 
     /** This method will return an arraylist of ReminderSchedules associated with the currently logged in user */
-    public ArrayList<ReminderSchedule> getReminderSchedules()throws IOException{
+    public static ArrayList<ReminderSchedule> getReminderSchedules()throws IOException{
         return getReminderSchedules(me);
     }
 
     /** This method will return an arraylist of ReminderSchedules associated with the passed User object
      * When it speaks with the webserver it will also use the currently logged in user (a careGiver)
      * So that the webServer can check the Permissions*/
-    public ArrayList<ReminderSchedule> getReminderSchedules(User careReceiver)throws IOException {
+    public static ArrayList<ReminderSchedule> getReminderSchedules(User careReceiver)throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/getReminderSchedules.php");
 
@@ -236,7 +236,7 @@ public class Database {
 
     /** This method will return an arraylist of User objects
      *  representing the careGiver's careReceivers*/
-    public ArrayList<User> getCareReceivers(User careGiver)throws IOException{
+    public static ArrayList<User> getCareReceivers(User careGiver)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/getCareReceivers.php");
 
@@ -261,12 +261,12 @@ public class Database {
      */
 
     /** This is the same concept as addReminderSchedule, only it will remove the ReminderSchedule */
-    public Status removeReminderSchedule(ReminderSchedule reminder)throws IOException{
+    public static Status removeReminderSchedule(ReminderSchedule reminder)throws IOException{
         return removeReminderSchedule(reminder,me);
     }
 
     /** This is the same concept as addReminderSchedule, only it will remove the ReminderSchedule */
-    public Status removeReminderSchedule(ReminderSchedule reminder, User careReceiver)throws IOException{
+    public static Status removeReminderSchedule(ReminderSchedule reminder, User careReceiver)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/addCareReceiver.php");
 
