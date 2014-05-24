@@ -31,6 +31,7 @@ if(!$loggedIn){
 		$PermissionToken=$_POST["PermissionToken"];
 		$SessionToken=$_POST["SessionToken"];
 		$conn=connect();
+		
 		$query="
 		insert into CanCareFor
 			select receiver.CRID, giver.CGID
@@ -39,13 +40,13 @@ if(!$loggedIn){
 		";
 		$response=pg_query($conn,$query);
 		pg_close ($conn);
-		if(!$response){
-			$status=400;
-			$statusMessage="An error occured: Possibly record already exists";
+		if(!pg_affected_rows($response)){
+			$status=203;
+			$statusMessage="An error occured: Possibly PermissionToken does not exist OR The CanCareFor Relationship already exists for these users";
 			$data=$response;
 		}else{
 			$status=202;
-			$statusMessage="The Query was a success. Either nothing was added, or a new relationship was";
+			$statusMessage="The Query was a success. New Care Relationship added.";
 			$data=true;
 		}
 	}

@@ -39,8 +39,8 @@ if(!$loggedIn){
 		";
 		$response=pg_query($conn,$query);
 		pg_close ($conn);
-		if(!$response){
-			$status=400;
+		if(!pg_affected_rows($response)){
+			$status=203;
 			$statusMessage="An error occured: Possibly record already exists";
 			$data=$response;
 		}else{

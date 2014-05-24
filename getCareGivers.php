@@ -20,12 +20,13 @@ if(!$loggedIn){
 		$SessionToken=$_POST["SessionToken"];
 		$conn=connect();
 		$query="
-			select FName,LName,UName, null as pass from Users
+			select FName,LName,UName, '' as Pass from Users
 			where UName in 
 				(select CGID as UName from CanCareFor where CRID in 
 					(select UName as CRID from SessionTokens where SessionToken='$SessionToken'));
 		";
 		$response=pg_query($conn,$query);
+
 		pg_close ($conn);
 		if(!$response){
 			$status=400;

@@ -5,6 +5,7 @@ header("Content-Type: application/json");
 
 $sql = "
 
+
 drop table CanCareFor;
 drop table PillRecord;
 drop table QRTokens;
@@ -36,12 +37,24 @@ create table CanCareFor
 );
 
 insert into CanCareFor values('cdmurphy','dnscianni');
+insert into CanCareFor values('bsaia','dnscianni');
+insert into CanCareFor values('ashay','dnscianni');
+insert into CanCareFor values('ashay','asandoval');
+insert into CanCareFor values('cdmurphy','asandoval');
 /*			    
 			select COUNT(*) as CanCareFor from CanCareFor
 				where  CRID in (select UName as CRID from SessionTokens where SessionToken='ptoken')
 					and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey')
 					
-					*/
+			select * from Users
+			where UName in 
+				(select CGID as UName from CanCareFor where CRID in 
+					(select UName as CRID from SessionTokens where SessionToken='ptoken'));
+
+			select * from CanCareFor
+				where CRID in (select UName as CRID from QRTokens where Token='pkey') 
+				  and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey')
+*/
 																
 
 create table SessionTokens
@@ -49,7 +62,8 @@ create table SessionTokens
 , SessionToken varchar(256) unique not null
 , foreign key (UName) references Users(UName) on delete cascade
 );
-
+/* delete from SessionTokens where UName='cdmurphy' */
+/* delete from SessionTokens where UName='dnscianni' */
 insert into SessionTokens values ('cdmurphy','somekey');
 insert into SessionTokens values ('dnscianni','ptoken');
 
@@ -68,7 +82,7 @@ create table QRTokens
 
 insert into QRTokens
 select UName, 'pkey' as Token from Users
-where UName in (select UName from SessionTokens where SessionToken='somekey');
+where UName in (select UName from SessionTokens where SessionToken='ptoken');
 */
 
 create table ReminderSchedules
@@ -106,6 +120,7 @@ create table PillRecord
 );
 insert into PillRecord values ('cdmurphy','Mon May 12 00:31:00 GMT 2014', 'Mon May 12 00:36:00 GMT 2014', 'Take the Blue pill','Red Pill Taken');
 insert into PillRecord values ('dnscianni','Mon May 12 00:32:00 GMT 2014','Mon May 12 00:37:00 GMT 2014',  'Take the Red pill','Blue Pill Taken');
+
 
 ";
 $result = pg_query($conn, $sql);
