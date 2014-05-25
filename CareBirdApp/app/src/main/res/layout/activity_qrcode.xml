@@ -24,15 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"/>
-    <Button
-        android:id="@+id/scanCode"
-        android:text="Scan QR Code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="30dp"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/button"/>
 
     <Button
         android:id="@+id/done"
@@ -43,13 +34,4 @@
         android:textSize="30dp"
         android:textColor="#FFFFFF"
         android:background="@drawable/button"/>
-    <TextView
-        android:id="@+id/qrDecoded"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="16sp"
-        android:textColor="#008000"/>
-
-
 </LinearLayout>
