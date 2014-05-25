@@ -194,8 +194,9 @@ public class Database {
             //new Gson().fromJson(responseString, ReminderSchedule[].class);
             //User[] careGivers = new Gson().fromJson(responseString, User[].class);
             ArrayList<ReminderSchedule> temp = new ArrayList<ReminderSchedule>();
-            for(ReminderSchedule reminder:reminders)
+            for(ReminderSchedule reminder:reminders) {
                 temp.add(reminder);
+            }
             return temp;
         }
         return new ArrayList<ReminderSchedule>();

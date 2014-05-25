@@ -108,6 +108,8 @@ public class ReminderListActivity extends Activity {
 
 
         new getReminders().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
+        for(ReminderSchedule view:toView)
+            System.out.println(view);
         /*
         try
         {
@@ -116,16 +118,19 @@ public class ReminderListActivity extends Activity {
             return;
         }
         */
-        ListView remList = (ListView) findViewById(R.id.listView);
+        //ListView remList = (ListView) findViewById(R.id.listView);
+        TextView simpleList = (TextView) findViewById(R.id.textView);
 
         if (toView == null)
             return;
 
         for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
-            TextView temp = new TextView(this);
+            String temp = simpleList.getText().toString();
+            simpleList.setText(temp + toView.get(i).toString());
+            //TextView temp = new TextView(this);
 
-            temp.setText(toView.get(i).toString());
-            remList.addView(temp);
+            //temp.setText(toView.get(i).toString());
+            //remList.addView(temp);
         }
 
     }
@@ -143,7 +148,7 @@ public class ReminderListActivity extends Activity {
     }
 
     public void refreshList() {
-        ListView remList = (ListView) findViewById(R.id.listView);
+        TextView textList = (TextView) findViewById(R.id.textView);
         //ArrayList<ReminderSchedule> toView;
 
         new getReminders().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
@@ -155,12 +160,12 @@ public class ReminderListActivity extends Activity {
             return;
         }
         */
-        remList.removeAllViews();
+        //remList.removeAllViews();
 
         for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
-            TextView temp = new TextView(this);
-            temp.setText(toView.get(i).toString());
-            remList.addView(temp);
+            //TextView temp = new TextView(this);
+            //temp.setText(toView.get(i).toString());
+            textList.setText(textList.getText().toString() + toView.get(i).toString());
         }
     }
 }

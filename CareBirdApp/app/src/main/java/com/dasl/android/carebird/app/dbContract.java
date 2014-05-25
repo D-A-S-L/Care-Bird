@@ -48,11 +48,11 @@ public final class dbContract {
          */
         public static final String TABLE_NAME = "Pedometer_Log";
         public static final String COLUMN_NAME_LOG_TIME = "log_time";
-        public static final String COLUMN_NAME_DURATION = "duration"; //i.e. month, week, year...
+        public static final String COLUMN_NAME_INTERVAL = "interval"; //i.e. month, week, year...
         public static final String COLUMN_NAME_STEPS_TAKEN = "steps_taken";
     }
     public static final String CREATE_PEDOMETER_TABLE = "CREATE TABLE IF NOT EXIST"+ pedometerTable.TABLE_NAME + "(" +
-            pedometerTable.COLUMN_NAME_DURATION + TEXT + COMMA +
+            pedometerTable.COLUMN_NAME_INTERVAL + TEXT + COMMA +
             pedometerTable.COLUMN_NAME_STEPS_TAKEN + INTEGER + COMMA +
             pedometerTable.COLUMN_NAME_LOG_TIME + " INTEGER DEFAULT CURRENT_TIMESTAMP," +
             pedometerTable._ID + " INTEGER PRIMARY KEY" + ");";
