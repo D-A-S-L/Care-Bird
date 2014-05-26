@@ -1,23 +1,38 @@
 package com.dasl.android.carebird.app;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Random;
 
 /**
  * Created by Alec on 5/21/2014.
  */
 public class ReminderListActivity extends Activity {
-    private final ArrayList<ReminderSchedule> toView = new ArrayList<ReminderSchedule>();
-    class getReminders extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
+    private AlarmManager keeperOfAlarms;
+    private ArrayList<ReminderSchedule> toView = new ArrayList<ReminderSchedule>();
+    private String itemSelected;
+    private PopupMenu deleteOpt;
+
+    private class ReminderGetter extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
         @Override
         protected ArrayList<ReminderSchedule> doInBackground(String... params) {
             User me = new User(params[0],params[1],"","");
@@ -45,17 +60,17 @@ public class ReminderListActivity extends Activity {
             //Context context = getApplicationContext();
             //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
             //Log.v("carebird", result);
-            for(ReminderSchedule result:results)
-                toView.add(result);
+            toView = results;
         }
     }
-       /*
-    class setReminders extends AsyncTask<ArrayList<ReminderSchedule>, Integer,String > {
+
+    private class ReminderAdder extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
         @Override
-        protected String doInBackground(ArrayList<ReminderSchedule>... params) {
+        protected ArrayList<ReminderSchedule> doInBackground(String... params) {
             User me = new User(params[0],params[1],"","");
             //com.dasl.android.carebird.app.Status response;
             ArrayList<ReminderSchedule> result = null;
+
             try {
 
                 //User computer = new User("computer","computer","computer","computer");
@@ -63,6 +78,7 @@ public class ReminderListActivity extends Activity {
                 //computer.setToken(Database.me.getToken());
                 //Database.addCareReceiver("okay");
 
+                ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(new ReminderSchedule(params[2]));
                 result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
 
                 //Database.addCareGiver("okay");
@@ -75,27 +91,89 @@ public class ReminderListActivity extends Activity {
         }
         @Override
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
-            //Context context = getApplicationContext();
-            //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-            //Log.v("carebird", result);
-            for(ReminderSchedule result:results)
-                toView.add(result);
+            toView = results;
         }
     }
-    */
+
+    private class ReminderDeleter extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
+        @Override
+        protected ArrayList<ReminderSchedule> doInBackground(String... params) {
+            User me = new User(params[0],params[1],"","");
+            //com.dasl.android.carebird.app.Status response;
+            ArrayList<ReminderSchedule> result = null;
+
+            try {
+
+                //User computer = new User("computer","computer","computer","computer");
+                //Database.login(computer);
+                //computer.setToken(Database.me.getToken());
+                //Database.addCareReceiver("okay");
+
+                ((GlobalApplication) getApplication()).getDatabase().removeReminderSchedule(new ReminderSchedule(params[2]));
+                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
+
+                //Database.addCareGiver("okay");
+
+                //result = response.getMessage();
+            }catch (IOException error){
+                //result = "failure in try catch";
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<ReminderSchedule> results) {
+            toView = results;
+        }
+    }
+
+    /*
+ class setReminders extends AsyncTask<ArrayList<ReminderSchedule>, Integer,String > {
+     @Override
+     protected String doInBackground(ArrayList<ReminderSchedule>... params) {
+         User me = new User(params[0],params[1],"","");
+         //com.dasl.android.carebird.app.Status response;
+         ArrayList<ReminderSchedule> result = null;
+         try {
+
+             //User computer = new User("computer","computer","computer","computer");
+             //Database.login(computer);
+             //computer.setToken(Database.me.getToken());
+             //Database.addCareReceiver("okay");
+
+             result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
+
+             //Database.addCareGiver("okay");
+
+             //result = response.getMessage();
+         }catch (IOException error){
+             //result = "failure in try catch";
+         }
+         return result;
+     }
+     @Override
+     protected void onPostExecute(ArrayList<ReminderSchedule> results) {
+         //Context context = getApplicationContext();
+         //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+         //Log.v("carebird", result);
+         for(ReminderSchedule result:results)
+             toView.add(result);
+     }
+ }
+ */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        keeperOfAlarms = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 
-        setContentView(R.layout.activity_reminder_list);
+        setContentView(R.layout.activity_reminder_list_cr);
 
-        ImageButton syncButton = (ImageButton) findViewById(R.id.sync_button);
+        Button syncButton = (Button) findViewById(R.id.sync_button);
 
         syncButton.setOnClickListener(new View.OnClickListener() {
-               public void onClick(View v) {
-                   refreshList();
+            public void onClick(View v) {
+                refreshList();
 
-               }
+            }
         });
 
         Button addButton = (Button) findViewById(R.id.add_button);
@@ -107,7 +185,9 @@ public class ReminderListActivity extends Activity {
         });
 
 
-        new getReminders().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
+        String a = Database.me.getUserName();
+        String b = Database.me.getPassword();
+        new ReminderGetter().execute(new String[]{a, b});
         /*
         try
         {
@@ -117,50 +197,159 @@ public class ReminderListActivity extends Activity {
         }
         */
         ListView remList = (ListView) findViewById(R.id.listView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+
+        deleteOpt = new PopupMenu(this, remList);
+        deleteOpt.getMenu().add("Delete Reminder");
+        deleteOpt.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                deleteReminder(itemSelected);
+
+                return false;
+            }
+        });
+
+        remList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> arg0, View v, int index, long arg3) {
+                itemSelected = ((ArrayAdapter<String>) ((ListView) findViewById(R.id.listView)).getAdapter()).getItem(index);
+                deleteOpt.show();
+
+                return true;
+            }
+        });
+
+        /*remList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                itemSelected = ((ArrayAdapter<String>) ((ListView) findViewById(R.id.listView)).getAdapter()).getItem(0);
+
+                return;
+            }
+        });*/
 
         if (toView == null)
             return;
 
         for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
-            TextView temp = new TextView(this);
+            String temp = toView.get(i).toString();
 
-            temp.setText(toView.get(i).toString());
-            remList.addView(temp);
+            adapter.add(temp);
+
+            //temp.setText(toView.get(i).toString());
+            //remList.addView(temp);
         }
+
+        remList.setAdapter(adapter);
 
     }
 
     public void createNewReminder() {
-        ReminderSchedule test = new ReminderSchedule(3, 30, "Fancy pill", 0);
+        Random rand = new Random();
 
-        try {
+        ReminderSchedule test = new ReminderSchedule(rand.nextInt(24), rand.nextInt(60), "Fancy pill", 0);
+        System.out.println("creating " + test.toString());
+
+        /*try {
             ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(test);
         } catch (IOException e) {
             return;
-        }
+        }*/
+
+        ///* NECFORDATABASE
+        new ReminderAdder().execute(new String[] {Database.me.getUserName(), Database.me.getPassword(), test.toString()});
+         //*/
+
+        // NOTNEC
+        //toView.add(new ReminderSchedule(test.toString()));
+
+        refreshList();
+    }
+
+    public void deleteReminder(String reminderString) {
+        ///* NECFORDATABASE
+        new ReminderDeleter().execute(new String[] {Database.me.getUserName(), Database.me.getPassword(), reminderString});
+        //*/
+
+        // NOTNEC
+        //toView.remove(new ReminderSchedule(reminderString));
 
         refreshList();
     }
 
     public void refreshList() {
+        System.out.println("Refreshing list");
         ListView remList = (ListView) findViewById(R.id.listView);
-        //ArrayList<ReminderSchedule> toView;
 
-        new getReminders().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
-        /*
-        try {
-            toView = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
+        ///* NECFORDATABASE
+        new ReminderGetter().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
+        //*/
 
-        } catch (IOException e) {
-            return;
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) remList.getAdapter();
+
+        // removing items that are no longer in the database's list
+        for (int i = adapter.getCount() - 1; i >= 0; i--) {
+            ReminderSchedule temp = new ReminderSchedule(adapter.getItem(i));
+
+            if (!toView.contains(temp)) {
+                removeFromAlarms(temp.getKey());
+
+                adapter.remove(adapter.getItem(i));
+            }
         }
-        */
-        remList.removeAllViews();
 
+        // adding items that have been added to database's list
         for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
-            TextView temp = new TextView(this);
-            temp.setText(toView.get(i).toString());
-            remList.addView(temp);
+            if (adapter.getPosition(toView.get(i).toString()) < 0) {
+                addToAlarms(toView.get(i));
+
+                adapter.add(toView.get(i).toString());
+            }
+
+            //String temp = toView.get(i).toString();
+
+            //adapter.add(temp);
+            //temp.setText(toView.get(i).toString());
+            //remList.addView(temp);
         }
+
+        adapter.notifyDataSetChanged();
+
+        //remList.setAdapter(adapter);
+        //TextView isThisWorking = (TextView) findViewById(R.id.toPopulate);
+
+        for (int i = 0; i < toView.size(); i++)
+            System.out.println("Contents: " + toView.get(i).toString());
+    }
+
+    public void addToAlarms(ReminderSchedule schedule) {
+        Intent toReminder = new Intent(this, ReminderActivity.class);
+        toReminder.putExtra("REMINDER_NAME", schedule.getName());
+        toReminder.putExtra("YES_NO", schedule.getMessage());
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(System.currentTimeMillis());
+        cal.set(Calendar.HOUR_OF_DAY, schedule.getHour());
+        cal.set(Calendar.MINUTE, schedule.getMinute());
+
+        PendingIntent temp = PendingIntent.getActivity(this, schedule.getKey(),
+                toReminder, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (schedule.getInterval() != 0) {
+            keeperOfAlarms.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                    schedule.getInterval(), temp);
+        } else {
+            keeperOfAlarms.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), temp);
+        }
+
+
+    }
+
+    public void removeFromAlarms(int reminderKey) {
+        Intent toReminder = new Intent(this, ReminderActivity.class);
+
+        PendingIntent temp = PendingIntent.getActivity(this, reminderKey, toReminder,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        keeperOfAlarms.cancel(temp);
     }
 }
