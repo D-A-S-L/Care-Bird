@@ -151,12 +151,12 @@ public class Database {
      * assumes the reminder is intended for the passed User object (a careReceiver)
      * When it speaks with the webserver it will also use the currently logged in user (a careGiver)
      * So that the webServer can check the Permissions*/
-    public static Status addReminderSchedule(ReminderSchedule reminder, User user)throws IOException{
+    public static Status addReminderSchedule(ReminderSchedule reminder, User careReceiver)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/addReminderSchedule.php");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
-        urlParameters.add(new BasicNameValuePair("CareReceiverUserName", user.getUserName()));
+        urlParameters.add(new BasicNameValuePair("CareReceiverUserName", careReceiver.getUserName()));
         urlParameters.add(new BasicNameValuePair("name", String.valueOf(reminder.getName()) ));
         urlParameters.add(new BasicNameValuePair("minute", String.valueOf(reminder.getMinute()) ));
         urlParameters.add(new BasicNameValuePair("hour", String.valueOf(reminder.getHour()) ));
@@ -270,7 +270,7 @@ public class Database {
         HttpPost post = new HttpPost(BASE_URL + "/removeReminderSchedule.php");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
-        urlParameters.add(new BasicNameValuePair("CareReceiverUserName", user.getUserName()));
+        urlParameters.add(new BasicNameValuePair("CareReceiverUserName", careReceiver.getUserName()));
         urlParameters.add(new BasicNameValuePair("name", String.valueOf(reminder.getName()) ));
         urlParameters.add(new BasicNameValuePair("minute", String.valueOf(reminder.getMinute()) ));
         urlParameters.add(new BasicNameValuePair("hour", String.valueOf(reminder.getHour()) ));
