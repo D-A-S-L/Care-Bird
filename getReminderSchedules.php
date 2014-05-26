@@ -60,7 +60,7 @@ if(!$loggedIn){
 				$response=pg_query($conn,$query);
 				$resArray = pg_fetch_row($response);
 			$crUName=$resArray[0];
-			$legit = (!$response && ($crUName == $CRName));
+			$legit = ($crUName == $CRName);
 		}	
 		if(!$himself && !$legit){
 			$status=203;
