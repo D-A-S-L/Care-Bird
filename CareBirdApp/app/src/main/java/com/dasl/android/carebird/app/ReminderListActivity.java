@@ -292,6 +292,7 @@ public class ReminderListActivity extends Activity {
 
             if (!toView.contains(temp)) {
                 removeFromAlarms(temp.getKey());
+                
 
                 adapter.remove(adapter.getItem(i));
             }
