@@ -25,6 +25,7 @@ insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
 insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
+insert into users values ('Ted', 'Bear', 'teddybear', 'teddybear');
 /*
 insert into users values ('Apache', 'http://stackoverflow.com/questions/9893924/error-converting-a-http-post-response-to-json', 'http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/', 'brian');
 */
@@ -41,6 +42,9 @@ insert into CanCareFor values('bsaia','dnscianni');
 insert into CanCareFor values('ashay','dnscianni');
 insert into CanCareFor values('ashay','asandoval');
 insert into CanCareFor values('cdmurphy','asandoval');
+insert into CanCareFor values('cdmurphy','teddybear');
+insert into CanCareFor values('bsaia','teddybear');
+insert into CanCareFor values('ashay','teddybear');
 /*			    
 			select COUNT(*) as CanCareFor from CanCareFor
 				where  CRID in (select UName as CRID from SessionTokens where SessionToken='ptoken')
@@ -95,36 +99,6 @@ create table ReminderSchedules
 , primary key (UName, name, minute, hour,interval)
 );
 
-				insert into ReminderSchedules values
-				( 'cdmurphy'
-				, 'rName', '0', '0', '1'
-				);
-				insert into ReminderSchedules values
-				( 'cdmurphy'
-				, 'Hey Remind Yourself', '1', '1', '2'
-				);
-				insert into ReminderSchedules values
-				( 'cdmurphy'
-				, 'Do the pills!', '2', '4', '7'
-				);
-				insert into ReminderSchedules values
-				( 'dnscianni'
-				, 'rName', '10', '110', '11111'
-				);
-				insert into ReminderSchedules values
-				( 'bsaia'
-				, 'rName', '1', '11', '001000'
-				);
-	/*
-			        delete from ReminderSchedules
-			        where UName='cdmurphy'
-				  and name='Fancy+pill'
-				  and minute='26'
-				  and hour='5'
-				  and interval='0'
-	*/
-
-
 
 
 create table PillRecord
@@ -136,6 +110,7 @@ create table PillRecord
 );
 insert into PillRecord values ('cdmurphy','Mon May 12 00:31:00 GMT 2014', 'Mon May 12 00:36:00 GMT 2014', 'Take the Blue pill','Red Pill Taken');
 insert into PillRecord values ('dnscianni','Mon May 12 00:32:00 GMT 2014','Mon May 12 00:37:00 GMT 2014',  'Take the Red pill','Blue Pill Taken');
+
 
 ";
 $result = pg_query($conn, $sql);

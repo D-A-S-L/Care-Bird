@@ -121,36 +121,6 @@ create table ReminderSchedules
 , primary key (UName, name, minute, hour,interval)
 );
 
-				insert into ReminderSchedules values
-				( 'cdmurphy'
-				, 'rName', '0', '0', '1'
-				);
-				insert into ReminderSchedules values
-				( 'cdmurphy'
-				, 'Hey Remind Yourself', '1', '1', '2'
-				);
-				insert into ReminderSchedules values
-				( 'cdmurphy'
-				, 'Do the pills!', '2', '4', '7'
-				);
-				insert into ReminderSchedules values
-				( 'dnscianni'
-				, 'rName', '10', '110', '11111'
-				);
-				insert into ReminderSchedules values
-				( 'bsaia'
-				, 'rName', '1', '11', '001000'
-				);
-	/*
-			        delete from ReminderSchedules
-			        where UName='cdmurphy'
-				  and name='Fancy+pill'
-				  and minute='26'
-				  and hour='5'
-				  and interval='0'
-	*/
-
-
 
 
 create table PillRecord
