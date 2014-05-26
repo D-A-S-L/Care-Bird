@@ -54,8 +54,8 @@ if(!$loggedIn){
 		if(!$himself){
 			$query="		
 					select CRID from CanCareFor
-						where  CRID ='$CRName'
-						and CGID in (select UName as CGID from SessionTokens where SessionToken='$sToken');
+						where  CRID in (select UName as CRID from SessionTokens where SessionToken='$sToken')
+						and CGID = '$CRName'
 			";
 				$response=pg_query($conn,$query);
 				$resArray = pg_fetch_row($response);
