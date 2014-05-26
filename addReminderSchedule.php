@@ -50,23 +50,22 @@ if(!$loggedIn){
 		$conn=connect();
 		// Find out if the care giver is the same person as the care receiver
 			$query="		
-				select UName from SessionTokens where SessionToken='$cgToken');
+				select UName from SessionTokens where SessionToken='$cgToken'
 			";
 			$response=pg_query($conn,$query);
 			$resArray = pg_fetch_row($response);
-		
 		$himself = ($crUName==$resArray[0]);
 		// Find out, if the care giver has permission over the care receiver 
 		$legit=false;
 		if(!$himself){
 			$query="		
 					select CRID from CanCareFor
-						where  CRID=$crUName and CGID in (select UName as CGID from SessionTokens where SessionToken='$cgToken');
+						where  CRID='$crUName' and CGID in (select UName as CGID from SessionTokens where SessionToken='$cgToken');
 			";
 						/* A result means that the care giver has correct permissions */
 			$response=pg_query($conn,$query);
 			$resArray = pg_fetch_row($response);
-			
+			echo $resArray[0];
 			$legit = ($crUName==$resArray[0]);
 		}
 
@@ -87,7 +86,7 @@ if(!$loggedIn){
 			";
 		$response=pg_query($conn,$query);
 		$resArray = pg_fetch_row($response);
-		
+		print_r($resArray);
 					
 		$status=202;
 		$statusMessage="ReminderSchedule added";

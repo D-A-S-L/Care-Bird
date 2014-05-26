@@ -24,6 +24,7 @@ select * from QRTokens;
 delete from QRTokens;
 select * from PillRecord;
 select * from SessionTokens;
+delete from SessionTokens;
 select * from ReminderSchedules;
 delete from ReminderSchedules;
 
