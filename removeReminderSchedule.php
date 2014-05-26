@@ -76,11 +76,13 @@ if(!$loggedIn){
 			$data=false;
 		}else{
 			// CareGiver is legit, add the ReminderSchedule
-			$query="		
-				insert into ReminderSchedules values
-				( '$crUName'
-				, '$name', '$minute', '$hour', '$interval'
-				);
+			$query="
+				delete from ReminderSchedules
+					where UName='$crUName'
+						and name='$name'
+						and minute='$minute'
+						and hour='$hour'
+						and interval='$interval'
 			";
 		$response=pg_query($conn,$query);
 		$resArray = pg_fetch_row($response);

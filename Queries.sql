@@ -47,6 +47,7 @@ insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
 insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
+insert into users values ('Ted', 'Bear', 'teddybear', 'teddybear');
 /*
 insert into users values ('Apache', 'http://stackoverflow.com/questions/9893924/error-converting-a-http-post-response-to-json', 'http://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/', 'brian');
 */
@@ -63,6 +64,9 @@ insert into CanCareFor values('bsaia','dnscianni');
 insert into CanCareFor values('ashay','dnscianni');
 insert into CanCareFor values('ashay','asandoval');
 insert into CanCareFor values('cdmurphy','asandoval');
+insert into CanCareFor values('cdmurphy','teddybear');
+insert into CanCareFor values('bsaia','teddybear');
+insert into CanCareFor values('ashay','teddybear');
 /*			    
 			select COUNT(*) as CanCareFor from CanCareFor
 				where  CRID in (select UName as CRID from SessionTokens where SessionToken='ptoken')
@@ -137,6 +141,14 @@ create table ReminderSchedules
 				( 'bsaia'
 				, 'rName', '1', '11', '001000'
 				);
+	/*
+			        delete from ReminderSchedules
+			        where UName='cdmurphy'
+				  and name='Fancy+pill'
+				  and minute='26'
+				  and hour='5'
+				  and interval='0'
+	*/
 
 
 
