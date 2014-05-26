@@ -17,7 +17,7 @@ REVOKE ALL ON DATABASE d86fo56ie0kqjt FROM public;
 				where  CRID='dnscianni' and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey');
 
 select * from Users;
-delete from Users where FName = ''
+delete from Users 
 select * from CanCareFor;
 delete from CanCareFor;
 select * from QRTokens;
@@ -43,8 +43,11 @@ create table Users
 , Pass  varchar(15) not null CHECK (Pass ~ '^[0-9a-zA-Z]+$')   /* All fields made large to make notes easility, will be changed later */
 , PhoneNum  varchar(15) CHECK (PhoneNum ~ '^[0-9]+$')
 );
+
+insert into users values ('Doctor', 'Guy', 'docguy','docguy','5555555555');
+insert into users values ('Patient', 'Guy', 'patguy','patguy','4444444444');
 /*  
-insert into users values ('Chris', 'Murphy', 'cdmurphy','chris');
+insert into users values ('Chris', 'Murphy', 'cdmurphy','chris','6263754326');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
@@ -61,6 +64,9 @@ create table CanCareFor
 ,foreign key (CGID) references Users(UName) on delete cascade
 ,primary key (CRID, CGID)
 );
+
+
+insert into CanCareFor values('docguy','patguy');
 /*
 insert into CanCareFor values('cdmurphy','dnscianni');
 insert into CanCareFor values('bsaia','dnscianni');

@@ -73,12 +73,16 @@ if(!$loggedIn){
 					select name,hour,minute,interval from ReminderSchedules where UName='$CRName';
 			";
 			$response=pg_query($conn,$query);
-			$resArray = pg_fetch_all($response);
 			
-						
-			$status=202;
-			$statusMessage="ReminderSchedule added";
-			$data=$resArray;
+			if(pg_affected_rows($response)<1){
+				$status=203;
+				$statusMessage="No records found for that User";
+				$data=$response;
+			}else{
+				$status=202;
+				$statusMessage="Records found";
+				$data=true;
+			}
 		}
 	}
 }

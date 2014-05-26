@@ -38,17 +38,17 @@ if(!$loggedIn){
 			where UName in (select UName from SessionTokens where SessionToken='$SessionToken');
 		";
 		$response=pg_query($conn,$query);
-		pg_close ($conn);
-		if(!pg_affected_rows($response)){
+		if(pg_affected_rows($response)<1){
 			$status=203;
 			$statusMessage="An error occured: Possibly record already exists";
 			$data=$response;
 		}else{
 			$status=202;
-			$statusMessage="The Query was a success. Either nothing was added, or a new QRToken was";
+			$statusMessage="The Query was a success. New QRToken added";
 			$data=true;
 		}
 	}
 }
+pg_close ($conn);
 echo deliver_response($status, $statusMessage,$data);
 ?>

@@ -25,11 +25,9 @@ if(!$loggedIn){
 				(select CGID as UName from CanCareFor where CRID in 
 					(select UName as CRID from SessionTokens where SessionToken='$SessionToken'));
 		";
-		$response=pg_query($conn,$query);
-
-		pg_close ($conn);
-		if(!$response){
-			$status=400;
+		$response = pg_query($conn,$query);
+		if(pg_num_rows($response)<1){
+			$status=203;
 			$statusMessage="No Records found for that user";
 			$data=false;
 		}else{
@@ -38,5 +36,7 @@ if(!$loggedIn){
 			$data=pg_fetch_all($response);
 		}
 	}
+
+pg_close ($conn);
 echo deliver_response($status, $statusMessage,$data);
 ?>

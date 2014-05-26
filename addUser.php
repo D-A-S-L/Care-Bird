@@ -33,21 +33,15 @@ else{
 			 values ('$fname','$lname','$user','$pass',$phone);";
 	$response=pg_query($conn,$query);
 	
-	$query="select * from Users
-			 where FName='$fname'
-			 	and LName='$lname'
-			 	and UName='$user'
-			 	and Pass='$pass'
-			 	and PhoneNum='$pass';";
-	$response=pg_query($conn,$query);
+	$effectedRows=pg_affected_rows($response);
 	
-	if(!$response){
+	if($effectedRows<1){
 		$status=406;
-		$statusMessage="An error occured: Possibly record already exists";
+		$statusMessage="An error occured: Possibly record already exists or bad input";
 		$data=false;
 	}else{
 		$status=202;
-		$statusMessage="The Query was a success. New User added.";
+		$statusMessage="New User added.";
 		$data=true;
 	}
 }

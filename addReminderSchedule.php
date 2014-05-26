@@ -82,13 +82,17 @@ if(!$loggedIn){
 				, '$name', '$minute', '$hour', '$interval'
 				);
 			";
-		$response=pg_query($conn,$query);
-		$resArray = pg_fetch_row($response);
-		print_r($resArray);
-					
-		$status=202;
-		$statusMessage="ReminderSchedule added";
-		$data=true;
+			$response=pg_query($conn,$query);
+			
+			if(pg_affected_rows($response)<1){
+				$status=203;
+				$statusMessage="An error occured: Possibly record already exists";
+				$data=$response;
+			}else{
+				$status=202;
+				$statusMessage="ReminderSchedule added";
+				$data=true;
+			}
 		}
 	}
 }
