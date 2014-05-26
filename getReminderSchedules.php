@@ -59,7 +59,7 @@ if(!$loggedIn){
 			";
 				$response=pg_query($conn,$query);
 				$resArray = pg_fetch_row($response);
-			$legit = ($crUName == $resArray[0]);
+			$legit = ($CRName == $resArray[0]);
 		}	
 		if(!$himself && !$legit){
 			$status=203;
