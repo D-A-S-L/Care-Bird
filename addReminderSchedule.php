@@ -32,7 +32,7 @@ if(!$loggedIn){
 	$data = false;
 }else{
 	// Valid Session Token but no Permission Token Provided...
-	if(!($_POST["CareGiverSessionToken"]
+	if(!($_POST["SessionToken"]
 	 && $_POST["CareReceiverUserName"]
 	  && $_POST["name"] && $_POST["hour"] && $_POST["minute"] && $_POST["interval"]))
 	{		
@@ -41,7 +41,7 @@ if(!$loggedIn){
 	}
 	// Valid Session Token Provided.
 	else{	
-		$cgToken=$_POST["CareGiverSessionToken"];
+		$cgToken=$_POST["SessionToken"];
 		$crUName=$_POST["CareReceiverUserName"];
 		$name=$_POST["name"];
 		$hour=$_POST["hour"];

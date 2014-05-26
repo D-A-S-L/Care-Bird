@@ -76,7 +76,7 @@ function logIn(){
 function loggedIn(){
 	$conn = connect();
 	$status=400;
-	$statusMessage="Default Message";
+	$statusMessage="To be logged in, must use SessionToken in POST";
 	$data=null;
 		if($_POST["SessionToken"])
 		{		
