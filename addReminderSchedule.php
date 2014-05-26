@@ -33,68 +33,66 @@ if(!$loggedIn){
 }else{
 	// Valid Session Token but no Permission Token Provided...
 	if(!($_POST["CareGiverSessionToken"]
-	 && $_POST["CareReceiverSessionToken"]
+	 && $_POST["CareReceiverUserName"]
 	  && $_POST["name"] && $_POST["hour"] && $_POST["minute"] && $_POST["interval"]))
 	{		
 		$status=400;
 		$data=false;
 	}
-	// Valid Session Token, and a PermissionToken Provided.
-	// For now, assume the permission token is correct
-	// And assume that there isn't already a token for that user
-	// Multiple Permission Tokens are allowed for a user because they are short lived and they may have more than 1 caregiver
+	// Valid Session Token Provided.
 	else{	
 		$cgToken=$_POST["CareGiverSessionToken"];
-		$crToken=$_POST["CareReceiverSessionToken"];
+		$crUName=$_POST["CareReceiverUserName"];
 		$name=$_POST["name"];
 		$hour=$_POST["hour"];
 		$minute=$_POST["minute"];
 		$interval=$_POST["interval"];
 		$conn=connect();
-		// Find out if the CareGiver can actually care for the CareReceiver
-		// If so, return the UName of the CareReceiver so we can add reminders for him
-		$himself = ($cgToken==$crToken);
-		$crUName="";
+		// Find out if the care giver is the same person as the care receiver
+			$query="		
+				select UName from SessionTokens where SessionToken='$cgToken');
+			";
+			$response=pg_query($conn,$query);
+			$resArray = pg_fetch_row($response);
+		
+		$himself = ($crUName==$resArray[0]);
+		// Find out, if the care giver has permission over the care receiver 
 		$legit=false;
 		if(!$himself){
 			$query="		
-					select CRID as CanCareFor from CanCareFor
-						where  CRID in (select UName as CRID from SessionTokens where SessionToken='$crToken')
-						and CGID in (select UName as CGID from SessionTokens where SessionToken='$cgToken');
+					select CRID from CanCareFor
+						where  CRID=$crUName and CGID in (select UName as CGID from SessionTokens where SessionToken='$cgToken');
 			";
-			$response=pg_query($conn,$query);
-			$resArray = pg_fetch_row($response);
-			$crUName=$resArray[0];
-			$legit = (!$response || !$crUName);
-		}
-		else{
-			$query="		
-					select UName from SessionTokens where SessionToken='$crToken';
-			";
-			$response=pg_query($conn,$query);
-			$resArray = pg_fetch_row($response);
-			$crUName=$resArray[0];			
-			}
-			if(!$himself && !$legit){
-				$status=203;
-				$statusMessage="CareGiver does not have the priveledge to care";
-				$data=false;
-			}else{
-				// CareGiver is legit, add the ReminderSchedule
-				$query="		
-					insert into ReminderSchedules values
-					( '$crUName'
-					, '$name', '$minute', '$hour', '$interval'
-					);
-				";
+						/* A result means that the care giver has correct permissions */
 			$response=pg_query($conn,$query);
 			$resArray = pg_fetch_row($response);
 			
-						
-			$status=202;
-			$statusMessage="ReminderSchedule added";
-			$data=true;
+			$legit = ($crUName==$resArray[0]);
 		}
+
+			// at this point the care giver is either the same person as the care receiver,
+			// or the care giver has permission over the care receiver	
+
+		if(!$himself && !$legit){
+			$status=203;
+			$statusMessage="CareGiver does not have the priveledge to care";
+			$data=false;
+		}else{
+			// CareGiver is legit, add the ReminderSchedule
+			$query="		
+				insert into ReminderSchedules values
+				( '$crUName'
+				, '$name', '$minute', '$hour', '$interval'
+				);
+			";
+		$response=pg_query($conn,$query);
+		$resArray = pg_fetch_row($response);
+		
+					
+		$status=202;
+		$statusMessage="ReminderSchedule added";
+		$data=true;
+	}
 	}
 }
 

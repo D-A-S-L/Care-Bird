@@ -12,6 +12,10 @@ CREATE DATABASE d86fo56ie0kqjt
 GRANT ALL ON DATABASE d86fo56ie0kqjt TO yndbtfxmnwkcgi;
 REVOKE ALL ON DATABASE d86fo56ie0kqjt FROM public;
 
+
+			select CRID as CanCareFor from CanCareFor
+				where  CRID='dnscianni' and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey');
+
 select * from Users;
 delete from Users where FName = ''
 select * from CanCareFor;
@@ -117,12 +121,20 @@ create table ReminderSchedules
 				, 'rName', '0', '0', '1'
 				);
 				insert into ReminderSchedules values
+				( 'cdmurphy'
+				, 'Hey Remind Yourself', '1', '1', '2'
+				);
+				insert into ReminderSchedules values
+				( 'cdmurphy'
+				, 'Do the pills!', '2', '4', '7'
+				);
+				insert into ReminderSchedules values
 				( 'dnscianni'
 				, 'rName', '10', '110', '11111'
 				);
 				insert into ReminderSchedules values
 				( 'bsaia'
-				, 'rName', '1', '11', '00000'
+				, 'rName', '1', '11', '001000'
 				);
 
 
