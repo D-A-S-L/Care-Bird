@@ -81,7 +81,7 @@ if(!$loggedIn){
 			}else{
 				$status=202;
 				$statusMessage="Records found";
-				$data=$response;
+				$data=pg_fetch_all($response);
 			}
 		}
 	}
