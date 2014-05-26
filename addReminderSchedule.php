@@ -32,9 +32,7 @@ if(!$loggedIn){
 	$data = false;
 }else{
 	// Valid Session Token but no Permission Token Provided...
-	if(!($_POST["SessionToken"]
-	 && $_POST["CareReceiverUserName"]
-	  && $_POST["name"] && $_POST["hour"] && $_POST["minute"] && $_POST["interval"]))
+	if(!(isset($_POST["SessionToken"])	 && isset($_POST["CareReceiverUserName"])  && isset($_POST["name"]) && isset($_POST["hour"]) && isset($_POST["minute"]) && isset($_POST["interval"])))
 	{		
 		$status=400;
 		$data=false;
