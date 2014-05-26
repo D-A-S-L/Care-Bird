@@ -155,12 +155,12 @@ public class Database {
         HttpPost post = new HttpPost(BASE_URL + "/addReminderSchedule.php");
 
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        urlParameters.add(new BasicNameValuePair("CareGiverSessionToken", me.getToken()));
-        urlParameters.add(new BasicNameValuePair("CareReceiverSessionToken", user.getToken()));
+        urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
+        urlParameters.add(new BasicNameValuePair("CareReceiverUserName", user.getUserName()));
         urlParameters.add(new BasicNameValuePair("name", String.valueOf(reminder.getName()) ));
         urlParameters.add(new BasicNameValuePair("minute", String.valueOf(reminder.getMinute()) ));
         urlParameters.add(new BasicNameValuePair("hour", String.valueOf(reminder.getHour()) ));
-        //urlParameters.add(new BasicNameValuePair("interval", String.valueOf(reminder.getInterval()) ));
+        urlParameters.add(new BasicNameValuePair("interval", String.valueOf(reminder.getInterval()) ));
 
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
