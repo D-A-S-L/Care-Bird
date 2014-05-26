@@ -77,11 +77,11 @@ if(!$loggedIn){
 			if(pg_affected_rows($response)<1){
 				$status=203;
 				$statusMessage="No records found for that User";
-				$data=$response;
+				$data=false;
 			}else{
 				$status=202;
 				$statusMessage="Records found";
-				$data=true;
+				$data=$response;
 			}
 		}
 	}
