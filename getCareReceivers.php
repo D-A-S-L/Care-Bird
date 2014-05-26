@@ -20,7 +20,7 @@ if(!$loggedIn){
 		$SessionToken=$_POST["SessionToken"];
 		$conn=connect();
 		$query="
-			select FName,LName,UName, null as pass from Users
+			select FName,LName,UName, null as pass, PhoneNum from Users
 			where UName in 
 				(select CRID as UName from CanCareFor where CGID in 
 					(select UName as CGID from SessionTokens where SessionToken='$SessionToken'));
