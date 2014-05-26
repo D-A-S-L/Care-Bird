@@ -34,7 +34,7 @@ if(!$loggedIn){
 		
 		$query="
 		insert into CanCareFor
-			select receiver.CRID, giver.CGID
+			select giver.CGID, receiver.CRID
 			from (select UName as CRID from QRTokens where Token='$PermissionToken') as receiver
 			    ,(select UName as CGID from SessionTokens where SessionToken='$SessionToken') as giver
 		";
