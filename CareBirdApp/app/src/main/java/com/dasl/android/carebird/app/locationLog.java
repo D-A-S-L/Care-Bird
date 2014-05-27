@@ -14,5 +14,11 @@ public class locationLog extends Log {
         // no arg constructor for json serialization
     }
 
-    locationLog(int logTime, int originalAlertTime, )
+    locationLog(int logTime, int originalAlertTime, int distanceFromHome, long latitude, long longitude){
+        super(logTime, -1, -1);
+        this.originalAlertTime = originalAlertTime;
+        this.distanceFromHome = distanceFromHome;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 }
