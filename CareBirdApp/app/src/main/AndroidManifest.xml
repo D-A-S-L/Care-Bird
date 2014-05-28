@@ -49,6 +49,11 @@
             android:label="Care Bird" >
         </activity>
         <activity
+        android:name="com.dasl.android.carebird.app.ReminderListActivityCG"
+        android:screenOrientation="portrait"
+        android:label="Care Bird" >
+    </activity>
+        <activity
             android:name="com.dasl.android.carebird.app.ReminderActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
