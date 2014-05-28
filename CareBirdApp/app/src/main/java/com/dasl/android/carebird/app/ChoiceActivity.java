@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,9 @@ public class ChoiceActivity extends Activity {
 
 
         int firstboot = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getInt("firstboot", 0);
+
+        TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
+        getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("myPhoneNumber", tMgr.getLine1Number()).commit();
 
         if (firstboot == 0){
             // 1) Launch the authentication activity
@@ -75,43 +79,9 @@ public class ChoiceActivity extends Activity {
                 Intent myIntent = new Intent(this, MainCGActivity.class);
                 startActivityForResult(myIntent, 0);
             } else {
-                Intent myIntent = new Intent(this, MainActivity.class);
+                Intent myIntent = new Intent(this, MainMenuActivity.class);
                 startActivityForResult(myIntent, 0);
             }
         }
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            Intent i = new Intent(this, SettingsActivity.class);
-            startActivity(i);
-            return true;
-        }
-        else if(id == R.id.action_qr_code) {
-            Intent i = new Intent(this, QRCodeActivity.class);
-            startActivity(i);
-            return true;
-        }
-        else if(id == R.id.action_contacts) {
-            Intent i = new Intent(this, ContactActivity.class);
-            startActivity(i);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

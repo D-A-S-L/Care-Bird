@@ -16,8 +16,8 @@
     tools:context="com.dasl.android.carebird.app.LoginCRActivity">
 
     <TextView
-        android:id="@+id/CareGiver1"
-        android:text="Care Giver 1"
+        android:id="@+id/CareReceiver1"
+        android:text="Care Receiver 1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"

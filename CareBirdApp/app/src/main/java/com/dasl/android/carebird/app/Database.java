@@ -13,6 +13,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import android.util.Log;
 
 /**
  * Created by Brian on 5/17/2014.
@@ -126,6 +127,7 @@ public class Database {
         urlParameters.add(new BasicNameValuePair("Pass", newUser.getPassword()));
         urlParameters.add(new BasicNameValuePair("FName", newUser.getFirstName()));
         urlParameters.add(new BasicNameValuePair("LName", newUser.getLastName()));
+        urlParameters.add(new BasicNameValuePair("PhoneNum", newUser.getPhoneNum()));
 
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
@@ -150,20 +152,18 @@ public class Database {
      * assumes the reminder is intended for the passed User object (a careReceiver)
      * When it speaks with the webserver it will also use the currently logged in user (a careGiver)
      * So that the webServer can check the Permissions*/
-    public static Status addReminderSchedule(ReminderSchedule reminder, User user)throws IOException{
+    public static Status addReminderSchedule(ReminderSchedule reminder, User careReceiver)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/addReminderSchedule.php");
-
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        urlParameters.add(new BasicNameValuePair("CareGiverSessionToken", me.getToken()));
-        urlParameters.add(new BasicNameValuePair("CareReceiverSessionToken", user.getToken()));
+        urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
+        urlParameters.add(new BasicNameValuePair("CareReceiverUserName", careReceiver.getUserName()));
         urlParameters.add(new BasicNameValuePair("name", String.valueOf(reminder.getName()) ));
         urlParameters.add(new BasicNameValuePair("minute", String.valueOf(reminder.getMinute()) ));
         urlParameters.add(new BasicNameValuePair("hour", String.valueOf(reminder.getHour()) ));
-        //urlParameters.add(new BasicNameValuePair("interval", String.valueOf(reminder.getInterval()) ));
+        urlParameters.add(new BasicNameValuePair("interval", String.valueOf(reminder.getInterval()) ));
 
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
-
         HttpResponse response = client.execute(post);
 
         //responseString is either "true" or "false"
@@ -194,6 +194,7 @@ public class Database {
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        Log.v("Database.getReminderSchdeules responseString: ",responseString);
         if (!responseString.equals("false")) {
             ReminderSchedule[] reminders = new Gson().fromJson(responseString, ReminderSchedule[].class);
             //new Gson().fromJson(responseString, ReminderSchedule[].class);
@@ -201,6 +202,7 @@ public class Database {
             ArrayList<ReminderSchedule> temp = new ArrayList<ReminderSchedule>();
             for(ReminderSchedule reminder:reminders) {
                 temp.add(reminder);
+                Log.v("Database.getReminderSchedules reminder: ",reminder.toString());
             }
             return temp;
         }
@@ -249,9 +251,17 @@ public class Database {
 
         // This string needs to be converted with gson into an ArrayList<ReminderSchedules>
         String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-        if(responseString != "false") {
-            return new Gson().fromJson(responseString
-                    , new TypeToken<ArrayList<User>>() {}.getType());
+        Log.v("Database.getCareReceivers response string: ",responseString);
+        if(!responseString.equals("false")) {
+
+            User[] users = new Gson().fromJson(responseString, User[].class);
+
+            ArrayList<User> temp = new ArrayList<User>();
+            for (User u : users) {
+                Log.v("Database.getCareReceivers user: ",u.getUserName());
+                temp.add(u);
+            }
+            return temp;
         }
         return new ArrayList<User>();
     }
@@ -269,21 +279,20 @@ public class Database {
     /** This is the same concept as addReminderSchedule, only it will remove the ReminderSchedule */
     public static Status removeReminderSchedule(ReminderSchedule reminder, User careReceiver)throws IOException{
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(BASE_URL + "/addCareReceiver.php");
-
+        HttpPost post = new HttpPost(BASE_URL + "/removeReminderSchedule.php");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
-        urlParameters.add(new BasicNameValuePair("CRName", careReceiver.getUserName()));
-        urlParameters.add(new BasicNameValuePair("name", String.valueOf(reminder.getName())));
+        urlParameters.add(new BasicNameValuePair("CareReceiverUserName", careReceiver.getUserName()));
+        urlParameters.add(new BasicNameValuePair("name", String.valueOf(reminder.getName()) ));
         urlParameters.add(new BasicNameValuePair("minute", String.valueOf(reminder.getMinute()) ));
         urlParameters.add(new BasicNameValuePair("hour", String.valueOf(reminder.getHour()) ));
-        //urlParameters.add(new BasicNameValuePair("interval", String.valueOf(reminder.getInterval()) ));
+        urlParameters.add(new BasicNameValuePair("interval", String.valueOf(reminder.getInterval()) ));
 
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
-
         HttpResponse response = client.execute(post);
 
-        String jsonResponseString = EntityUtils.toString(response.getEntity(),"UTF-8");
+        //responseString is either "true" or "false"
+        String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
 
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }

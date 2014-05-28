@@ -4,41 +4,46 @@ package com.dasl.android.carebird.app;
  * Created by Brian on 5/20/2014.
  */
 public class User {
-    private String UName;
+    private String uname;
     private String pass;
-    private String FName;
-    private String LName;
+    private String fname;
+    private String lname;
+    private String phonenum;
     private transient  String token = "";
 
     public User(){
         //no argument constructor, required for the Gson serializer
     }
-    public User(String userName, String password, String firstName, String lastName){
-        this.UName = userName;
+    public User(String userName, String password, String firstName, String lastName, String PhoneNum){
+        this.uname = userName;
         this.pass = password;
-        this.FName = firstName;
-        this.LName = lastName;
+        this.fname = firstName;
+        this.lname = lastName;
+        this.phonenum = PhoneNum;
     }
 
     public void setToken(String token){
         this.token = token;
     }
     public String getUserName(){
-        return this.UName;
+        return this.uname;
     }
     public String getPassword(){
         return this.pass;
     }
     public String getFirstName(){
-        return this.FName;
+        return this.fname;
     }
     public String getLastName(){
-        return this.LName;
+        return this.lname;
     }
     public String getToken(){
         return this.token;
     }
+    public String getPhoneNum(){
+        return this.phonenum;
+    }
     public String toString(){
-        return FName + " " + LName;
+        return fname + " " + lname;
     }
 }

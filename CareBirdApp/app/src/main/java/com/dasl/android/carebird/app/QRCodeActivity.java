@@ -53,8 +53,8 @@ public class QRCodeActivity extends Activity {
         else {
             setContentView(R.layout.activity_qrcode);
             qrImage = (ImageView) findViewById(R.id.qrCode);
-            Random rand = new Random();
-            int tok = rand.nextInt(100000) + 900000; //Six digit permission token
+            Random rand = new Random(System.currentTimeMillis());
+            int tok = rand.nextInt(900000) + 100000; //Six digit permission token
             String qrToken = "" + tok;
 
             String fname = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("fname", null);
@@ -83,6 +83,13 @@ public class QRCodeActivity extends Activity {
             }
             new SyncCare().execute(new String[]{qrToken});
         }
+        Button doneBtn = (Button) findViewById(R.id.done);
+        doneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -119,10 +126,10 @@ public class QRCodeActivity extends Activity {
             String result;
             try {
                 if(getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getBoolean(getString(R.string.user_type), true)) {
-                    response = Database.addCareReceiver(strings[0]);
+                    response = ((GlobalApplication)getApplication()).getDatabase().addCareReceiver(strings[0]);
                 }
                 else {
-                    response = Database.addCareGiver(strings[0]);
+                    response = ((GlobalApplication)getApplication()).getDatabase().addCareGiver(strings[0]);
                 }
                 result = response.getMessage();
 

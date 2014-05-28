@@ -144,7 +144,7 @@ public class LoginCRActivity extends Activity implements LoaderCallbacks<Cursor>
         class PostTask extends AsyncTask<String, Integer, String>{
             @Override
             protected String doInBackground(String... params) {
-                User me = new User(params[0],params[1],"","");
+                User me = new User(params[0],params[1],"","", "");
                 com.dasl.android.carebird.app.Status response;
                 String result;
                 try {

@@ -17,32 +17,59 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import android.util.Log;
 
 /**
- * Created by Alec on 5/21/2014.
+ * Created by Alec on 5/26/2014.
  */
-public class ReminderListActivity extends Activity {
-    private AlarmManager keeperOfAlarms;
+public class ReminderListActivityCG extends Activity {
+    private ArrayList<User> careReceivers;
+    private String crName;
     private ArrayList<ReminderSchedule> toView = new ArrayList<ReminderSchedule>();
     private String itemSelected;
     private PopupMenu deleteOpt;
     private Timer refresher;
     //private Handler mHandler;
     private Runnable mUpdateResults;
-    private Status addReminderResponse=null;
+
+
+    private class CareReceiverGetter extends AsyncTask<String, Integer, ArrayList<User>> {
+        @Override
+        protected ArrayList<User> doInBackground(String... params) {
+            User me = new User(params[0],params[1],"","","");
+            //com.dasl.android.carebird.app.Status response;
+            ArrayList<User> result = null;
+            try {
+
+                result = ((GlobalApplication) getApplication()).getDatabase().getCareReceivers(me);
+                System.out.println("result was: " + result.size());
+
+            }catch (IOException error){
+                //result = "failure in try catch";
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<User> results) {
+            careReceivers = results;
+        }
+    }
 
     private class ReminderGetter extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
         @Override
         protected ArrayList<ReminderSchedule> doInBackground(String... params) {
-            User me = new User(params[0],params[1],"","","");
+            User cr = new User(params[0], "", "", "", "");
             //com.dasl.android.carebird.app.Status response;
             ArrayList<ReminderSchedule> result = null;
             try {
@@ -52,7 +79,9 @@ public class ReminderListActivity extends Activity {
                 //computer.setToken(Database.me.getToken());
                 //Database.addCareReceiver("okay");
 
-                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
+                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules(cr);
+
+                System.out.println("" + result.size());
 
                 //Database.addCareGiver("okay");
 
@@ -74,7 +103,7 @@ public class ReminderListActivity extends Activity {
     private class ReminderAdder extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
         @Override
         protected ArrayList<ReminderSchedule> doInBackground(String... params) {
-            User me = new User(params[0],params[1],"","","");
+            User cr = new User(params[0],"","","", "");
             //com.dasl.android.carebird.app.Status response;
             ArrayList<ReminderSchedule> result = null;
 
@@ -85,8 +114,9 @@ public class ReminderListActivity extends Activity {
                 //computer.setToken(Database.me.getToken());
                 //Database.addCareReceiver("okay");
 
-                addReminderResponse = ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(new ReminderSchedule(params[2]));
-
+               com.dasl.android.carebird.app.Status status=  ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(new ReminderSchedule(params[1]), cr);
+                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
+                Log.v("ReminderListActivity.addReminderSchedule: ", status.getMessage());
                 //Database.addCareGiver("okay");
 
                 //result = response.getMessage();
@@ -97,14 +127,14 @@ public class ReminderListActivity extends Activity {
         }
         @Override
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
-
+            toView = results;
         }
     }
 
     private class ReminderDeleter extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
         @Override
         protected ArrayList<ReminderSchedule> doInBackground(String... params) {
-            User me = new User(params[0],params[1],"","","");
+            User cr = new User(params[0],"","","","");
             //com.dasl.android.carebird.app.Status response;
             ArrayList<ReminderSchedule> result = null;
 
@@ -115,7 +145,8 @@ public class ReminderListActivity extends Activity {
                 //computer.setToken(Database.me.getToken());
                 //Database.addCareReceiver("okay");
 
-                ((GlobalApplication) getApplication()).getDatabase().removeReminderSchedule(new ReminderSchedule(params[2]));
+                ((GlobalApplication) getApplication()).getDatabase().removeReminderSchedule(new ReminderSchedule(params[1]), cr);
+                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
 
                 //Database.addCareGiver("okay");
 
@@ -127,6 +158,7 @@ public class ReminderListActivity extends Activity {
         }
         @Override
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
+            toView = results;
         }
     }
 
@@ -167,9 +199,9 @@ public class ReminderListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        keeperOfAlarms = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        crName = null;
 
-        setContentView(R.layout.activity_reminder_list_cr);
+        setContentView(R.layout.activity_reminder_list_cg);
 
         Button syncButton = (Button) findViewById(R.id.sync_button);
 
@@ -194,14 +226,29 @@ public class ReminderListActivity extends Activity {
         String b = Database.me.getPassword();
         new ReminderGetter().execute(new String[]{a, b});
 
-        /*
-        try
-        {
-            toView = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
-        } catch (IOException e) {
-            return;
+        new CareReceiverGetter().execute(new String[]{a, b});
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                crName = (String) adapterView.getItemAtPosition(i);
+
+                System.out.println("CRname: " + crName);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                crName = null;
+            }
+        });
+
+        ArrayAdapter<String> sAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+
+        for (int i = 0; careReceivers != null && i < careReceivers.size() && careReceivers.get(i) != null; i++) {
+            sAdapter.add(careReceivers.get(i).getUserName());
         }
-        */
+
+        spinner.setAdapter(sAdapter);
 
         ListView remList = (ListView) findViewById(R.id.listView);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
@@ -226,16 +273,8 @@ public class ReminderListActivity extends Activity {
             }
         });
 
-        /*remList.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                itemSelected = ((ArrayAdapter<String>) ((ListView) findViewById(R.id.listView)).getAdapter()).getItem(0);
-
-                return;
-            }
-        });*/
-
         refresher = new Timer();
-        refresher.schedule (new RefresherTask(), 5000, 5000);
+        refresher.schedule (new RefresherTask(), 2000, 5000);
 
         //final Handler mHandler = new Handler();
 
@@ -246,80 +285,38 @@ public class ReminderListActivity extends Activity {
             }
         };
 
-
-        if (toView == null) {
-            remList.setAdapter(adapter);
-            return;
-        }
-
-        for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
-
-            String temp = toView.get(i).toString();
-
-            adapter.add(temp);
-
-
-            //temp.setText(toView.get(i).toString());
-            //remList.addView(temp);
-        }
-
         remList.setAdapter(adapter);
-
+        return;
     }
 
     public void createNewReminder() {
+        if (crName == null)
+            return;
+
         Random rand = new Random();
 
         ReminderSchedule test = new ReminderSchedule(rand.nextInt(24), rand.nextInt(60), "Fancy pill", 0);
         System.out.println("creating " + test.toString());
 
-        /*try {
-            ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(test);
-        } catch (IOException e) {
-            return;
-        }*/
-
-        new ReminderAdder().execute(new String[] {Database.me.getUserName(), Database.me.getPassword(), test.toString()});
-
-        while(addReminderResponse==null)
-            try {
-                Thread.sleep(333);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        addReminderResponse=null;
-        // NOTNEC
-        //toView.add(new ReminderSchedule(test.toString()));
+        new ReminderAdder().execute(new String[] {crName, test.toString()});
 
         refreshList();
     }
 
     public void deleteReminder(String reminderString) {
-        ///* NECFORDATABASE
-        new ReminderDeleter().execute(new String[]{Database.me.getUserName(), Database.me.getPassword(), reminderString});
-        //*/
-
-        // NOTNEC
-        //toView.remove(new ReminderSchedule(reminderString));
-
-        /*while(addReminderResponse==null)
-            try {
-                Thread.sleep(333);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        addReminderResponse=null;*/
+        new ReminderDeleter().execute(new String[] {crName, reminderString});
 
         refreshList();
     }
 
     public void refreshList() {
+        if (crName == null)
+            return;
 
         System.out.println("Refreshing list");
         ListView remList = (ListView) findViewById(R.id.listView);
 
-
-        new ReminderGetter().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
+        new ReminderGetter().execute(new String[]{crName});
 
         ArrayAdapter<String> adapter = (ArrayAdapter<String>) remList.getAdapter();
 
@@ -328,9 +325,6 @@ public class ReminderListActivity extends Activity {
             ReminderSchedule temp = new ReminderSchedule(adapter.getItem(i));
 
             if (!toView.contains(temp)) {
-                removeFromAlarms(temp.getKey());
-
-
                 adapter.remove(adapter.getItem(i));
             }
         }
@@ -340,58 +334,15 @@ public class ReminderListActivity extends Activity {
         for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
 
             if (adapter.getPosition(toView.get(i).toString()) < 0) {
-                addToAlarms(toView.get(i));
-
                 adapter.add(toView.get(i).toString());
             }
-
-            //String temp = toView.get(i).toString();
-
-            //adapter.add(temp);
-            //temp.setText(toView.get(i).toString());
-            //remList.addView(temp);
 
         }
 
         adapter.notifyDataSetChanged();
 
-        //remList.setAdapter(adapter);
-        //TextView isThisWorking = (TextView) findViewById(R.id.toPopulate);
-
         for (int i = 0; i < toView.size(); i++)
             System.out.println("Contents: " + toView.get(i).toString());
-    }
-
-    public void addToAlarms(ReminderSchedule schedule) {
-        Intent toReminder = new Intent(this, ReminderActivity.class);
-        toReminder.putExtra("REMINDER_NAME", schedule.getName());
-        toReminder.putExtra("YES_NO", schedule.getMessage());
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(System.currentTimeMillis());
-        cal.set(Calendar.HOUR_OF_DAY, schedule.getHour());
-        cal.set(Calendar.MINUTE, schedule.getMinute());
-
-        PendingIntent temp = PendingIntent.getActivity(this, schedule.getKey(),
-                toReminder, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        if (schedule.getInterval() != 0) {
-            keeperOfAlarms.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
-                    schedule.getInterval(), temp);
-        } else {
-            keeperOfAlarms.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), temp);
-        }
-
-
-    }
-
-    public void removeFromAlarms(int reminderKey) {
-        Intent toReminder = new Intent(this, ReminderActivity.class);
-
-        PendingIntent temp = PendingIntent.getActivity(this, reminderKey, toReminder,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-
-        keeperOfAlarms.cancel(temp);
     }
 
     public void onDestroy() {
@@ -403,9 +354,33 @@ public class ReminderListActivity extends Activity {
     private class RefresherTask extends TimerTask {
         public void run() {
             System.out.println("Timer triggered");
+
+            //if (crName == null)
+                //return;
+
             runOnUiThread(new Runnable() {
                 public void run() {
-                    refreshList();
+
+                    Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                    ArrayAdapter<String> sAdapter = (ArrayAdapter<String>) spinner.getAdapter();
+
+                    if (careReceivers != null) {
+                        for (int i = 0; i < careReceivers.size() && careReceivers.get(i) != null; i++) {
+                            System.out.println(careReceivers.get(i));
+                        }
+
+                    }
+
+                    if (sAdapter.getCount() == 0 && careReceivers != null) {
+                        System.out.println("Updating CR list");
+
+                        for (int i = 0; careReceivers != null && i < careReceivers.size() && careReceivers.get(i) != null; i++) {
+                            sAdapter.add(careReceivers.get(i).getUserName());
+                        }
+                    }
+
+                    if (crName != null)
+                        refreshList();
                 }
             });
             //mHandler(mUpdateResults);

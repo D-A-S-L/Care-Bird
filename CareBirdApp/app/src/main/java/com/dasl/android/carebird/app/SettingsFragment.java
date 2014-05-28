@@ -26,10 +26,6 @@ import java.util.List;
  */
 public class SettingsFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
 
-    /*
-     * For testing purposes
-     */
-    private AlarmManager keeperOfAlarms;
 	public static final String KEY_PREF_HOME_ADDRESS= "pref_home_address";
     public static final String KEY_PREF_LOCATION_NOTIFY = "pref_location_notify";
     private static final long POINT_RADIUS = 150; // in Meters
@@ -55,7 +51,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
         //exampleSchedulerMethod(b);
     }
 
-    public void exampleSchedulerMethod(ReminderSchedule exampleSchedule) {
+    /*public void exampleSchedulerMethod(ReminderSchedule exampleSchedule) {
         int pseudoRand = (int) (System.currentTimeMillis() / 1000 + System.currentTimeMillis()
                         % 1000);
 
@@ -76,7 +72,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
 
         return;
 
-    }
+    }*/
 	
 	@Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {

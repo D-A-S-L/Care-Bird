@@ -1,16 +1,24 @@
 package com.dasl.android.carebird.app;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 /**
  * Created by David on 4/30/14.
@@ -20,6 +28,29 @@ public class MainMenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_menu_activity);
+
+        class PostTask extends AsyncTask<String, Integer, String> {
+            @Override
+            protected String doInBackground(String... params) {
+                User me = new User(params[0],params[1],params[2],params[3], params[4]);
+                com.dasl.android.carebird.app.Status response;
+                String result;
+                try {
+                    response = ((GlobalApplication) getApplication()).getDatabase().login(me);
+                    result = response.getMessage();
+                }catch (IOException error){
+                    result = "failure in try catch";
+                };
+                return result;
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                Context context = getApplicationContext();
+                Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                Log.v("carebird", result);
+            }
+        }
+        new PostTask().execute(new String[]{getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("userName", "userName"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("password", "password"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("fname", "fname"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("lname", "lname"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", "1111111111")});
 
         // Font path
         String fontPath = "fonts/APHont-Regular_q15c.ttf";
@@ -116,6 +147,30 @@ public class MainMenuActivity extends Activity {
                 }
 
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.action_contacts:
+                Intent i1 = new Intent(this, ContactActivity.class);
+                startActivity(i1);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

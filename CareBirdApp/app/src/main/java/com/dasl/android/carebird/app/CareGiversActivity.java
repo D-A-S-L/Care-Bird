@@ -42,13 +42,41 @@ import java.util.ArrayList;
 public class CareGiversActivity extends ListActivity {
 
     Activity act = this;
-
+    CGAdapter adapter;
     private ArrayList<User> mCareGivers;
+
+    private class getCG extends AsyncTask<User, String, ArrayList<User>> {
+        @Override
+        protected ArrayList<User> doInBackground(User... params) {
+            User me = params[0];
+            ArrayList<User> response = null;
+            //ArrayList<User> result;
+            try {
+                //Database db = new Database();
+                response = ((GlobalApplication) getApplication()).getDatabase().getCareGivers(me);
+                Log.v("CareGiversActivity response: ",java.util.Arrays.toString(response.toArray()));
+                mCareGivers = response;
+                //result = response.getMessage();
+            }catch (IOException error){
+                //result = "failure in try catch";
+                System.out.println("ERROR ERROR");
+            }
+            return response;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<User> result) {
+            //---------------------
+            //for(User cg:mCareGivers)
+            //    System.out.println(cg.getUserName());
+            //-------------------------
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        new getCG().execute(((GlobalApplication) getApplication()).getMe());
         /*
         try {
             mCareGivers = ((GlobalApplication) getApplication()).getDatabase().getCareGivers(((GlobalApplication) getApplication()).getMe());
@@ -59,31 +87,15 @@ public class CareGiversActivity extends ListActivity {
         CGAdapter adapter = new CGAdapter(mCareGivers);
         setListAdapter(adapter);
         */
-        class getCG extends AsyncTask<User, String, ArrayList<User>> {
-            @Override
-            protected ArrayList<User> doInBackground(User... params) {
-                User me = params[0];
-                ArrayList<User> response = null;
-                //ArrayList<User> result;
-                try {
-                    //Database db = new Database();
-                    response = Database.getCareGivers(me);
-                    //result = response.getMessage();
-                }catch (IOException error){
-                    //result = "failure in try catch";
-                }
-                return response;
-            }
-            @Override
-            protected void onPostExecute(ArrayList<User> result) {
-                mCareGivers = result;
-                //---------------------
-                //for(User cg:mCareGivers)
-                //    System.out.println(cg.getUserName());
-                //-------------------------
-            }
+        try {
+            while(mCareGivers==null)
+            Thread.sleep(333);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        new getCG().execute(Database.me);
+        Log.v("mCareGivers:",java.util.Arrays.toString(mCareGivers.toArray()));
+        adapter = new CGAdapter(mCareGivers);
+        setListAdapter(adapter);
 
     }
 
@@ -99,20 +111,46 @@ public class CareGiversActivity extends ListActivity {
     }
 
     private class CGAdapter extends ArrayAdapter<User> {
-        public CGAdapter(ArrayList<User> taqs) {
-            super(act, android.R.layout.simple_list_item_1, taqs);
+        public CGAdapter(ArrayList<User> cg) {
+            super(act, android.R.layout.simple_list_item_1, cg);
         }
 
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = act.getLayoutInflater().inflate(R.layout.list_item_cg, null);
+            if(convertView == null) {
+                convertView = act.getLayoutInflater().inflate(R.layout.care_givers_activity, null);
             }
 
-            final User c = mCareGivers.get(position);
+            final User u = mCareGivers.get(position);
 
-            TextView txt = (TextView) convertView.findViewById(R.id.cg_list_text);
-            txt.setText(c.getFirstName() + " " + c.getLastName());
+            TextView txt = (TextView)convertView.findViewById(R.id.CareGiver1Name);
+            txt.setText(u.toString());
+
+            TextView txt2 = (TextView)convertView.findViewById(R.id.CareGiver1UserName);
+            txt2.setText(u.getUserName());
+
+            TextView txt3 = (TextView)convertView.findViewById(R.id.CareGiver1Phone);
+            txt3.setText(u.getPhoneNum());
+
+			/*TextView repTextView = (TextView)convertView.findViewById(R.id.taq_list_item_repTextView);
+            String temp = "";
+            if(t.getReputation() > 0) {
+                temp = "+" + t.getReputation();
+                repTextView.setTextColor(Color.GREEN);
+            }
+            else if(t.getReputation() < 0) {
+                temp = "" + t.getReputation();
+                repTextView.setTextColor(Color.RED);
+            }
+            else {
+                temp = "" + t.getReputation();
+                repTextView.setTextColor(Color.BLACK);
+            }
+
+			repTextView.setText(temp);*/
+
+            //ImageView User Color (if statement)
+
 
             return convertView;
         }

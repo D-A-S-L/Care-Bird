@@ -120,29 +120,7 @@ public class SignUpCGActivity extends Activity implements LoaderManager.LoaderCa
         String lname = mLNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        class PostTask extends AsyncTask<String, Integer, String>{
-            @Override
-            protected String doInBackground(String... params) {
-                User me = new User(params[0],params[1],params[2],params[3]);
-                ((GlobalApplication) getApplication()).setMe(me);
-                com.dasl.android.carebird.app.Status response;
-                String result;
-                try {
-                    response = ((GlobalApplication) getApplication()).getDatabase().addUser(me);
-                    result = response.getMessage();
-                }catch (IOException error){
-                    result = "failure in try catch";
-                };
-                return result;
-            }
-            @Override
-            protected void onPostExecute(String result) {
-                Context context = getApplicationContext();
-                Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                Log.v("carebird", result);
-            }
-        }
-        new PostTask().execute(new String[]{userName, password, fname, lname});
+
 
         boolean cancel = false;
         View focusView = null;
@@ -192,6 +170,30 @@ public class SignUpCGActivity extends Activity implements LoaderManager.LoaderCa
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, fname, lname, password);
             mAuthTask.execute((Void) null);
+
+            class PostTask extends AsyncTask<String, Integer, String>{
+                @Override
+                protected String doInBackground(String... params) {
+                    User me = new User(params[0],params[1],params[2],params[3], params[4]);
+                    ((GlobalApplication) getApplication()).setMe(me);
+                    com.dasl.android.carebird.app.Status response;
+                    String result;
+                    try {
+                        response = ((GlobalApplication) getApplication()).getDatabase().addUser(me);
+                        result = response.getMessage();
+                    }catch (IOException error){
+                        result = "failure in try catch";
+                    };
+                    return result;
+                }
+                @Override
+                protected void onPostExecute(String result) {
+                    Context context = getApplicationContext();
+                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                    Log.v("carebird", result);
+                }
+            }
+            new PostTask().execute(new String[]{userName, password, fname, lname, getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", "1111111111")});
 
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("userName", userName).commit();
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("fname", fname).commit();

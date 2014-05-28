@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
         class PostTask extends AsyncTask<String, Integer, String> {
             @Override
             protected String doInBackground(String... params) {
-                User me = new User(params[0],params[1],params[2],params[3]);
+                User me = new User(params[0],params[1],params[2],params[3], params[4]);
                 com.dasl.android.carebird.app.Status response;
                 String result;
                 try {
@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
                 Log.v("carebird", result);
             }
         }
-        new PostTask().execute(new String[]{getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("userName", "userName"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("password", "password"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("fname", "fname"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("lname", "lname")});
+        new PostTask().execute(new String[]{getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("userName", "userName"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("password", "password"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("fname", "fname"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("lname", "lname"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", "1111111111")});
 
         // Font path
         String fontPath = "fonts/APHont-Regular_q15c.ttf";
@@ -85,11 +85,6 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
-            startActivity(i);
-            return true;
-        }
-        else if(id == R.id.action_qr_code) {
-            Intent i = new Intent(this, QRCodeActivity.class);
             startActivity(i);
             return true;
         }
