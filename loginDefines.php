@@ -28,7 +28,7 @@ function logIn(){
 			
 			//  Bad Username/Password Combination
 			if(empty($result) or ($row[0]!=$Pass)){
-				$status =203;
+				$status =401;
 				$statusMessage = "No user found with that combination";
 				$data=false;
 			}
@@ -89,7 +89,7 @@ function loggedIn(){
 			
 				//  Bad Session Key
 				if(empty($result)){
-					$status =203;
+					$status =401;
 					$status_Message = "Invalid Session Key";
 					$data=false;
 				}

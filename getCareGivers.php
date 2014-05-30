@@ -11,7 +11,7 @@ $statusMessage="Default Message";
 $data=null;
 
 if(!$loggedIn){
-	$status =203;
+	$status =401;
 	$status_Message = "No user found with that combination";
 	$data = false;
 }else{

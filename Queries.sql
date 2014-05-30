@@ -17,7 +17,7 @@ REVOKE ALL ON DATABASE d86fo56ie0kqjt FROM public;
 				where  CRID='dnscianni' and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey');
 
 select * from Users;
-delete from Users 
+delete from Users;
 select * from CanCareFor;
 delete from CanCareFor;
 select * from QRTokens;
@@ -46,6 +46,8 @@ create table Users
 
 insert into users values ('Doctor', 'Guy', 'docguy','docguy','5555555555');
 insert into users values ('Patient', 'Guy', 'patguy','patguy','4444444444');
+insert into users values ( 'Ted', 'Bear','teddybear','teddybear','4444444444');
+insert into users values ( 'Red', 'Bull','redbull','redbull','4444444444');
 /*  
 insert into users values ('Chris', 'Murphy', 'cdmurphy','chris','6263754326');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
@@ -67,6 +69,11 @@ create table CanCareFor
 
 
 insert into CanCareFor values('docguy','patguy');
+/*
+insert into CanCareFor values('docguy','dnscianni');
+insert into CanCareFor values('teddybear','dnscianni');
+insert into CanCareFor values('redbull','dnscianni');
+*/
 /*
 insert into CanCareFor values('cdmurphy','dnscianni');
 insert into CanCareFor values('bsaia','dnscianni');
