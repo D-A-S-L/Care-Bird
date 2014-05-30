@@ -13,7 +13,6 @@ import android.widget.Toast;
 public class ProximityReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.i("ProximityReceiver", "Inside Proximity Receiver");
         String key = LocationManager.KEY_PROXIMITY_ENTERING;
         boolean entering = intent.getBooleanExtra(key, false);
         if(entering) {

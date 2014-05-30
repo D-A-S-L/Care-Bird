@@ -94,7 +94,7 @@ public class MainCGActivity extends Activity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Intent i = new Intent(this, SettingsActivity.class);
+                Intent i = new Intent(this, LocationActivity.class);
                 startActivity(i);
                 return true;
             case R.id.action_contacts:

@@ -78,27 +78,7 @@ public class SettingsFragment extends PreferenceFragment implements OnSharedPref
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
         Log.i("SettingsFragment", "inside onSharedPrefernce");
         if (s.equals(findPreference(KEY_PREF_HOME_ADDRESS).getKey())) {
-            Geocoder coder = new Geocoder(getActivity().getApplicationContext());
-            List<Address> address;
-            String strAddress = sharedPreferences.getString(KEY_PREF_HOME_ADDRESS, null);
-            Preference add = findPreference(KEY_PREF_HOME_ADDRESS);
 
-
-            try {
-                address = coder.getFromLocationName(strAddress,5);
-                if (address == null) {
-                    add.setSummary("GPS Coordinates not set");
-                    return;
-                }
-                Address location = address.get(0);
-                double lat = location.getLatitude();
-                double lon = location.getLongitude();
-                String coordinates = "Lat: " + lat + "  " + "Long: " + lon;
-                add.setSummary("Found - " + coordinates);
-
-            } catch(IOException e) {
-                Log.i("SettingsFragment", "FAILED");
-            }
         }
         else if(s.equals(findPreference(KEY_PREF_LOCATION_NOTIFY).getKey())) {
             CheckBoxPreference check = (CheckBoxPreference)findPreference(KEY_PREF_LOCATION_NOTIFY);
