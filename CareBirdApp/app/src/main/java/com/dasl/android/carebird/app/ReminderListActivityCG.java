@@ -2,12 +2,18 @@ package com.dasl.android.carebird.app;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,11 +35,14 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import android.util.Log;
+import android.widget.TimePicker;
 
 /**
  * Created by Alec on 5/26/2014.
  */
+
 public class ReminderListActivityCG extends Activity {
+//public class ReminderListActivityCG extends FragmentActivity {
     private ArrayList<User> careReceivers;
     private String crName;
     private ArrayList<ReminderSchedule> toView = new ArrayList<ReminderSchedule>();
@@ -297,7 +306,30 @@ public class ReminderListActivityCG extends Activity {
 
         ReminderSchedule test = new ReminderSchedule(rand.nextInt(24), rand.nextInt(60), "Fancy pill", 0);
         System.out.println("creating " + test.toString());
+        /*
+        final ReminderSchedule[] test = new ReminderSchedule[1];
+        class timeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState){
+                // Use the current time as the default values for the picker
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
 
+                // Create a new instance of TimePickerDialog and return it
+                return new TimePickerDialog(getActivity(), this, hour, minute,
+                        DateFormat.is24HourFormat(getActivity()));
+            }
+
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                // Do something with the time chosen by the user
+                test[0] = new ReminderSchedule(hourOfDay , minute, "Fancy pill", 0);
+                System.out.println("creating " + test[0].toString());
+            }
+        }
+        new timeDialog().show(getFragmentManager(), "timePicker");
+        new ReminderAdder().execute(new String[] {crName, test[0].toString()});
+        */
         new ReminderAdder().execute(new String[] {crName, test.toString()});
 
         refreshList();
