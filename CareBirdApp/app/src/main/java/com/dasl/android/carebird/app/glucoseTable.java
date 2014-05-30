@@ -3,7 +3,7 @@ package com.dasl.android.carebird.app;
 /**
  * Created by Brian on 5/24/2014.
  */
-public class glucoseTable extends Log {
+public class glucoseTable extends ReminderLog {
     public int originalAlertTime;
     public int glucoseValue; // if alert is snoozed or dismissed then use -1 for this value
 

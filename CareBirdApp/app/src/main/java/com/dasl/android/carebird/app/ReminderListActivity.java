@@ -66,7 +66,7 @@ public class ReminderListActivity extends Activity {
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
             //Context context = getApplicationContext();
             //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-            //Log.v("carebird", result);
+            //ReminderLog.v("carebird", result);
             toView = results;
         }
     }
@@ -158,7 +158,7 @@ public class ReminderListActivity extends Activity {
      protected void onPostExecute(ArrayList<ReminderSchedule> results) {
          //Context context = getApplicationContext();
          //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-         //Log.v("carebird", result);
+         //ReminderLog.v("carebird", result);
          for(ReminderSchedule result:results)
              toView.add(result);
      }

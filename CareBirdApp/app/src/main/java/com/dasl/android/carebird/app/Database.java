@@ -45,11 +45,11 @@ public class Database {
         /*
         if(response.getEntity() != null){
             //token.toJson(EntityUtils.toString(response.getEntity(),"UTF-8"));
-            //Log.v("carebird", token.toString());
+            //ReminderLog.v("carebird", token.toString());
             System.out.println(EntityUtils.toString(response.getEntity(),"UTF-8"));
         }
         else
-            Log.v("carebird1", "data is null");
+            ReminderLog.v("carebird1", "data is null");
         */
 
         String responseString=(EntityUtils.toString(response.getEntity(),"UTF-8"));

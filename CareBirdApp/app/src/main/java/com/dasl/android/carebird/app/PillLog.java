@@ -3,20 +3,18 @@ package com.dasl.android.carebird.app;
 /**
  * Created by Brian on 5/24/2014.
  */
-public class PillLog extends Log {
-    public int originalAlertTime;
+public class PillLog extends ReminderLog {
     public String message;
-    public byte actionTaken; // 0 for snooze, 1 for yes, 2 for dismiss(user exits alert without answering)
+    public String actiontaken; // 0 for snooze, 1 for yes, 2 for dismiss(user exits alert without answering)
 
+    /** no arg constructor for json serialization */
     PillLog(){
         super();
-        // no arg constructor for json serialization
     }
 
-    PillLog(int logTime, int originalAlertTime, String message, byte actionTaken){
-        super(logTime, -1, -1);
-        this.originalAlertTime = originalAlertTime;
+    PillLog(long originalalerttime, String message, String actiontaken){
+        super(originalalerttime);
         this.message = message;
-        this.actionTaken = actionTaken;
+        this.actiontaken = actiontaken;
     }
 }

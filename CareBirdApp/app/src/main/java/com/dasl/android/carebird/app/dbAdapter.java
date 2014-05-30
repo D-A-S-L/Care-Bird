@@ -169,7 +169,7 @@ public class dbAdapter{
             //this is version one there is nothing to update
 
             /*
-            Log.w(TAG, "Upgrading database!!!!!");
+            ReminderLog.w(TAG, "Upgrading database!!!!!");
             //db.execSQL("");
             onCreate(db);
             */

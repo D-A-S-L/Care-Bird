@@ -3,21 +3,19 @@ package com.dasl.android.carebird.app;
 /**
  * Created by Brian on 5/24/2014.
  */
-public class LocationLog extends Log {
-    public long originalAlertTime;
-    public double distanceFromHome;
+public class LocationLog extends ReminderLog {
+    public double metersfromhome;
     public double latitude;
     public double longitude;
 
+    /** no arg constructor for json serialization */
     LocationLog(){
         super();
-        // no arg constructor for json serialization
     }
 
-    LocationLog(long originalAlertTime, double distanceFromHome, double latitude, double longitude){
-        super();
-        this.originalAlertTime = originalAlertTime;
-        this.distanceFromHome = distanceFromHome;
+    LocationLog(long originalalerttime, double metersfromhome, double latitude, double longitude){
+        super(originalalerttime);
+        this.metersfromhome = metersfromhome;
         this.latitude = latitude;
         this.longitude = longitude;
     }
