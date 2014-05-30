@@ -274,6 +274,7 @@ public class Database {
     /** This is the same concept as addReminderSchedule, only it will remove the ReminderSchedule */
     public static Status removeReminderSchedule(ReminderSchedule reminder)throws IOException{
         return removeReminderSchedule(reminder,me);
+
     }
 
     /** This is the same concept as addReminderSchedule, only it will remove the ReminderSchedule */
@@ -296,4 +297,9 @@ public class Database {
 
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }
+
+    /**
+     * This method will return the XYZ log.
+     *
+     */
 }

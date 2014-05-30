@@ -1,9 +1,11 @@
 package com.dasl.android.carebird.app;
 
+import android.app.Activity;
+
 /**
  * Created by Brian on 5/20/2014.
  */
-public class User {
+public class User extends Activity {
     private String uname;
     private String pass;
     private String fname;
@@ -45,5 +47,8 @@ public class User {
     }
     public String toString(){
         return fname + " " + lname;
+    }
+    public boolean equals(User otherUser){
+        return otherUser.getUserName().equals(((GlobalApplication) getApplication()).getMe());
     }
 }
