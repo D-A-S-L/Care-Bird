@@ -74,6 +74,11 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.dasl.android.carebird.app.LocationActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.dasl.android.carebird.app.SettingsActivity"
             android:screenOrientation="portrait"
             android:label="@string/action_settings" >
