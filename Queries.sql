@@ -61,7 +61,7 @@ create table Logs
 , metersfromhome float not null
 , originalalerttime bigint not null
 , logtime bigint not null
-, type bigint not null
+, type varchar(10) not null check (type ~ '^[a-zA-Z]+$')
 , foreign key (UName) references Users(UName)
 , primary key (UName,latitude,longitude,metersfromhome,originalalerttime,logtime)
 );
@@ -71,8 +71,20 @@ create table Logs
 				( 
 				  'cdmurphy' 
 				, '1', '2', '3'
-				, '4','5'
-				);			
+				, '4','5','location'
+				);		
+
+
+				select
+				 latitude
+				,longitude
+				, metersfromhome
+				,originalalerttime
+				,logtime
+				,type
+				from Logs
+					where UName='cdmurphy';
+			
 */
 
 

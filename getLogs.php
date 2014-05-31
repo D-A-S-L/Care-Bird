@@ -28,7 +28,8 @@ if(!$loggedIn){
 	$data = false;
 }else{
 	// Valid Session Token but no Permission Token Provided...
-	if(!($_POST["SessionToken"] && $_POST["CRName"]) )
+	if(!(  isset($_POST["SessionToken"]) && isset($_POST["CRName"]) 
+		&& isset($_POST["type"])  /*not implemented && isset($_POST["type"]) */ ))
 	{		
 		$status=400;
 		$data=false;
@@ -67,10 +68,19 @@ if(!$loggedIn){
 			$data=false;
 		}else{
 			// CareGiver is legit, get the ReminderSchedules
-
-			$query="		
-					select name,hour,minute,interval from ReminderSchedules where UName='$CRName';
-			";
+			if($type=='location'){
+				$query="		
+						select
+						 latitude
+						,longitude
+						, metersfromhome
+						,originalalerttime
+						,logtime
+						,type
+						from Logs
+							where UName='$CRName';
+				";
+			}
 			$response=pg_query($conn,$query);
 			
 			if(pg_affected_rows($response)<1){
