@@ -29,7 +29,7 @@ public class TimePickerFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         ((CreateReminderActivity) getActivity()).h = hourOfDay;
-        ((CreateReminderActivity) getActivity()).m = hourOfDay;
+        ((CreateReminderActivity) getActivity()).m = minute;
         ((CreateReminderActivity) getActivity()).updateTimeText();
 
         // Do something with the time chosen by the user

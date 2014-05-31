@@ -376,11 +376,17 @@ public class ReminderListActivity extends Activity {
         PendingIntent temp = PendingIntent.getActivity(this, schedule.getKey(),
                 toReminder, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        long timeToSet = cal.getTimeInMillis();
+
+        while (schedule.getInterval() <= ReminderSchedule.DAILY && timeToSet < System.currentTimeMillis()) {
+            timeToSet += AlarmManager.INTERVAL_DAY;
+        }
+
         if (schedule.getInterval() != 0) {
-            keeperOfAlarms.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+            keeperOfAlarms.setRepeating(AlarmManager.RTC_WAKEUP, timeToSet,
                     schedule.getInterval(), temp);
         } else {
-            keeperOfAlarms.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), temp);
+            keeperOfAlarms.set(AlarmManager.RTC_WAKEUP, timeToSet, temp);
         }
 
 
