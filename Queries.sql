@@ -35,9 +35,9 @@ insert into users values ('Patient', 'Guy', 'patguy','patguy','4444444444');
 insert into users values ( 'Ted', 'Bear','teddybear','teddybear','4444444444');
 insert into users values ( 'Red', 'Bull','redbull','redbull','4444444444');
 insert into users values ('Chris', 'Murphy', 'cdmurphy','chris','6263754326');
+insert into users values ('David', 'Scianni', 'dnscianni', 'david','15626523806');
 
-/*  
-insert into users values ('David', 'Scianni', 'dnscianni', 'david');
+/* 
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
 insert into users values ('Brian', 'Saia', 'bsaia', 'brian');
@@ -54,6 +54,9 @@ create table CanCareFor
 ,primary key (CRID, CGID)
 );
 
+
+insert into CanCareFor values ('cdmurphy','dnscianni');
+
 create table Logs
 ( UName varchar(15) not null
 , latitude float not null
@@ -69,7 +72,7 @@ create table Logs
 /*
 				insert into Logs values
 				( 
-				  'cdmurphy' 
+				  'dnscianni' 
 				, '1', '2', '3'
 				, '4','5','location'
 				);		
@@ -83,7 +86,7 @@ create table Logs
 				,logtime
 				,type
 				from Logs
-					where UName='cdmurphy';
+					where UName='dnscianni';
 			
 */
 

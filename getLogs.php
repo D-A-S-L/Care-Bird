@@ -41,6 +41,7 @@ if(!$loggedIn){
 	else{	
 		$sToken=$_POST["SessionToken"];
 		$CRName=$_POST["CRName"];
+		$type=$_POST["type"];
 		$conn=connect();
 		// Find out if the CareGiver can actually care for the CareReceiver
 		// If so, return the CRName's Reminder Schedules
