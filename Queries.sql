@@ -7,7 +7,7 @@ select * from QRTokens;
 delete from QRTokens;
 select * from PillRecord;
 select * from SessionTokens;
-delete from SessionTokens;
+delete from SessionTokens where UName='cdmurphy';
 select * from ReminderSchedules;
 delete from ReminderSchedules;
 select * from Logs
@@ -59,17 +59,27 @@ insert into CanCareFor values ('cdmurphy','dnscianni');
 
 create table Logs
 ( UName varchar(15) not null
-, latitude float not null
-, longitude float not null
-, metersfromhome float not null
+/*loc*/, latitude float 
+/*loc*/, longitude float 
+/*loc*/, metersfromhome float 
+/*pill*/,message varchar (15)
+/*pill*/, actiontaken varchar (15)
 , originalalerttime bigint not null
 , logtime bigint not null
 , type varchar(10) not null check (type ~ '^[a-zA-Z]+$')
 , foreign key (UName) references Users(UName)
-, primary key (UName,latitude,longitude,metersfromhome,originalalerttime,logtime)
+, unique (UName,latitude,longitude,metersfromhome,originalalerttime,logtime)
+, unique (UName,originalalerttime,logtime,message, actiontaken)
 );
 
 /*
+				insert into Logs values
+				( 
+				  (select UName from SessionTokens where SessionToken='somekey') 
+				, '5', '5', '4'
+				, '4','3','location'
+				);	
+
 				insert into Logs values
 				( 
 				  'dnscianni' 

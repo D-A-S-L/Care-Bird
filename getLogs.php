@@ -77,7 +77,6 @@ if(!$loggedIn){
 						, metersfromhome
 						,originalalerttime
 						,logtime
-						,type
 						from Logs
 							where UName='$CRName';
 				";

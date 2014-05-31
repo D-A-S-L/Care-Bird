@@ -43,17 +43,36 @@ if(!$loggedIn){
 		$query="Default Query";
 		$goodInput=false;
 		// is Location log?
-		if(isset($_POST["latitude"]) && isset($_POST["longitude"]) && isset($_POST["metersfromhome"]) ){
+		if( isset($_POST["latitude"]) && isset($_POST["longitude"]) && isset($_POST["metersfromhome"]) ){
 			// Type is location log
 			$goodInput=true;
 			$latitude=$_POST["latitude"];
 			$longitude=$_POST["longitude"];
 			$metersfromhome=$_POST["metersfromhome"];
 			$query="	
-				insert into Logs values
+				insert into Logs
+				(UName,latitude,longitude,metersfromhome,originalalerttime,type)
+				 values
 				( 
-				  (select UName from SessionTokens where SessionToken='$SessionToken') /* UName */
+				  (select UName from SessionTokens where SessionToken='$SessionToken')
 				, '$latitude', '$longitude', '$metersfromhome'
+				, '$originalalerttime','$logtime','$type'
+				);			
+			";
+		}
+		// is Pill log?
+		if( isset($_POST["message"]) && isset($_POST["actiontaken"])){
+			// Type is location log
+			$goodInput=true;
+			$message=$_POST["message"];
+			$actionTaken=$_POST["actiontaken"];
+			$query="	
+				insert into Logs
+				(UName,message,actiontaken,originalalerttime,logtime,type)
+				values
+				( 
+				  (select UName from SessionTokens where SessionToken='$SessionToken') 
+				, '$message', '$actionTaken'
 				, '$originalalerttime','$logtime','$type'
 				);			
 			";
@@ -62,7 +81,7 @@ if(!$loggedIn){
 		// Insert the log notification
 		$response=pg_query($conn,$query);		
 
-		if(!$goodinput || pg_affected_rows($response)<1){
+		if(!$goodInput || pg_affected_rows($response)<1){
 			$status=203;
 			$statusMessage="An error occured: Possibly record already exists";
 			$data=$response;
