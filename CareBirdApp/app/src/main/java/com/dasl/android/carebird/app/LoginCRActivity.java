@@ -204,6 +204,7 @@ public class LoginCRActivity extends Activity implements LoaderCallbacks<Cursor>
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            ((GlobalApplication) getApplication()).logged();
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, password);
             mAuthTask.execute((Void) null);

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -73,9 +74,8 @@ public class CareGiversActivity extends ListActivity {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         new getCG().execute(((GlobalApplication) getApplication()).getMe());
         /*
         try {
@@ -119,6 +119,8 @@ public class CareGiversActivity extends ListActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             if(convertView == null) {
                 convertView = act.getLayoutInflater().inflate(R.layout.care_givers_activity, null);
+                final ListView listView = getListView();
+                listView.setBackgroundColor(Color.parseColor("#03c7d8"));
             }
 
             final User u = mCareGivers.get(position);
@@ -128,6 +130,14 @@ public class CareGiversActivity extends ListActivity {
 
             TextView txt3 = (TextView)convertView.findViewById(R.id.CareGiver1Phone);
             txt3.setText(u.getPhoneNum());
+
+            Button button0 = (Button) convertView.findViewById(R.id.CallButton);
+            button0.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + u.getPhoneNum()));
+                    startActivityForResult (myIntent, 0);
+                }
+            });
 
 			/*TextView repTextView = (TextView)convertView.findViewById(R.id.taq_list_item_repTextView);
             String temp = "";

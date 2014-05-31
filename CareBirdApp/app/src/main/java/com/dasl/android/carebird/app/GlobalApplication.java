@@ -8,6 +8,7 @@ import android.app.Application;
 public class GlobalApplication extends Application{
 
     private static Database db = new Database();
+    private boolean isLoggedIn = false;
     //private static User me;
 
     public Database getDatabase() {
@@ -20,5 +21,13 @@ public class GlobalApplication extends Application{
 
     public User getMe() {
         return db.me;
+    }
+
+    public void logged() {
+        isLoggedIn = true;
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
     }
 }

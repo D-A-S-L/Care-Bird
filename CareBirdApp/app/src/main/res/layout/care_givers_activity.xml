@@ -2,11 +2,11 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:background="@drawable/bg_no_bird">
+    android:background="#03c7d8">
 
     <TextView
         android:id="@+id/CareGiver1Name"

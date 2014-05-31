@@ -56,15 +56,15 @@ public class ReminderSchedule {
                 name = formatted.substring(13, i);
                 System.out.println("interval is " + interval);
                 break;
-            } else if (formatted.substring(i, i + 19).equals(" every 12 hours at ")) {
-                interval = TWICE_DAILY;
-                fieldInd = i + 19;
-                name = formatted.substring(13, i);
-                System.out.println("interval is " + interval);
-                break;
             } else if (formatted.substring(i, i + 15).equals(" every week at ")) {
                 interval = WEEKLY;
                 fieldInd = i + 15;
+                name = formatted.substring(13, i);
+                System.out.println("interval is " + interval);
+                break;
+            } else if (formatted.substring(i, i + 19).equals(" every 12 hours at ")) {
+                interval = TWICE_DAILY;
+                fieldInd = i + 19;
                 name = formatted.substring(13, i);
                 System.out.println("interval is " + interval);
                 break;

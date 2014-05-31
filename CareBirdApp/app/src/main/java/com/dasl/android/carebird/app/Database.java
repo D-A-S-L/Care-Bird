@@ -358,6 +358,12 @@ public class Database {
         return getLogs(me,me, type, limit);
     }
 
+    /**
+     * @param log
+     * @return
+     * @throws IOException
+     * this method adds any of the three types of logs
+     */
     public static Status addLog(ReminderLog log)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/addLog.php");
