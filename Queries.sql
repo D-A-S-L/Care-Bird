@@ -21,7 +21,7 @@ drop table ReminderSchedules;
 drop table Logs;
 drop table Users;
 
-
+				
 create table Users
 ( FName varchar(15) not null CHECK (FName ~ '^[a-zA-Z]+$')
 , LName varchar(15) not null CHECK (LName ~ '^[a-zA-Z]+$')

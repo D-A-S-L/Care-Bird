@@ -29,7 +29,7 @@ if(!$loggedIn){
 }else{
 	// Valid Session Token but no Permission Token Provided...
 	if(!(  isset($_POST["SessionToken"]) && isset($_POST["CRName"]) 
-		&& isset($_POST["type"])  /*not implemented && isset($_POST["type"]) */ ))
+		&& isset($_POST["type"])  /*not implemented && isset($_POST["limit"]) */ ))
 	{		
 		$status=400;
 		$data=false;
@@ -75,6 +75,17 @@ if(!$loggedIn){
 						 latitude
 						,longitude
 						, metersfromhome
+						,originalalerttime
+						,logtime
+						from Logs
+							where UName='$CRName';
+				";
+			}
+			else if (type=='pill'){
+				$query="		
+						select
+						 message
+						,actionTaken
 						,originalalerttime
 						,logtime
 						from Logs
