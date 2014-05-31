@@ -30,6 +30,10 @@ import java.util.TimerTask;
  * Created by Alec on 5/21/2014.
  */
 public class ReminderListActivity extends Activity {
+    public int h, m;
+    public long interval;
+    public String n;
+
     private AlarmManager keeperOfAlarms;
     private ArrayList<ReminderSchedule> toView = new ArrayList<ReminderSchedule>();
     private String itemSelected;
@@ -37,7 +41,8 @@ public class ReminderListActivity extends Activity {
     private Timer refresher;
     //private Handler mHandler;
     private Runnable mUpdateResults;
-    private Status addReminderResponse=null;
+    private Status addReminderResponse = null;
+
 
     private class ReminderGetter extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
         @Override
@@ -66,7 +71,7 @@ public class ReminderListActivity extends Activity {
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
             //Context context = getApplicationContext();
             //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-            //ReminderLog.v("carebird", result);
+            //Log.v("carebird", result);
             toView = results;
         }
     }
@@ -130,40 +135,7 @@ public class ReminderListActivity extends Activity {
         }
     }
 
-    /*
- class setReminders extends AsyncTask<ArrayList<ReminderSchedule>, Integer,String > {
-     @Override
-     protected String doInBackground(ArrayList<ReminderSchedule>... params) {
-         User me = new User(params[0],params[1],"","");
-         //com.dasl.android.carebird.app.Status response;
-         ArrayList<ReminderSchedule> result = null;
-         try {
 
-             //User computer = new User("computer","computer","computer","computer");
-             //Database.login(computer);
-             //computer.setToken(Database.me.getToken());
-             //Database.addCareReceiver("okay");
-
-             result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
-
-             //Database.addCareGiver("okay");
-
-             //result = response.getMessage();
-         }catch (IOException error){
-             //result = "failure in try catch";
-         }
-         return result;
-     }
-     @Override
-     protected void onPostExecute(ArrayList<ReminderSchedule> results) {
-         //Context context = getApplicationContext();
-         //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-         //ReminderLog.v("carebird", result);
-         for(ReminderSchedule result:results)
-             toView.add(result);
-     }
- }
- */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -187,7 +159,6 @@ public class ReminderListActivity extends Activity {
                 createNewReminder();
             }
         });
-
 
 
         String a = Database.me.getUserName();
@@ -268,7 +239,11 @@ public class ReminderListActivity extends Activity {
     }
 
     public void createNewReminder() {
-        Random rand = new Random();
+        Intent intent = new Intent(this, CreateReminderActivity.class);
+        intent.putExtra("CARE_RECEIVER", true);
+        intent.putExtra("USER_NAME", "");
+        startActivity(intent);
+        /*Random rand = new Random();
 
         ReminderSchedule test = new ReminderSchedule(rand.nextInt(24), rand.nextInt(60), "Fancy pill", 0);
         System.out.println("creating " + test.toString());
@@ -277,7 +252,7 @@ public class ReminderListActivity extends Activity {
             ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(test);
         } catch (IOException e) {
             return;
-        }*/
+        }
 
         new ReminderAdder().execute(new String[] {Database.me.getUserName(), Database.me.getPassword(), test.toString()});
 
@@ -287,9 +262,9 @@ public class ReminderListActivity extends Activity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        addReminderResponse=null;
-        // NOTNEC
-        //toView.add(new ReminderSchedule(test.toString()));
+        addReminderResponse=null;*/
+
+
 
         refreshList();
     }
@@ -366,6 +341,7 @@ public class ReminderListActivity extends Activity {
         Intent toReminder = new Intent(this, ReminderActivity.class);
         toReminder.putExtra("REMINDER_NAME", schedule.getName());
         toReminder.putExtra("YES_NO", schedule.getMessage());
+        toReminder.putExtra("ORIGINAL_ALERT_TIME", Long.parseLong("0"));
 
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(System.currentTimeMillis());

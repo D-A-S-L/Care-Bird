@@ -105,6 +105,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.dasl.android.carebird.app.CareGiversActivity"
             android:screenOrientation="portrait"
@@ -112,6 +113,16 @@
         </activity>
         <activity
             android:name="com.dasl.android.carebird.app.CareReceiversActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.CreateReminderActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.dasl.android.carebird.app.LocationAlertActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
         </activity>

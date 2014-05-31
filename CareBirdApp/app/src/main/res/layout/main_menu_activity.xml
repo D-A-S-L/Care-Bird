@@ -11,7 +11,7 @@
 
     <Button
         android:layout_width="320dp"
-        android:layout_height="80dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
         android:text="Panic"
         android:textSize="40dp"
@@ -21,7 +21,7 @@
 
     <Button
         android:layout_width="320dp"
-        android:layout_height="80dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:text="Schedules"
@@ -32,7 +32,7 @@
 
     <Button
         android:layout_width="320dp"
-        android:layout_height="80dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:text="Care Givers"
@@ -43,12 +43,23 @@
 
     <Button
         android:layout_width="320dp"
-        android:layout_height="80dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:text="Add CareGiver"
         android:textSize="38dp"
         android:textColor="#FFFFFF"
         android:id="@+id/QRcode"
+        android:background="@drawable/button"/>
+
+    <Button
+        android:layout_width="320dp"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Settings"
+        android:textSize="38dp"
+        android:textColor="#FFFFFF"
+        android:id="@+id/button_settings"
         android:background="@drawable/button"/>
 </LinearLayout>
