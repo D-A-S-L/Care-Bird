@@ -308,10 +308,11 @@ public class Database {
 
     /**
      * This method will return the desired logs for the specified patient.
+     * User me MUST contain a valid SessionToken
      * 'type' can either be: glucose, location, or pill
      * 'limit' N restricts the number of values returned to not exceed N
      */
-    public static ArrayList<ReminderLog> getlogs(User patient, String type, int limit)throws IOException {
+    public static ArrayList<ReminderLog> getLogs(User me, User patient, String type, int limit)throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/getLogs.php");
 
@@ -341,12 +342,20 @@ public class Database {
     }
 
     /**
+     * This method will return the desired logs for 'patient'.
+     * 'type' can either be: glucose, location, or pill
+     * 'limit' N restricts the number of values returned to not exceed N
+     */
+    public static ArrayList<ReminderLog> getLogs(User patient, String type, int limit)throws IOException {
+        return getLogs(me,patient, type, limit);
+    }
+    /**
      * This method will return the desired logs for yourself.
      * 'type' can either be: glucose, location, or pill
      * 'limit' N restricts the number of values returned to not exceed N
      */
-    public static ArrayList<ReminderLog> getlogs(String type, int limit)throws IOException {
-        return getlogs(me, type, limit);
+    public static ArrayList<ReminderLog> getLogs(String type, int limit)throws IOException {
+        return getLogs(me,me, type, limit);
     }
 
     public static Status addLog(ReminderLog log)throws IOException{
