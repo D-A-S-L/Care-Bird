@@ -118,27 +118,29 @@
         <activity
         android:name="com.dasl.android.carebird.app.LoginCRActivity"
             android:screenOrientation="portrait"
-        android:label="@string/title_activity_login_cr">
+        android:label="@string/title_activity_login_cr"
+            android:windowSoftInputMode="adjustResize|stateVisible">
         <!--android:windowSoftInputMode="adjustResize|stateVisible" -->
     </activity>
         <activity
             android:name="com.dasl.android.carebird.app.LoginCGActivity"
             android:screenOrientation="portrait"
-            android:label="@string/title_activity_login_cr">
+            android:label="@string/title_activity_login_cr"
+            android:windowSoftInputMode="adjustResize|stateVisible">
             <!--android:windowSoftInputMode="adjustResize|stateVisible" -->
         </activity>
         <activity
         android:name="com.dasl.android.carebird.app.SignUpCGActivity"
             android:screenOrientation="portrait"
         android:label="@string/title_activity_login_cr"
-        android:windowSoftInputMode="stateVisible|adjustPan">
+            android:windowSoftInputMode="adjustResize|stateVisible">
         <!--android:windowSoftInputMode="adjustResize|stateVisible" -->
     </activity>
         <activity
             android:name="com.dasl.android.carebird.app.SignUpCRActivity"
             android:screenOrientation="portrait"
             android:label="@string/title_activity_login_cr"
-            android:windowSoftInputMode="stateVisible|adjustPan">
+            android:windowSoftInputMode="adjustResize|stateVisible">
             <!--android:windowSoftInputMode="adjustResize|stateVisible" -->
         </activity>
 		<receiver android:name=".WifiReceiver">

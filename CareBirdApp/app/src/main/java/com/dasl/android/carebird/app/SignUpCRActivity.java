@@ -54,6 +54,7 @@ public class SignUpCRActivity extends Activity implements LoaderManager.LoaderCa
     private EditText mFNameView;
     private EditText mLNameView;
     private EditText mPasswordView;
+    private String mcheckLogin;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -87,6 +88,15 @@ public class SignUpCRActivity extends Activity implements LoaderManager.LoaderCa
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        Button mEmailLogInButton = (Button) findViewById(R.id.email_log_in_button);
+        mEmailLogInButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                Intent myIntent = new Intent(v.getContext(), LoginCRActivity.class);
+                startActivityForResult (myIntent, 0);
             }
         });
 
@@ -159,6 +169,42 @@ public class SignUpCRActivity extends Activity implements LoaderManager.LoaderCa
             cancel = true;
         }
 
+        class PostTask extends AsyncTask<String, Integer, String> {
+            @Override
+            protected String doInBackground(String... params) {
+                User me = new User(params[0],params[1],params[2],params[3], params[4]);
+                ((GlobalApplication) getApplication()).setMe(me);
+                com.dasl.android.carebird.app.Status response;
+                String result;
+                try {
+                    response = ((GlobalApplication) getApplication()).getDatabase().addUser(me);
+                    result = response.getMessage();
+                    mcheckLogin = result;
+                }catch (IOException error){
+                    result = "failure in try catch";
+                };
+                return result;
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                Context context = getApplicationContext();
+                Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                Log.v("carebird", result);
+            }
+        }
+        new PostTask().execute(new String[]{userName, password, fname, lname, getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", "11111111111")});
+
+        try {
+            while(mcheckLogin==null)
+                Thread.sleep(333);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (mcheckLogin.compareTo("An error occured: Possibly record already exists or bad input") == 0) {
+            focusView = mUsernameView;
+            cancel = true;
+        }
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -169,30 +215,6 @@ public class SignUpCRActivity extends Activity implements LoaderManager.LoaderCa
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, fname, lname, password);
             mAuthTask.execute((Void) null);
-
-            class PostTask extends AsyncTask<String, Integer, String> {
-                @Override
-                protected String doInBackground(String... params) {
-                    User me = new User(params[0],params[1],params[2],params[3], params[4]);
-                    ((GlobalApplication) getApplication()).setMe(me);
-                    com.dasl.android.carebird.app.Status response;
-                    String result;
-                    try {
-                        response = ((GlobalApplication) getApplication()).getDatabase().addUser(me);
-                        result = response.getMessage();
-                    }catch (IOException error){
-                        result = "failure in try catch";
-                    };
-                    return result;
-                }
-                @Override
-                protected void onPostExecute(String result) {
-                    Context context = getApplicationContext();
-                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    Log.v("carebird", result);
-                }
-            }
-            new PostTask().execute(new String[]{userName, password, fname, lname, getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", "11111111111")});
 
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("userName", userName).commit();
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("fname", fname).commit();
