@@ -103,7 +103,15 @@ public class MainMenuActivity extends Activity {
         button3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(v.getContext(), QRCodeActivity.class);
-                startActivityForResult (myIntent, 0);
+                startActivityForResult(myIntent, 0);
+            }
+        });
+        Button settingsBtn = (Button) findViewById(R.id.button_settings);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), LocationActivity.class);
+                startActivity(i);
             }
         });
     }
