@@ -27,8 +27,8 @@ public class User {
     public void setToken(String token){
         this.token = token;
     }
-    public void setUserName(String uname) {
-        this.uname = uname;
+    public void setPassword(String pass) {
+        this.pass = pass;
     }
     public String getUserName(){
         return this.uname;

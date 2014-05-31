@@ -59,11 +59,15 @@ public class Database {
 
         if(response.getStatusLine().getStatusCode() == 202){
             User userFromServer = new Gson().fromJson(responseString, User.class);
-            //me.setFname(userFromServer.getFirstName());
-            //me.setLname(userFromServer.getLastName());
-            //me.setToken(userFromServer.getToken());
-            userFromServer.setUserName(me.getUserName());
-            me = userFromServer;
+            if(!me.getFirstName().equals(""))
+                me.setToken(userFromServer.getToken());
+            else {
+                //me.setFname(userFromServer.getFirstName());
+                //me.setLname(userFromServer.getLastName());
+                //me.setToken(userFromServer.getToken());
+                userFromServer.setPassword(me.getPassword());
+                me = userFromServer;
+            }
         }
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }
