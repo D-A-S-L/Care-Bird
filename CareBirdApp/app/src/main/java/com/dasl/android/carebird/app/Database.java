@@ -54,10 +54,17 @@ public class Database {
 
         String responseString=(EntityUtils.toString(response.getEntity(),"UTF-8"));
 
-        responseString=responseString.substring(1,responseString.length()-1);
-        me.setToken(responseString);
+        //responseString=responseString.substring(1,responseString.length()-1);
+        //me.setToken(responseString);
 
-
+        if(response.getStatusLine().getStatusCode() == 202){
+            User userFromServer = new Gson().fromJson(responseString, User.class);
+            //me.setFname(userFromServer.getFirstName());
+            //me.setLname(userFromServer.getLastName());
+            //me.setToken(userFromServer.getToken());
+            userFromServer.setUserName(me.getUserName());
+            me = userFromServer;
+        }
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }
 
@@ -349,21 +356,22 @@ public class Database {
         urlParameters.add(new BasicNameValuePair("type", log.getType()));
         urlParameters.add(new BasicNameValuePair("logtime", String.valueOf(log.logtime)));
         urlParameters.add(new BasicNameValuePair("originalalerttime", String.valueOf(log.originalalerttime)));
-        if(log.getType().equals("location")){
+        if(log.getType().equals(LocationLog.getType())){
             urlParameters.add(new BasicNameValuePair("metersfromhome", String.valueOf((  (LocationLog) log  ).metersfromhome)));
             urlParameters.add(new BasicNameValuePair("latitude", String.valueOf((  (LocationLog) log  ).latitude)));
             urlParameters.add(new BasicNameValuePair("longitude", String.valueOf((  (LocationLog) log  ).longitude)));
-        } else if(log.getType().equals("pill")){
+        } else if(log.getType().equals(PillLog.getType())){
             urlParameters.add(new BasicNameValuePair("message", (  (PillLog) log  ).message));
             urlParameters.add(new BasicNameValuePair("actiontaken", (  (PillLog) log  ).actiontaken));
-        } else if(log.getType().equals("glucose")){
-
+        } else if(log.getType().equals(GlucoseLog.getType())){
+            urlParameters.add(new BasicNameValuePair("glucosevalue", String.valueOf((  (GlucoseLog) log  ).glucosevalue)));
+            urlParameters.add(new BasicNameValuePair("actiontaken", (  (GlucoseLog) log  ).actiontaken));
         }
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
         HttpResponse response = client.execute(post);
 
         //responseString is either "true" or "false"
-        String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
+        //String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
 
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }

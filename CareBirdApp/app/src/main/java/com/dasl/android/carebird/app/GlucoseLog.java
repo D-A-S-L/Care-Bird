@@ -4,18 +4,18 @@ package com.dasl.android.carebird.app;
  * Created by Brian on 5/30/2014.
  */
 public class GlucoseLog extends ReminderLog {
-    public static final transient String type = "glucose";
-    public String message;
-    public String actionTaken;
+    private final transient String type = "glucose";
+    public double glucosevalue;
+    public String actiontaken;
 
     /** no arg constructor for json serialization */
     GlucoseLog(){
         super();
     }
 
-    GlucoseLog(long originalAlertTime, String type, String message, String actionTaken){
+    GlucoseLog(long originalAlertTime, String type, double glucosevalue, String actiontaken){
         super(originalAlertTime, type);
-        this.message = message;
-        this.actionTaken = actionTaken;
+        this.glucosevalue = glucosevalue;
+        this.actiontaken = actiontaken;
     }
 }

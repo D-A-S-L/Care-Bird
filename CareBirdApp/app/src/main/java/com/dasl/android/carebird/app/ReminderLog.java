@@ -4,11 +4,11 @@ package com.dasl.android.carebird.app;
  * Created by Brian on 5/24/2014.
  */
 public class ReminderLog {
-    public String getType() {
+    public static String getType() {
         return type;
     }
 
-    private transient String type;
+    private static transient String type;
     public long logtime;
     public long originalalerttime;
 

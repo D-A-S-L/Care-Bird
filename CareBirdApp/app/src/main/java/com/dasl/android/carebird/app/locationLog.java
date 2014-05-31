@@ -4,7 +4,7 @@ package com.dasl.android.carebird.app;
  * Created by Brian on 5/24/2014.
  */
 public class LocationLog extends ReminderLog {
-    public static final transient String type = "location";
+    private final transient String type = "location";
     public double metersfromhome;
     public double latitude;
     public double longitude;
