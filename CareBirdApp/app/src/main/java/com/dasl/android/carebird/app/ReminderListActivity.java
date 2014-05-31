@@ -55,17 +55,7 @@ public class ReminderListActivity extends Activity {
             //com.dasl.android.carebird.app.Status response;
             ArrayList<ReminderSchedule> result = null;
             try {
-
-                //User computer = new User("computer","computer","computer","computer");
-                //Database.login(computer);
-                //computer.setToken(Database.me.getToken());
-                //Database.addCareReceiver("okay");
-
                 result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
-
-                //Database.addCareGiver("okay");
-
-                //result = response.getMessage();
             }catch (IOException error){
                 //result = "failure in try catch";
             }
@@ -73,9 +63,6 @@ public class ReminderListActivity extends Activity {
         }
         @Override
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
-            //Context context = getApplicationContext();
-            //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-            //Log.v("carebird", result);
             toView = results;
         }
     }
