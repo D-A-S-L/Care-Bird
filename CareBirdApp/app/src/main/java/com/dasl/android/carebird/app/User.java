@@ -5,7 +5,7 @@ import android.app.Activity;
 /**
  * Created by Brian on 5/20/2014.
  */
-public class User extends Activity {
+public class User {
     private String uname;
     private String pass;
     private String fname;
@@ -48,7 +48,9 @@ public class User extends Activity {
     public String toString(){
         return fname + " " + lname;
     }
+    /*
     public boolean equals(User otherUser){
-        return otherUser.getUserName().equals(((GlobalApplication) getApplication()).getMe());
+        return otherUser.getUserName().equals(((GlobalApplication) Activity.getApplication()).getMe());
     }
+    */
 }
