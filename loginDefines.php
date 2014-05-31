@@ -42,8 +42,9 @@ function logIn(){
 				//stores a session key & returns the new session key
 				$query="insert into SessionTokens values ('$UName','$SessionToken')
 						returning UName;";
-				$result=pg_query($conn,$query);
-				if(!$result){
+				$result=pg_query($conn,$query);			
+			
+				if(pg_affected_rows($result)<0){
 					$status=400;
 					$statusMessage="An error occured";
 					$data=$result;
@@ -51,6 +52,9 @@ function logIn(){
 					$user=pg_fetch_row($result);
 					$user=$user[0];  
 					if ($UName==$user){
+						$query = "select UName,FName,LName, '' as Pass, '$SessionToken' as SessionToken from Users
+						where UName='$UName';";			
+						$result=pg_query($conn,$query);	
 						$status=202;
 						$statusMessage="User logged in.";
 						$data=$SessionToken;

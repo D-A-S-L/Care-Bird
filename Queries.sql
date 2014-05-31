@@ -131,8 +131,8 @@ create table SessionTokens
 );
 /* delete from SessionTokens where UName='cdmurphy' */
 /* delete from SessionTokens where UName='dnscianni' */
-/*
 insert into SessionTokens values ('cdmurphy','somekey');
+/*
 insert into SessionTokens values ('dnscianni','ptoken');
 */
 
