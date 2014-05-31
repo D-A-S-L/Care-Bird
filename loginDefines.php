@@ -57,7 +57,7 @@ function logIn(){
 						$result=pg_query($conn,$query);	
 						$status=202;
 						$statusMessage="User logged in.";
-						$data=$SessionToken;
+						$data=pg_fetch_row($result);
 					}
 					else{
 						$status=400;
