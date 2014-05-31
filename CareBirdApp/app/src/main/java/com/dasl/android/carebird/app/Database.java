@@ -299,7 +299,36 @@ public class Database {
     }
 
     /**
-     * This method will return the XYZ log.
-     *
+     * This method will return the desired logs for the specified patient.
+     * 'type' can either be: glucose, location, or pill
+     * 'limit' N restricts the number of values returned to not exceed N
      */
+    public static ArrayList<ReminderLog> getlogs(User patient, String type, int limit)throws IOException {
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(BASE_URL + "/getLogs.php");
+
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
+        urlParameters.add(new BasicNameValuePair("CRName", patient.getUserName()));
+        urlParameters.add(new BasicNameValuePair("type", type));
+        urlParameters.add(new BasicNameValuePair("limit", String.valueOf(limit)));
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+        HttpResponse response = client.execute(post);
+
+        // This string needs to be converted with gson into an ArrayList<ReminderLog>
+        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+        Log.v("Database.getLogs responseString: ",responseString);
+        //if (!responseString.equals("false")) {
+        if(response.getStatusLine().getStatusCode() == 202){
+            ReminderLog[] logs = new Gson().fromJson(responseString, ReminderLog[].class);
+            ArrayList<ReminderLog> temp = new ArrayList<ReminderLog>();
+            for(ReminderLog log:logs) {
+                temp.add(log);
+                Log.v("Database.getLogs log: ",log.toString());
+            }
+            return temp;
+        }
+        return new ArrayList<ReminderLog>();
+    }
 }

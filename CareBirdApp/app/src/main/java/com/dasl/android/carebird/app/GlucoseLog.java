@@ -5,7 +5,7 @@ package com.dasl.android.carebird.app;
  */
 public class GlucoseLog extends ReminderLog {
     public String message;
-    public String actionTaken; // 0 for snooze, 1 for yes, 2 for dismiss(user exits alert without answering)
+    public String actionTaken;
 
     /** no arg constructor for json serialization */
     GlucoseLog(){

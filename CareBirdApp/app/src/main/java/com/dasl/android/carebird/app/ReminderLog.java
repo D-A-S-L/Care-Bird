@@ -10,7 +10,7 @@ public class ReminderLog {
     /** no arg constructor for json serialization */
     ReminderLog(){
     }
-    
+
     ReminderLog(long originalalerttime){
         logtime = System.currentTimeMillis();
         this.originalalerttime = originalalerttime;
