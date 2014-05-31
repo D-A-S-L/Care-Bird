@@ -20,6 +20,7 @@ package com.dasl.android.carebird.app;
         import android.provider.ContactsContract;
         import android.telephony.TelephonyManager;
         import android.text.TextUtils;
+        import android.util.*;
         import android.view.KeyEvent;
         import android.view.View;
         import android.view.View.OnClickListener;
@@ -29,6 +30,9 @@ package com.dasl.android.carebird.app;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.TextView;
+        import android.widget.Toast;
+
+        import java.io.IOException;
         import java.util.ArrayList;
         import java.util.List;
 
@@ -53,9 +57,9 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
 
     // UI references.
     private AutoCompleteTextView mUsernameView;
-    private EditText mNameView;
     private EditText mPasswordView;
     private View mProgressView;
+    private String mcheckLogin;
     private View mLoginFormView;
 
     @Override
@@ -68,7 +72,6 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
 
         // text view label
         TextView userNameText = (TextView) findViewById(R.id.username);
-        TextView nameText = (TextView) findViewById(R.id.name);
         TextView passwordText = (TextView) findViewById(R.id.password);
         TextView loginButtonText = (TextView) findViewById(R.id.email_sign_in_button);
 
@@ -77,15 +80,12 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
 
         // Applying font
         userNameText.setTypeface(tf);
-        nameText.setTypeface(tf);
         passwordText.setTypeface(tf);
         loginButtonText.setTypeface(tf);
 
         // Set up the login form.
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
-
-        mNameView = (EditText) findViewById(R.id.name);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -132,7 +132,6 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
 
         // Store values at the time of the login attempt.
         String userName = mUsernameView.getText().toString();
-        String name = mNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
@@ -150,12 +149,6 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
             cancel = true;
         }
 
-        if (TextUtils.isEmpty(name)) {
-            mNameView.setError(getString(R.string.error_field_required));
-            focusView = mNameView;
-            cancel = true;
-        }
-
         // Check for a valid email address.
         if (TextUtils.isEmpty(userName)) {
             mUsernameView.setError(getString(R.string.error_field_required));
@@ -167,19 +160,55 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
             cancel = true;
         }
 
+        class PostTask extends AsyncTask<String, Integer, String>{
+            @Override
+            protected String doInBackground(String... params) {
+                User me = new User(params[0],params[1],"","", params[2]);
+                ((GlobalApplication) getApplication()).setMe(me);
+                com.dasl.android.carebird.app.Status response;
+                String result;
+                try {
+                    response = ((GlobalApplication) getApplication()).getDatabase().login(me);
+                    result = response.getMessage();
+                    mcheckLogin = result;
+                }catch (IOException error){
+                    result = "failure in try catch";
+                };
+                return result;
+            }
+            @Override
+            protected void onPostExecute(String result) {
+                Context context = getApplicationContext();
+                Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                android.util.Log.v("carebird", result);
+            }
+        }
+        new PostTask().execute(new String[]{userName, password, getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", "1111111111")});
+
+        try {
+            while(mcheckLogin==null)
+                Thread.sleep(333);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (mcheckLogin.compareTo("No user found with that combination") == 0) {
+            focusView = mUsernameView;
+            cancel = true;
+        }
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
+            cancel = false;
             focusView.requestFocus();
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(userName, name, password);
+            mAuthTask = new UserLoginTask(userName, password);
             mAuthTask.execute((Void) null);
 
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("userName", userName).commit();
-            getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("name", name).commit();
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("password", password).commit();
 
             getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putInt("firstboot", 2).commit();
@@ -298,12 +327,10 @@ public class LoginCGActivity extends Activity implements LoaderCallbacks<Cursor>
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUserName;
-        private final String mName;
         private final String mPassword;
 
-        UserLoginTask(String userName, String name, String password) {
+        UserLoginTask(String userName, String password) {
             mUserName = userName;
-            mName = name;
             mPassword = password;
         }
 
