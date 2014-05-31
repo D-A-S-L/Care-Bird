@@ -43,7 +43,7 @@ if(!$loggedIn){
 		$query="Default Query";
 		$goodInput=false;
 		// is Location log?
-		if( true || isset($_POST["latitude"]) && isset($_POST["longitude"]) && isset($_POST["metersfromhome"]) ){
+		if(isset($_POST["latitude"]) && isset($_POST["longitude"]) && isset($_POST["metersfromhome"]) ){
 			// Type is location log
 			$goodInput=true;
 			$latitude=$_POST["latitude"];
