@@ -10,7 +10,7 @@
     android:background="@drawable/bird_no_bubble">
 
     <Button
-        android:layout_width="320dp"
+        android:layout_width="333dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
         android:text="Panic"
@@ -20,18 +20,18 @@
         android:background="@drawable/button"/>
 
     <Button
-        android:layout_width="320dp"
+        android:layout_width="333dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="Schedules"
+        android:text="Schedules/Logs"
         android:textSize="40dp"
         android:textColor="#FFFFFF"
         android:id="@+id/Schedules"
         android:background="@drawable/button"/>
 
     <Button
-        android:layout_width="320dp"
+        android:layout_width="333dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
@@ -42,7 +42,7 @@
         android:background="@drawable/button"/>
 
     <Button
-        android:layout_width="320dp"
+        android:layout_width="333dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
@@ -53,7 +53,7 @@
         android:background="@drawable/button"/>
 
     <Button
-        android:layout_width="320dp"
+        android:layout_width="333dp"
         android:layout_height="75dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
