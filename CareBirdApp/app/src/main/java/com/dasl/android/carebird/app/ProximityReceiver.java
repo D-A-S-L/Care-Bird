@@ -11,16 +11,17 @@ import android.widget.Toast;
  * Created by crazz_000 on 5/10/2014.
  */
 public class ProximityReceiver extends BroadcastReceiver {
+    GPSTracker gps;
     @Override
     public void onReceive(Context context, Intent intent) {
         String key = LocationManager.KEY_PROXIMITY_ENTERING;
         boolean entering = intent.getBooleanExtra(key, false);
         if(entering) {
-            Log.i("ProximityReceiver", "Entering proximity");
+            if(gps != null)
+                gps.stopUsingGPS();
         }
         else {
-            //Send notification alert
-            Log.i("ProximityReceiver", "Exiting proximity");
+            gps = new GPSTracker(context);
         }
     }
 }
