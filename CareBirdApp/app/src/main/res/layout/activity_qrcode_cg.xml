@@ -17,11 +17,12 @@
         android:id="@+id/idQr"
         android:text="Scan your Care Receiver's QR code to save their information"
         android:textColor="#FFFFFF"
-        android:textSize="15dp"
-        android:textStyle="bold"
+        android:textSize="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_marginBottom="15dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"/>
     <Button
         android:id="@+id/scanCode"
         android:text="Scan QR Code"
@@ -29,8 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_gravity="center_horizontal"
+        android:textSize="20dp"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"
         android:background="@drawable/button2"/>
 
     <Button
@@ -40,8 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
+        android:textSize="20dp"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"
         android:background="@drawable/button2"/>
     <TextView
         android:id="@+id/qrDecoded"

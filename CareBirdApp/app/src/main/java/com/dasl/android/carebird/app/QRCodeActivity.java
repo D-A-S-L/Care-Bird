@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 
@@ -30,6 +32,8 @@ public class QRCodeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if(getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getBoolean(getString(R.string.user_type), true)) {
             setContentView(R.layout.activity_qrcode_cg);
 
@@ -52,6 +56,21 @@ public class QRCodeActivity extends Activity {
         }
         else {
             setContentView(R.layout.activity_qrcode);
+
+            // Font path
+            String fontPath = "fonts/APHont-Regular_q15c.ttf";
+
+            // text view label
+            TextView qrText = (TextView) findViewById(R.id.idQr);
+            TextView done = (TextView) findViewById(R.id.done);
+
+            // Loading Font Face
+            Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
+
+            // Applying font
+            qrText.setTypeface(tf);
+            done.setTypeface(tf);
+
             qrImage = (ImageView) findViewById(R.id.qrCode);
             Random rand = new Random(System.currentTimeMillis());
             int tok = rand.nextInt(900000) + 100000; //Six digit permission token
@@ -87,6 +106,31 @@ public class QRCodeActivity extends Activity {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                class PostTask extends AsyncTask<String, Integer, String> {
+                    @Override
+                    protected String doInBackground(String... params) {
+                        User me = new User(params[0],params[1],params[2],params[3], params[4]);
+                        String result = "error";
+                        try {
+                            if(getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("otherPhoneNumber", "thisisanerror").compareTo("thisisanerror") == 0) {
+                                ArrayList<User> cg = ((GlobalApplication) getApplication()).getDatabase().getCareGivers(me);
+                                if(cg != null && !cg.isEmpty()) {
+                                    getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit().putString("otherPhoneNumber", "tel:" + cg.get(0).getPhoneNum()).commit();
+                                    result = "tel:" + cg.get(0).getPhoneNum();
+                                }
+                            }
+                        }catch (IOException error){
+                            result = "failure in try catch";
+                        };
+                        return result;
+                    }
+                    @Override
+                    protected void onPostExecute(String result) {
+                        Log.v("carebird", result);
+                    }
+                }
+                new PostTask().execute(new String[]{getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("userName", "userName"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("password", "password"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("fname", "fname"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("lname", "lname"), getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getString("myPhoneNumber", "1111111111")});
+
                 finish();
             }
         });

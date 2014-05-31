@@ -89,24 +89,24 @@
 
             <Button
                 android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceLarge"
                 android:layout_width="300dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_height="80dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/action_sign_in"
-                android:textStyle="bold"
+                android:textSize="38dp"
+                android:textColor="#FFFFFF"
                 android:background="@drawable/button"/>
 
             <Button
                 android:id="@+id/email_log_in_button"
-                style="?android:textAppearanceLarge"
                 android:layout_width="300dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_height="80dp"
+                android:layout_height="130dp"
                 android:layout_marginTop="5dp"
                 android:text="@string/action_log_in"
-                android:textStyle="bold"
+                android:textSize="38dp"
+                android:textColor="#FFFFFF"
                 android:background="@drawable/button"/>
 
         </LinearLayout>
