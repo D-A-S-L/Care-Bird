@@ -42,7 +42,11 @@ import android.widget.TimePicker;
  */
 
 public class ReminderListActivityCG extends Activity {
-//public class ReminderListActivityCG extends FragmentActivity {
+    public int h, m;
+    public long interval;
+    public String n;
+
+    //public class ReminderListActivityCG extends FragmentActivity {
     private ArrayList<User> careReceivers;
     private String crName;
     private ArrayList<ReminderSchedule> toView = new ArrayList<ReminderSchedule>();
@@ -104,7 +108,7 @@ public class ReminderListActivityCG extends Activity {
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
             //Context context = getApplicationContext();
             //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-            //ReminderLog.v("carebird", result);
+            //Log.v("carebird", result);
             toView = results;
         }
     }
@@ -123,7 +127,7 @@ public class ReminderListActivityCG extends Activity {
                 //computer.setToken(Database.me.getToken());
                 //Database.addCareReceiver("okay");
 
-               com.dasl.android.carebird.app.Status status=  ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(new ReminderSchedule(params[1]), cr);
+                com.dasl.android.carebird.app.Status status=  ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(new ReminderSchedule(params[1]), cr);
                 result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
                 Log.v("ReminderListActivity.addReminderSchedule: ", status.getMessage());
                 //Database.addCareGiver("okay");
@@ -171,40 +175,6 @@ public class ReminderListActivityCG extends Activity {
         }
     }
 
-    /*
- class setReminders extends AsyncTask<ArrayList<ReminderSchedule>, Integer,String > {
-     @Override
-     protected String doInBackground(ArrayList<ReminderSchedule>... params) {
-         User me = new User(params[0],params[1],"","");
-         //com.dasl.android.carebird.app.Status response;
-         ArrayList<ReminderSchedule> result = null;
-         try {
-
-             //User computer = new User("computer","computer","computer","computer");
-             //Database.login(computer);
-             //computer.setToken(Database.me.getToken());
-             //Database.addCareReceiver("okay");
-
-             result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
-
-             //Database.addCareGiver("okay");
-
-             //result = response.getMessage();
-         }catch (IOException error){
-             //result = "failure in try catch";
-         }
-         return result;
-     }
-     @Override
-     protected void onPostExecute(ArrayList<ReminderSchedule> results) {
-         //Context context = getApplicationContext();
-         //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-         //ReminderLog.v("carebird", result);
-         for(ReminderSchedule result:results)
-             toView.add(result);
-     }
- }
- */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -242,7 +212,7 @@ public class ReminderListActivityCG extends Activity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 crName = (String) adapterView.getItemAtPosition(i);
 
-                System.out.println("CRname: " + crName);
+                //System.out.println("CRname: " + crName);
             }
 
             @Override
@@ -302,10 +272,15 @@ public class ReminderListActivityCG extends Activity {
         if (crName == null)
             return;
 
-        Random rand = new Random();
+        Intent intent = new Intent(this, CreateReminderActivity.class);
+        intent.putExtra("CARE_RECEIVER", false);
+        intent.putExtra("USER_NAME", crName);
+        startActivity(intent);
+
+        /*Random rand = new Random();
 
         ReminderSchedule test = new ReminderSchedule(rand.nextInt(24), rand.nextInt(60), "Fancy pill", 0);
-        System.out.println("creating " + test.toString());
+        System.out.println("creating " + test.toString());*/
         /*
         final ReminderSchedule[] test = new ReminderSchedule[1];
         class timeDialog extends DialogFragment implements TimePickerDialog.OnTimeSetListener{
@@ -330,7 +305,7 @@ public class ReminderListActivityCG extends Activity {
         new timeDialog().show(getFragmentManager(), "timePicker");
         new ReminderAdder().execute(new String[] {crName, test[0].toString()});
         */
-        new ReminderAdder().execute(new String[] {crName, test.toString()});
+        //new ReminderAdder().execute(new String[] {crName, test.toString()});
 
         refreshList();
     }
@@ -388,7 +363,7 @@ public class ReminderListActivityCG extends Activity {
             System.out.println("Timer triggered");
 
             //if (crName == null)
-                //return;
+            //return;
 
             runOnUiThread(new Runnable() {
                 public void run() {
