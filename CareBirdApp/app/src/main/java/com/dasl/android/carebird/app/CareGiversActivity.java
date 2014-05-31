@@ -126,9 +126,6 @@ public class CareGiversActivity extends ListActivity {
             TextView txt = (TextView)convertView.findViewById(R.id.CareGiver1Name);
             txt.setText(u.toString());
 
-            TextView txt2 = (TextView)convertView.findViewById(R.id.CareGiver1UserName);
-            txt2.setText(u.getUserName());
-
             TextView txt3 = (TextView)convertView.findViewById(R.id.CareGiver1Phone);
             txt3.setText(u.getPhoneNum());
 

@@ -10,6 +10,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -62,6 +63,26 @@ public class SignUpCRActivity extends Activity implements LoaderManager.LoaderCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup_cr);
+
+        // Font path
+        String fontPath = "fonts/APHont-Regular_q15c.ttf";
+
+        // text view label
+        TextView userNameText = (TextView) findViewById(R.id.username);
+        TextView passwordText = (TextView) findViewById(R.id.password);
+        TextView fnameText = (TextView) findViewById(R.id.fname);
+        TextView lnameText = (TextView) findViewById(R.id.lname);
+        TextView logInButton = (TextView) findViewById(R.id.email_log_in_button);
+
+        // Loading Font Face
+        Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
+
+        // Applying font
+        userNameText.setTypeface(tf);
+        passwordText.setTypeface(tf);
+        fnameText.setTypeface(tf);
+        lnameText.setTypeface(tf);
+        logInButton.setTypeface(tf);
 
 
         // Set up the login form.
