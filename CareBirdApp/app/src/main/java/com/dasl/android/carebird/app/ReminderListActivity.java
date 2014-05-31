@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,9 +23,12 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 /**
  * Created by Alec on 5/21/2014.
@@ -290,9 +294,8 @@ public class ReminderListActivity extends Activity {
 
     public void refreshList() {
 
-        System.out.println("Refreshing list");
+        System.out.println("Refreshing list!!");
         ListView remList = (ListView) findViewById(R.id.listView);
-
 
         new ReminderGetter().execute(new String[]{Database.me.getUserName(), Database.me.getPassword()});
 
@@ -303,19 +306,41 @@ public class ReminderListActivity extends Activity {
             ReminderSchedule temp = new ReminderSchedule(adapter.getItem(i));
 
             if (!toView.contains(temp)) {
-                removeFromAlarms(temp.getKey());
-
+                //removeFromAlarms(temp.getKey());
 
                 adapter.remove(adapter.getItem(i));
             }
         }
 
+        Set<String> s = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getStringSet("ALARMS", new HashSet<String>());
+        Object[] sArr = s.toArray();
+        System.out.println("Shared prefs loaded: " + sArr.length);
+
+        for (int i = 0; i < sArr.length; i++) {
+            System.out.println("Contents of alarms: " + sArr[i]);
+
+            if (!toView.contains((String) sArr[i])) {
+                removeFromAlarms(Integer.parseInt((String) sArr[i]));
+                s.remove((String) sArr[i]);
+            }
+        }
+
+        for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
+            if (!s.contains(toView.get(i))) {
+                addToAlarms(toView.get(i));
+                s.add("" + toView.get(i).getKey());
+            }
+        }
+
+        SharedPreferences.Editor editor = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit();//.putStringSet("ALARMS", s);
+        editor.putStringSet("ALARMS", s);
+        editor.commit();
 
         // adding items that have been added to database's list
         for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
 
             if (adapter.getPosition(toView.get(i).toString()) < 0) {
-                addToAlarms(toView.get(i));
+                //addToAlarms(toView.get(i));
 
                 adapter.add(toView.get(i).toString());
             }

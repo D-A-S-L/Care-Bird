@@ -1,47 +1,52 @@
 package com.dasl.android.carebird.app;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.PendingIntent;
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
-import android.text.format.DateFormat;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
-import android.widget.TextView;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import android.util.Log;
-import android.widget.TimePicker;
 
 /**
  * Created by Alec on 5/26/2014.
  */
 
 public class ReminderListActivityCG extends Activity {
+
+    /*
+     * This corresponds to the option to view medication reminders.
+     * One of the 5 options must be chosen at any point in this activity.
+     */
+    public final static int REMINDERS = 0;
+
+    /*
+     * This corresponds to the option to view medication logs
+     */
+    public final static int MED_LOGS = 1;
+
+    /*
+     * This corresponds to the option to view glucose logs
+     */
+    public final static int GLUCOSE_LOGS = 2;
+
+    /*
+     * This corresponds to the option to view location logs
+     */
+    public final static int LOCATION_LOGS = 3;
+
+    private int viewing;
+
     public int h, m;
     public long interval;
     public String n;
@@ -49,7 +54,10 @@ public class ReminderListActivityCG extends Activity {
     //public class ReminderListActivityCG extends FragmentActivity {
     private ArrayList<User> careReceivers;
     private String crName;
-    private ArrayList<ReminderSchedule> toView = new ArrayList<ReminderSchedule>();
+    private ArrayList<ReminderSchedule> toViewRem = new ArrayList<ReminderSchedule>();
+    private ArrayList<ReminderLog> toViewLog = new ArrayList<ReminderLog>();
+    //private ArrayList<GlucoseLog> toViewGlucoseLog = new ArrayList<GlucoseLog>();
+    //private ArrayList<LocationLog> toViewLocationLog = new ArrayList<LocationLog>();
     private String itemSelected;
     private PopupMenu deleteOpt;
     private Timer refresher;
@@ -109,17 +117,16 @@ public class ReminderListActivityCG extends Activity {
             //Context context = getApplicationContext();
             //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
             //Log.v("carebird", result);
-            toView = results;
+            toViewRem = results;
         }
     }
 
-    private class ReminderAdder extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
+    private class ReminderLogGetter extends AsyncTask<String, Integer, ArrayList<ReminderLog>> {
         @Override
-        protected ArrayList<ReminderSchedule> doInBackground(String... params) {
-            User cr = new User(params[0],"","","", "");
+        protected ArrayList<ReminderLog> doInBackground(String... params) {
+            User cr = new User(params[0], "", "", "", "");
             //com.dasl.android.carebird.app.Status response;
-            ArrayList<ReminderSchedule> result = null;
-
+            ArrayList<ReminderLog> result = null;
             try {
 
                 //User computer = new User("computer","computer","computer","computer");
@@ -127,9 +134,44 @@ public class ReminderListActivityCG extends Activity {
                 //computer.setToken(Database.me.getToken());
                 //Database.addCareReceiver("okay");
 
-                com.dasl.android.carebird.app.Status status=  ((GlobalApplication) getApplication()).getDatabase().addReminderSchedule(new ReminderSchedule(params[1]), cr);
-                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules();
-                Log.v("ReminderListActivity.addReminderSchedule: ", status.getMessage());
+                result = ((GlobalApplication) getApplication()).getDatabase().getlogs(cr, params[1], 0);
+
+                System.out.println("" + result.size());
+
+                //Database.addCareGiver("okay");
+
+                //result = response.getMessage();
+            }catch (IOException error){
+                //result = "failure in try catch";
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<ReminderLog> results) {
+            //Context context = getApplicationContext();
+            //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+            //Log.v("carebird", result);
+            toViewLog = results;
+        }
+    }
+
+    /*private class ReminderGetter extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
+        @Override
+        protected ArrayList<ReminderSchedule> doInBackground(String... params) {
+            User cr = new User(params[0], "", "", "", "");
+            //com.dasl.android.carebird.app.Status response;
+            ArrayList<ReminderSchedule> result = null;
+            try {
+
+                //User computer = new User("computer","computer","computer","computer");
+                //Database.login(computer);
+                //computer.setToken(Database.me.getToken());
+                //Database.addCareReceiver("okay");
+
+                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules(cr);
+
+                System.out.println("" + result.size());
+
                 //Database.addCareGiver("okay");
 
                 //result = response.getMessage();
@@ -140,9 +182,46 @@ public class ReminderListActivityCG extends Activity {
         }
         @Override
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
-            toView = results;
+            //Context context = getApplicationContext();
+            //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+            //Log.v("carebird", result);
+            toViewRem = results;
         }
     }
+
+    private class ReminderGetter extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
+        @Override
+        protected ArrayList<ReminderSchedule> doInBackground(String... params) {
+            User cr = new User(params[0], "", "", "", "");
+            //com.dasl.android.carebird.app.Status response;
+            ArrayList<ReminderSchedule> result = null;
+            try {
+
+                //User computer = new User("computer","computer","computer","computer");
+                //Database.login(computer);
+                //computer.setToken(Database.me.getToken());
+                //Database.addCareReceiver("okay");
+
+                result = ((GlobalApplication) getApplication()).getDatabase().getReminderSchedules(cr);
+
+                System.out.println("" + result.size());
+
+                //Database.addCareGiver("okay");
+
+                //result = response.getMessage();
+            }catch (IOException error){
+                //result = "failure in try catch";
+            }
+            return result;
+        }
+        @Override
+        protected void onPostExecute(ArrayList<ReminderSchedule> results) {
+            //Context context = getApplicationContext();
+            //Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+            //Log.v("carebird", result);
+            toViewRem = results;
+        }
+    } */
 
     private class ReminderDeleter extends AsyncTask<String, Integer, ArrayList<ReminderSchedule>> {
         @Override
@@ -171,7 +250,7 @@ public class ReminderListActivityCG extends Activity {
         }
         @Override
         protected void onPostExecute(ArrayList<ReminderSchedule> results) {
-            toView = results;
+            toViewRem = results;
         }
     }
 
@@ -199,14 +278,33 @@ public class ReminderListActivityCG extends Activity {
             }
         });
 
-
-
         String a = Database.me.getUserName();
         String b = Database.me.getPassword();
         new ReminderGetter().execute(new String[]{a, b});
 
         new CareReceiverGetter().execute(new String[]{a, b});
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+
+        viewing = 0;
+
+        Spinner viewing = (Spinner) findViewById(R.id.spinner);
+        viewing.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                changeViewType(i);
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                changeViewType(0);
+            }
+        });
+
+        ArrayAdapter<String> viewTypes = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+        viewTypes.add("Reminders");
+        viewTypes.add("Medication Logs");
+        viewTypes.add("Glucose Logs");
+        viewTypes.add("Location Logs");
+        viewing.setAdapter(viewTypes);
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinner2);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -322,40 +420,69 @@ public class ReminderListActivityCG extends Activity {
 
         System.out.println("Refreshing list");
         ListView remList = (ListView) findViewById(R.id.listView);
-
-        new ReminderGetter().execute(new String[]{crName});
-
         ArrayAdapter<String> adapter = (ArrayAdapter<String>) remList.getAdapter();
 
-        // removing items that are no longer in the database's list
-        for (int i = adapter.getCount() - 1; i >= 0; i--) {
-            ReminderSchedule temp = new ReminderSchedule(adapter.getItem(i));
+        if (viewing == REMINDERS) {
 
-            if (!toView.contains(temp)) {
+            new ReminderGetter().execute(new String[]{crName});
+
+            // removing all items from adapter
+            for (int i = adapter.getCount() - 1; i >= 0; i--) {
                 adapter.remove(adapter.getItem(i));
             }
-        }
 
-
-        // adding items that have been added to database's list
-        for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
-
-            if (adapter.getPosition(toView.get(i).toString()) < 0) {
-                adapter.add(toView.get(i).toString());
+            // adding items from the database's retrieved list
+            for (int i = 0; i < toViewRem.size() && toViewRem.get(i) != null; i++) {
+                adapter.add(toViewRem.get(i).toString());
             }
 
+            adapter.notifyDataSetChanged();
+
+            for (int i = 0; i < toViewRem.size(); i++)
+                System.out.println("Contents: " + toViewRem.get(i).toString());
+
+            return;
+        } else if (viewing == MED_LOGS) {
+            new ReminderLogGetter().execute(new String[] {crName, PillLog.getType()});
+        } else if (viewing == GLUCOSE_LOGS) {
+            new ReminderLogGetter().execute(new String[] {crName, GlucoseLog.getType()});
+        } else {
+            new ReminderLogGetter().execute(new String[] {crName, LocationLog.getType()});
+        }
+
+        // removing all items from adapter
+        for (int i = adapter.getCount() - 1; i >= 0; i--) {
+            adapter.remove(adapter.getItem(i));
+        }
+
+        // adding items from the database's retrieved list
+        for (int i = 0; i < toViewLog.size() && toViewLog.get(i) != null; i++) {
+            adapter.add(toViewLog.get(i).toString());
         }
 
         adapter.notifyDataSetChanged();
 
-        for (int i = 0; i < toView.size(); i++)
-            System.out.println("Contents: " + toView.get(i).toString());
+        for (int i = 0; i < toViewLog.size() && toViewLog.get(i) != null; i++)
+            System.out.println("Contents: " + toViewLog.get(i).toString());
     }
 
     public void onDestroy() {
         refresher.cancel();
 
         super.onDestroy();
+    }
+
+    public void changeViewType(int type) {
+        viewing = type;
+        Button addButton = (Button) findViewById(R.id.add_button);
+
+        if (type == REMINDERS) {
+            addButton.setEnabled(true);
+        } else {
+            addButton.setEnabled(false);
+        }
+
+        refreshList();
     }
 
     private class RefresherTask extends TimerTask {
@@ -368,7 +495,7 @@ public class ReminderListActivityCG extends Activity {
             runOnUiThread(new Runnable() {
                 public void run() {
 
-                    Spinner spinner = (Spinner) findViewById(R.id.spinner);
+                    Spinner spinner = (Spinner) findViewById(R.id.spinner2);
                     ArrayAdapter<String> sAdapter = (ArrayAdapter<String>) spinner.getAdapter();
 
                     if (careReceivers != null) {

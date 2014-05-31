@@ -22,7 +22,6 @@ public class ChoiceActivity extends Activity {
   //  SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
     protected void onCreate(Bundle savedInstanceState) {
 
-
         int firstboot = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getInt("firstboot", 0);
 
         TelephonyManager tMgr = (TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE);
