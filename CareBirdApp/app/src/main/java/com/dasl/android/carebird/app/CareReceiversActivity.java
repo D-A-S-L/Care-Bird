@@ -3,6 +3,8 @@ package com.dasl.android.carebird.app;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -100,6 +102,8 @@ public class CareReceiversActivity extends ListActivity {
         public View getView(final int position, View convertView, ViewGroup parent) {
             if(convertView == null) {
                 convertView = act.getLayoutInflater().inflate(R.layout.care_receivers_activity, null);
+                final ListView listView = getListView();
+                listView.setBackgroundResource(R.drawable.bg);
             }
 
             final User u = mCareReceivers.get(position);
@@ -107,11 +111,16 @@ public class CareReceiversActivity extends ListActivity {
             TextView txt = (TextView)convertView.findViewById(R.id.CareReceiver1Name);
             txt.setText(u.toString());
 
-            TextView txt2 = (TextView)convertView.findViewById(R.id.CareReceiver1UserName);
-            txt2.setText(u.getUserName());
-
             TextView txt3 = (TextView)convertView.findViewById(R.id.CareReceiver1Phone);
             txt3.setText(u.getPhoneNum());
+
+            Button button0 = (Button) convertView.findViewById(R.id.CallButton2);
+            button0.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + u.getPhoneNum()));
+                    startActivityForResult (myIntent, 0);
+                }
+            });
 
 			/*TextView repTextView = (TextView)convertView.findViewById(R.id.taq_list_item_repTextView);
             String temp = "";

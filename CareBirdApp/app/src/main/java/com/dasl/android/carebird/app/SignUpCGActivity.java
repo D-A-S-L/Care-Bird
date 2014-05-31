@@ -213,6 +213,7 @@ public class SignUpCGActivity extends Activity implements LoaderManager.LoaderCa
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+            ((GlobalApplication) getApplication()).logged();
             showProgress(true);
             mAuthTask = new UserLoginTask(userName, fname, lname, password);
             mAuthTask.execute((Void) null);
