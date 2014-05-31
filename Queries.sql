@@ -73,7 +73,9 @@ create table Logs
 );
 
 /*
-				insert into Logs values
+				insert into Logs
+				(UName,latitude,longitude,metersfromhome,originalalerttime,type)
+				values
 				( 
 				  (select UName from SessionTokens where SessionToken='somekey') 
 				, '5', '5', '4'

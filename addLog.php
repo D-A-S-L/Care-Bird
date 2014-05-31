@@ -51,7 +51,7 @@ if(!$loggedIn){
 			$metersfromhome=$_POST["metersfromhome"];
 			$query="	
 				insert into Logs
-				(UName,latitude,longitude,metersfromhome,originalalerttime,type)
+				(UName,latitude,longitude,metersfromhome,originalalerttime,logtime,type)
 				 values
 				( 
 				  (select UName from SessionTokens where SessionToken='$SessionToken')
