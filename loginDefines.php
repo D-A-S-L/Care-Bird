@@ -58,6 +58,7 @@ function logIn(){
 						$status=202;
 						$statusMessage="User logged in.";
 						$data=pg_fetch_all($result);
+						$data=$data[0];
 					}
 					else{
 						$status=400;
