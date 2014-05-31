@@ -54,7 +54,7 @@ if(!$loggedIn){
 				( 
 				  (select UName from SessionTokens where SessionToken='$SessionToken') /* UName */
 				, '$latitude', '$longitude', '$metersfromhome'
-				, '$originalalerttime','$logtime',$type
+				, '$originalalerttime','$logtime','$type'
 				);			
 			";
 		}
