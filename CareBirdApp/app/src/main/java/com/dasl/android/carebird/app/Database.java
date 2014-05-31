@@ -26,9 +26,7 @@ public class Database {
      * Upon a successful user/pass combination, the User object held by the Database class will be updated
      * with a SessionToken. No additional manipulation will be required by android developers.*/
     public static Status login(User user) throws IOException{
-
         me = user;
-
         //HttpPost post = new HttpPost(BASE_URL);
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/login.php");
@@ -53,22 +51,17 @@ public class Database {
         */
 
         String responseString=(EntityUtils.toString(response.getEntity(),"UTF-8"));
-
+        Log.v("Database.Login(): response String: ",responseString);
         //responseString=responseString.substring(1,responseString.length()-1);
         //me.setToken(responseString);
-        //Log.v("CareBird: ", String.valueOf(response.getStatusLine().getStatusCode()));
         if(response.getStatusLine().getStatusCode() == 202){
             User userFromServer = new Gson().fromJson(responseString, User.class);
-            //Log.v("Session Token: ", userFromServer.getToken());
-            if(!me.getFirstName().equals(""))
-                me.setToken(userFromServer.getToken());
-            else {
+            String pass = me.getPassword();
+            me = userFromServer;
+            Log.v("Database.login(): Session Token : ",me.getToken());
                 //me.setFname(userFromServer.getFirstName());
                 //me.setLname(userFromServer.getLastName());
                 //me.setToken(userFromServer.getToken());
-                userFromServer.setPassword(me.getPassword());
-                me = userFromServer;
-            }
         }
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }
@@ -98,6 +91,7 @@ public class Database {
 
         //responseString is either "true" or "false"
         String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
+        Log.v("Database.addCareGiver: responseString: ",responseString);
         System.out.println("ResponseString: "+responseString);
         return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
     }
@@ -147,6 +141,7 @@ public class Database {
 
         //responseString is either "true" or "false"
         String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
+        Log.v("Database.addUser: responseString: ", responseString);
         if(!responseString.equals("false")){
             login(newUser);
         }
