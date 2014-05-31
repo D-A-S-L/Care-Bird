@@ -58,6 +58,7 @@ public class Database {
             User userFromServer = new Gson().fromJson(responseString, User.class);
             String pass = me.getPassword();
             me = userFromServer;
+            me.setPassword(pass);
             Log.v("Database.login(): Session Token : ",me.getToken());
                 //me.setFname(userFromServer.getFirstName());
                 //me.setLname(userFromServer.getLastName());
@@ -350,16 +351,16 @@ public class Database {
 
     public static Status addLog(ReminderLog log)throws IOException{
         HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(BASE_URL + "/addReminderSchedule.php");
+        HttpPost post = new HttpPost(BASE_URL + "/addLog.php");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
         urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
         urlParameters.add(new BasicNameValuePair("type", log.getType()));
         urlParameters.add(new BasicNameValuePair("logtime", String.valueOf(log.logtime)));
         urlParameters.add(new BasicNameValuePair("originalalerttime", String.valueOf(log.originalalerttime)));
         if(log.getType().equals(LocationLog.getType())){
-            urlParameters.add(new BasicNameValuePair("metersfromhome", String.valueOf((  (LocationLog) log  ).metersfromhome)));
-            urlParameters.add(new BasicNameValuePair("latitude", String.valueOf((  (LocationLog) log  ).latitude)));
-            urlParameters.add(new BasicNameValuePair("longitude", String.valueOf((  (LocationLog) log  ).longitude)));
+            urlParameters.add(new BasicNameValuePair("metersfromhome",String.valueOf(((LocationLog)log).metersfromhome)));
+            urlParameters.add(new BasicNameValuePair("latitude", String.valueOf(((LocationLog)log).latitude)));
+            urlParameters.add(new BasicNameValuePair("longitude", String.valueOf(((LocationLog)log).longitude)));
         } else if(log.getType().equals(PillLog.getType())){
             urlParameters.add(new BasicNameValuePair("message", (  (PillLog) log  ).message));
             urlParameters.add(new BasicNameValuePair("actiontaken", (  (PillLog) log  ).actiontaken));
