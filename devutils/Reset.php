@@ -4,14 +4,27 @@ $conn=connect();
 header("Content-Type: application/json");
 
 $sql = "
-
-
-
+/*
+select * from Users;
+delete from Users;
+select * from CanCareFor;
+delete from CanCareFor;
+select * from QRTokens;
+delete from QRTokens;
+select * from PillRecord;
+select * from SessionTokens;
+delete from SessionTokens;
+select * from ReminderSchedules;
+delete from ReminderSchedules;
+select * from Logs
+delete from Logs
+*/
 drop table CanCareFor;
 drop table PillRecord;
 drop table QRTokens;
 drop table SessionTokens;
 drop table ReminderSchedules;
+drop table Logs;
 drop table Users;
 
 
@@ -22,8 +35,14 @@ create table Users
 , Pass  varchar(15) not null CHECK (Pass ~ '^[0-9a-zA-Z]+$')   /* All fields made large to make notes easility, will be changed later */
 , PhoneNum  varchar(15) CHECK (PhoneNum ~ '^[0-9]+$')
 );
+
+insert into users values ('Doctor', 'Guy', 'docguy','docguy','5555555555');
+insert into users values ('Patient', 'Guy', 'patguy','patguy','4444444444');
+insert into users values ( 'Ted', 'Bear','teddybear','teddybear','4444444444');
+insert into users values ( 'Red', 'Bull','redbull','redbull','4444444444');
+insert into users values ('Chris', 'Murphy', 'cdmurphy','chris','6263754326');
+
 /*  
-insert into users values ('Chris', 'Murphy', 'cdmurphy','chris');
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
@@ -40,6 +59,35 @@ create table CanCareFor
 ,foreign key (CGID) references Users(UName) on delete cascade
 ,primary key (CRID, CGID)
 );
+
+create table logs
+( UName varchar(15) not null
+, latitude float not null
+, longitude float not null
+, metersfromhome float not null
+, originalalerttime bigint not null
+, logtime bigint not null
+, foreign key (UName) references Users(UName)
+, primary key (UName,latitude,longitude,metersfromhome,originalalerttime,logtime)
+);
+
+/*
+				insert into Logs values
+				( 
+				  'cdmurphy' 
+				, '1', '2', '3'
+				, '4','5'
+				);			
+*/
+
+
+
+insert into CanCareFor values('docguy','patguy');
+/*
+insert into CanCareFor values('docguy','dnscianni');
+insert into CanCareFor values('teddybear','dnscianni');
+insert into CanCareFor values('redbull','dnscianni');
+*/
 /*
 insert into CanCareFor values('cdmurphy','dnscianni');
 insert into CanCareFor values('bsaia','dnscianni');
@@ -101,7 +149,7 @@ create table ReminderSchedules
 , name varchar(25) not null check (name <> '')
 , minute int not null
 , hour int not null
-, interval int not null
+, interval bigint not null
 , foreign key (UName) references Users(UName)
 , primary key (UName, name, minute, hour,interval)
 );
@@ -118,15 +166,13 @@ create table PillRecord
 insert into PillRecord values ('cdmurphy','Mon May 12 00:31:00 GMT 2014', 'Mon May 12 00:36:00 GMT 2014', 'Take the Blue pill','Red Pill Taken');
 insert into PillRecord values ('dnscianni','Mon May 12 00:32:00 GMT 2014','Mon May 12 00:37:00 GMT 2014',  'Take the Red pill','Blue Pill Taken');
 
-
-
 ";
 $result = pg_query($conn, $sql);
 
-if(empty($result))
-	deliver_response(200, "No entries in table 'ourgroup'", NULL);
+if(!pg_affected_rows($result))
+	echo deliver_response(200, "An error occured reseting the database", NULL);
 else
-	deliver_response(200, "Table 'ourgroup'", $result);
+	echo deliver_response(200, "Database Reset", $result);
 	
 pg_close ($conn);
 ?>

@@ -1,21 +1,4 @@
-﻿-- Database: d86fo56ie0kqjt
-
--- DROP DATABASE d86fo56ie0kqjt;
-
-CREATE DATABASE d86fo56ie0kqjt
-  WITH OWNER = yndbtfxmnwkcgi
-       ENCODING = 'UTF8'
-       TABLESPACE = pg_default
-       LC_COLLATE = 'en_US.UTF-8'
-       LC_CTYPE = 'en_US.UTF-8'
-       CONNECTION LIMIT = -1;
-GRANT ALL ON DATABASE d86fo56ie0kqjt TO yndbtfxmnwkcgi;
-REVOKE ALL ON DATABASE d86fo56ie0kqjt FROM public;
-
-
-			select CRID as CanCareFor from CanCareFor
-				where  CRID='dnscianni' and CGID in (select UName as CGID from SessionTokens where SessionToken='somekey');
-
+﻿/*
 select * from Users;
 delete from Users;
 select * from CanCareFor;
@@ -27,12 +10,15 @@ select * from SessionTokens;
 delete from SessionTokens;
 select * from ReminderSchedules;
 delete from ReminderSchedules;
-
+select * from Logs
+delete from Logs
+*/
 drop table CanCareFor;
 drop table PillRecord;
 drop table QRTokens;
 drop table SessionTokens;
 drop table ReminderSchedules;
+drop table Logs;
 drop table Users;
 
 
@@ -48,8 +34,9 @@ insert into users values ('Doctor', 'Guy', 'docguy','docguy','5555555555');
 insert into users values ('Patient', 'Guy', 'patguy','patguy','4444444444');
 insert into users values ( 'Ted', 'Bear','teddybear','teddybear','4444444444');
 insert into users values ( 'Red', 'Bull','redbull','redbull','4444444444');
-/*  
 insert into users values ('Chris', 'Murphy', 'cdmurphy','chris','6263754326');
+
+/*  
 insert into users values ('David', 'Scianni', 'dnscianni', 'david');
 insert into users values ('Amir', 'Sandoval', 'asandoval', 'amir');
 insert into users values ('Alec', 'Shay', 'ashay', 'alec');
@@ -66,6 +53,27 @@ create table CanCareFor
 ,foreign key (CGID) references Users(UName) on delete cascade
 ,primary key (CRID, CGID)
 );
+
+create table Logs
+( UName varchar(15) not null
+, latitude float not null
+, longitude float not null
+, metersfromhome float not null
+, originalalerttime bigint not null
+, logtime bigint not null
+, foreign key (UName) references Users(UName)
+, primary key (UName,latitude,longitude,metersfromhome,originalalerttime,logtime)
+);
+
+/*
+				insert into Logs values
+				( 
+				  'cdmurphy' 
+				, '1', '2', '3'
+				, '4','5'
+				);			
+*/
+
 
 
 insert into CanCareFor values('docguy','patguy');
@@ -135,7 +143,7 @@ create table ReminderSchedules
 , name varchar(25) not null check (name <> '')
 , minute int not null
 , hour int not null
-, interval int not null
+, interval bigint not null
 , foreign key (UName) references Users(UName)
 , primary key (UName, name, minute, hour,interval)
 );
