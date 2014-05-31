@@ -52,7 +52,7 @@ function logIn(){
 					$user=pg_fetch_row($result);
 					$user=$user[0];  
 					if ($UName==$user){
-						$query = "select UName,FName,LName, '' as Pass, '$SessionToken' as token, PhoneNum from Users
+						$query = "select UName,FName,LName, Pass, '$SessionToken' as token, PhoneNum from Users
 						where UName='$UName';";			
 						$result=pg_query($conn,$query);	
 						$status=202;
