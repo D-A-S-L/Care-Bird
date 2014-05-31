@@ -331,4 +331,26 @@ public class Database {
         }
         return new ArrayList<ReminderLog>();
     }
+
+    public static Status addLog(ReminderLog log)throws IOException{
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(BASE_URL + "/addReminderSchedule.php");
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("SessionToken", me.getToken()));
+        urlParameters.add(new BasicNameValuePair("type", log.getType()));
+        urlParameters.add(new BasicNameValuePair("logtime", String.valueOf(log.logtime)));
+        urlParameters.add(new BasicNameValuePair("originalalerttime", String.valueOf(log.originalalerttime)));
+        if(log.getType().equals("location")){
+            urlParameters.add(new BasicNameValuePair("metersfromhome", String.valueOf((  (LocationLog) log  ).metersfromhome)));
+            urlParameters.add(new BasicNameValuePair("latitude", String.valueOf((  (LocationLog) log  ).latitude)));
+            urlParameters.add(new BasicNameValuePair("longitude", String.valueOf((  (LocationLog) log  ).longitude)));
+        }
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
+        HttpResponse response = client.execute(post);
+
+        //responseString is either "true" or "false"
+        String responseString = EntityUtils.toString(response.getEntity(),"UTF-8");
+
+        return new Status(response.getStatusLine().getStatusCode(),response.getStatusLine().getReasonPhrase());
+    }
 }
