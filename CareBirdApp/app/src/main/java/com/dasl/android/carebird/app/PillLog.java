@@ -4,7 +4,7 @@ package com.dasl.android.carebird.app;
  * Created by Brian on 5/24/2014.
  */
 public class PillLog extends ReminderLog {
-    private final transient String type = "pill";
+    public static final transient String type = "pill";
     public String message;
     public String actiontaken; // 0 for snooze, 1 for yes, 2 for dismiss(user exits alert without answering)
 

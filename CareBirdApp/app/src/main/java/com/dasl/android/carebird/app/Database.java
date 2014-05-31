@@ -332,6 +332,15 @@ public class Database {
         return new ArrayList<ReminderLog>();
     }
 
+    /**
+     * This method will return the desired logs for yourself.
+     * 'type' can either be: glucose, location, or pill
+     * 'limit' N restricts the number of values returned to not exceed N
+     */
+    public static ArrayList<ReminderLog> getlogs(String type, int limit)throws IOException {
+        return getlogs(me, type, limit);
+    }
+
     public static Status addLog(ReminderLog log)throws IOException{
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/addReminderSchedule.php");
@@ -344,6 +353,11 @@ public class Database {
             urlParameters.add(new BasicNameValuePair("metersfromhome", String.valueOf((  (LocationLog) log  ).metersfromhome)));
             urlParameters.add(new BasicNameValuePair("latitude", String.valueOf((  (LocationLog) log  ).latitude)));
             urlParameters.add(new BasicNameValuePair("longitude", String.valueOf((  (LocationLog) log  ).longitude)));
+        } else if(log.getType().equals("pill")){
+            urlParameters.add(new BasicNameValuePair("message", (  (PillLog) log  ).message));
+            urlParameters.add(new BasicNameValuePair("actiontaken", (  (PillLog) log  ).actiontaken));
+        } else if(log.getType().equals("glucose")){
+
         }
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
         HttpResponse response = client.execute(post);
