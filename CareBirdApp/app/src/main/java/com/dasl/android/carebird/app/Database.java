@@ -49,16 +49,17 @@ public class Database {
             System.out.println(EntityUtils.toString(response.getEntity(),"UTF-8"));
         }
         else
-            ReminderLog.v("carebird1", "data is null");
+            Log.v("carebird1", "data is null");
         */
 
         String responseString=(EntityUtils.toString(response.getEntity(),"UTF-8"));
 
         //responseString=responseString.substring(1,responseString.length()-1);
         //me.setToken(responseString);
-
+        //Log.v("CareBird: ", String.valueOf(response.getStatusLine().getStatusCode()));
         if(response.getStatusLine().getStatusCode() == 202){
             User userFromServer = new Gson().fromJson(responseString, User.class);
+            //Log.v("Session Token: ", userFromServer.getToken());
             if(!me.getFirstName().equals(""))
                 me.setToken(userFromServer.getToken());
             else {

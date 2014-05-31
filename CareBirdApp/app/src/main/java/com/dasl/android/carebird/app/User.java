@@ -11,7 +11,7 @@ public class User {
     private String fname;
     private String lname;
     private String phonenum;
-    private transient  String token = "";
+    private String token = "";
 
     public User(){
         //no argument constructor, required for the Gson serializer
