@@ -61,6 +61,7 @@ create table Logs
 , metersfromhome float not null
 , originalalerttime bigint not null
 , logtime bigint not null
+, type bigint not null
 , foreign key (UName) references Users(UName)
 , primary key (UName,latitude,longitude,metersfromhome,originalalerttime,logtime)
 );

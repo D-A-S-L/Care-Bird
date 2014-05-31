@@ -29,7 +29,7 @@ if(!$loggedIn){
 	$data = false;
 }else{
 	// Valid Session Token but no Permission Token Provided...
-	if(!(   isset($_POST["SessionToken"]) && isset($_POST["logtime"])  && isset($_POST["originalalerttime"])  ))
+	if(!(   isset($_POST["SessionToken"]) &&  isset($_POST["type"]) && isset($_POST["logtime"])  && isset($_POST["originalalerttime"])  ))
 	{		
 		$status=400;
 		$data=false;
@@ -39,10 +39,11 @@ if(!$loggedIn){
 		$SessionToken=$_POST["SessionToken"];
 		$logtime=$_POST["logtime"];
 		$originalalerttime = $_POST["originalalerttime"];
+		$type=$_POST["type"];
 		$query="Default Query";
 		$goodInput=false;
 		// is Location log?
-		if((isset($_POST["latitude"]) && isset($_POST["longitude"]) && isset($_POST["metersfromhome"])) ){
+		if(isset($_POST["latitude"]) && isset($_POST["longitude"]) && isset($_POST["metersfromhome"]) ){
 			// Type is location log
 			$goodInput=true;
 			$latitude=$_POST["latitude"];
@@ -53,7 +54,7 @@ if(!$loggedIn){
 				( 
 				  (select UName from SessionTokens where SessionToken='$SessionToken') /* UName */
 				, '$latitude', '$longitude', '$metersfromhome'
-				, '$originalalerttime','$logtime'
+				, '$originalalerttime','$logtime',$type
 				);			
 			";
 		}
