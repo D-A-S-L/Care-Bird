@@ -47,7 +47,7 @@ public class Database {
             System.out.println(EntityUtils.toString(response.getEntity(),"UTF-8"));
         }
         else
-            ReminderLog.v("carebird1", "data is null");
+            Log.v("carebird1", "data is null");
         */
 
         String responseString=(EntityUtils.toString(response.getEntity(),"UTF-8"));
