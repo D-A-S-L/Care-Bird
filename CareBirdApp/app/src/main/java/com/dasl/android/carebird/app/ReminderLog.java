@@ -3,7 +3,7 @@ package com.dasl.android.carebird.app;
 /**
  * Created by Brian on 5/24/2014.
  */
-public class ReminderLog {
+public abstract class ReminderLog {
     public long logtime;
     public long originalalerttime;
 
@@ -11,11 +11,12 @@ public class ReminderLog {
     ReminderLog(){
     }
 
+    public String getType(){return "unknown";}
     ReminderLog(long originalalerttime){
         logtime = System.currentTimeMillis();
         this.originalalerttime = originalalerttime;
     }
-    public static String getType() {
-        return "unknown";
+    public String toString(){
+        return "logtime: "+logtime+", originalalerttime: "+originalalerttime;
     }
 }
