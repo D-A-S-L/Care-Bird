@@ -181,6 +181,10 @@ public class MainMenuActivity extends Activity {
                 Intent i1 = new Intent(this, ContactActivity.class);
                 startActivity(i1);
                 return true;
+            case R.id.action_test:
+                Intent i2 = new Intent(this, TestLocationLog.class);
+                startActivity(i2);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
