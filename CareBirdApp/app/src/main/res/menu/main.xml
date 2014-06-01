@@ -10,4 +10,7 @@
     <item android:id="@+id/action_contacts"
         android:title="@string/contact"
         app:showAsAction="never" />
+    <item android:id="@+id/action_test"
+        android:title="Test Location Log"
+        app:showAsAction="never" />
 </menu>
