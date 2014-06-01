@@ -13,7 +13,7 @@ public class PillLog extends ReminderLog {
         super();
     }
 
-    PillLog(long originalalerttime, String message, String actiontaken){
+    PillLog(long originalalerttime, String message, String actiontaken) {
         super(originalalerttime);
         this.message = message;
         this.actiontaken = actiontaken;

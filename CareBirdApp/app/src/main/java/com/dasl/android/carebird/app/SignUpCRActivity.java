@@ -221,7 +221,8 @@ public class SignUpCRActivity extends Activity implements LoaderManager.LoaderCa
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if (mcheckLogin.compareTo("An error occured: Possibly record already exists or bad input") == 0) {
+        //if (mcheckLogin.compareTo("An error occured: Possibly record already exists or bad input") == 0) {
+        if (mcheckLogin.equals("An error occured: Possibly record already exists or bad input")) {
             focusView = mUsernameView;
             cancel = true;
         }

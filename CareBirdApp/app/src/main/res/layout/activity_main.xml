@@ -30,7 +30,7 @@
         android:layout_below="@+id/PolyWelcome"
         android:layout_alignLeft="@+id/PolyWelcome"
         android:layout_alignStart="@+id/PolyWelcome"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:layout_alignRight="@+id/PolyWelcome"
         android:layout_alignEnd="@+id/PolyWelcome" />
 
