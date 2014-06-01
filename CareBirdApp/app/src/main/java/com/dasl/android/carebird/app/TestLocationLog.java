@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -37,8 +38,9 @@ public class TestLocationLog extends Activity {
             double currLon = 12.123;
 
             try {
-                response = ((GlobalApplication) getApplication()).getDatabase().addLog(new LocationLog(System.currentTimeMillis(),
-                        45.76, currLat, currLon));
+                ReminderLog l = new LocationLog(System.currentTimeMillis(), 45.76, currLat, currLon);
+                Log.v("TestLocationLog: ",l.toString());
+                response = ((GlobalApplication) getApplication()).getDatabase().addLog(l);
                 result = response.getMessage();
             }
             catch(IOException e) {

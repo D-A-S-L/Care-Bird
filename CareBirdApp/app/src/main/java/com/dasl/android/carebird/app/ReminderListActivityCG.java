@@ -134,7 +134,7 @@ public class ReminderListActivityCG extends Activity {
                 //computer.setToken(Database.me.getToken());
                 //Database.addCareReceiver("okay");
 
-                result = ((GlobalApplication) getApplication()).getDatabase().getlogs(cr, params[1], 0);
+                result = ((GlobalApplication) getApplication()).getDatabase().getLogs(cr, params[1], 0);
 
                 System.out.println("" + result.size());
 
@@ -443,11 +443,11 @@ public class ReminderListActivityCG extends Activity {
 
             return;
         } else if (viewing == MED_LOGS) {
-            new ReminderLogGetter().execute(new String[] {crName, PillLog.getType()});
+            new ReminderLogGetter().execute(new String[] {crName, PillLog.type});
         } else if (viewing == GLUCOSE_LOGS) {
-            new ReminderLogGetter().execute(new String[] {crName, GlucoseLog.getType()});
+            new ReminderLogGetter().execute(new String[] {crName, GlucoseLog.type});
         } else {
-            new ReminderLogGetter().execute(new String[] {crName, LocationLog.getType()});
+            new ReminderLogGetter().execute(new String[] {crName, LocationLog.type});
         }
 
         // removing all items from adapter
