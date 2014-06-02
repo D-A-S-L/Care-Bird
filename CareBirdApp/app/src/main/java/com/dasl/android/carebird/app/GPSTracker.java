@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class GPSTracker extends Service implements LocationListener {
     double longitude;
 
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 20; // 20 meters
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 5 minute
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 5; // 5 minute
 
     protected LocationManager locationManager;
 
@@ -128,7 +129,7 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        android.util.Log.i("OnLocationChanged", "inside locationchanged");
+        this.location = location;
         new LogLocation().execute(new String[]{});
     }
 
@@ -173,7 +174,7 @@ public class GPSTracker extends Service implements LocationListener {
             double lon = Double.parseDouble(mPref.getString("GPS_LONGITUDE", null));
             double currLat = getLatitude();
             double currLon = getLongitude();
-
+            Log.i("GPSTracker", currLat + "   " + currLon);
             try {
                 response = Database.addLog(new LocationLog(System.currentTimeMillis(),
                         distFrom(lat, lon, currLat, currLon), currLat, currLon));

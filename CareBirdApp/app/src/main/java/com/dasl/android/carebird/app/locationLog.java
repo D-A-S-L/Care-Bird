@@ -9,15 +9,16 @@ public class LocationLog extends ReminderLog {
     public double latitude;
     public double longitude;
 
-    /** no arg constructor for json serialization */
+    /** no arg constructor for json serialization *///
+    //
     LocationLog(){
         super();
     }
 
-    LocationLog(long originalalerttime, double metersfromhome, double latitude, double longitude){
+    LocationLog(long originalalerttime, double metersfromhome, double lat, double longitude){
         super(originalalerttime);
         this.metersfromhome = metersfromhome;
-        this.latitude = latitude;
+        this.latitude = lat;
         this.longitude = longitude;
     }
     @Override

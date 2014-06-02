@@ -22,6 +22,7 @@ public class ProximityReceiver extends BroadcastReceiver {
         }
         else {
             gps = new GPSTracker(context);
+            //call service?
         }
     }
 }
