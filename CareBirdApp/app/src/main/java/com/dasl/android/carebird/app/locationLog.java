@@ -26,7 +26,7 @@ public class LocationLog extends ReminderLog {
         return LocationLog.type;
     }
     public String toString(){
-        return super.toString()+", Type: "+type+ ", metersfromhome: "+metersfromhome
-                +", latitude: "+latitude+", longitude: "+longitude;
+        return "Care receiver was: " + metersfromhome + " meters from home at " + originalalerttime +
+                "; coordinates: (" + latitude + "," + longitude + ")";
     }
 }

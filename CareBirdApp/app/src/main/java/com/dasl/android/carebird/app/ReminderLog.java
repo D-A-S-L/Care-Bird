@@ -16,7 +16,9 @@ public abstract class ReminderLog {
         logtime = System.currentTimeMillis();
         this.originalalerttime = originalalerttime;
     }
-    public String toString(){
+    /*public String toString(){
         return "logtime: "+logtime+", originalalerttime: "+originalalerttime;
-    }
+    }*/
+
+    //public abstract String toString();
 }

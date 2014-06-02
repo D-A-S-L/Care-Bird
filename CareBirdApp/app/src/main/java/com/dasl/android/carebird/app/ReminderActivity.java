@@ -45,10 +45,11 @@ public class ReminderActivity extends Activity {
             //com.dasl.android.carebird.app.Status response;
             //ArrayList<ReminderSchedule> result = null;
             try {
+                System.out.println("Adding log: " + params[0] + " with response " + params[2]);
                 response = ((GlobalApplication) getApplication()).getDatabase().addLog(
                         new PillLog(Long.parseLong(params[0]), params[1], params[2]));
             }catch (IOException error){
-                //result = "failure in try catch";
+                error.printStackTrace();
             }
             return 1;
         }
