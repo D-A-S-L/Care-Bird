@@ -121,7 +121,8 @@ public class CreateReminderActivity extends Activity {
 
 
         ArrayAdapter<String> sAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1);
+                R.layout.spinner_item);
+        sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         sAdapter.add("Daily");
         sAdapter.add("Twice daily");

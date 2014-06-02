@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -44,6 +45,32 @@ public class LocationActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+
+        // Font path
+        String fontPath = "fonts/APHont-Regular_q15c.ttf";
+
+        // text view label
+        TextView tv1 = (TextView) findViewById(R.id.title_GPS);
+        TextView tv2 = (TextView) findViewById(R.id.edit_address);
+        TextView tv3 = (TextView) findViewById(R.id.location_set);
+        TextView tv4 = (TextView) findViewById(R.id.address_btn);
+        TextView tv5 = (TextView) findViewById(R.id.meters);
+        TextView tv7 = (TextView) findViewById(R.id.wifi);
+        TextView tv8 = (TextView) findViewById(R.id.wifi_ssid);
+        TextView tv9 = (TextView) findViewById(R.id.text_wifi);
+
+        // Loading Font Face
+        Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
+
+        // Applying font
+        tv1.setTypeface(tf);
+        tv2.setTypeface(tf);
+        tv3.setTypeface(tf);
+        tv4.setTypeface(tf);
+        tv5.setTypeface(tf);
+        tv7.setTypeface(tf);
+        tv8.setTypeface(tf);
+        tv9.setTypeface(tf);
 
         mPref = getSharedPreferences("BOOT_PREF",MODE_PRIVATE);
         editor = mPref.edit();

@@ -4,7 +4,7 @@ package com.dasl.android.carebird.app;
  * Created by Brian on 5/30/2014.
  */
 public class GlucoseLog extends ReminderLog {
-    private static final transient String type = "glucose";
+    public static final transient String type = "glucose";
     public double glucosevalue;
     public String actiontaken;
 
@@ -18,7 +18,6 @@ public class GlucoseLog extends ReminderLog {
         this.glucosevalue = glucosevalue;
         this.actiontaken = actiontaken;
     }
-    public static String getType() {
-        return type;
-    }
+    @Override
+    public String getType() { return GlucoseLog.type;  }
 }

@@ -4,7 +4,7 @@ package com.dasl.android.carebird.app;
  * Created by Brian on 5/24/2014.
  */
 public class LocationLog extends ReminderLog {
-    private static final transient String type = "location";
+    public static final transient String type = "location";
     public double metersfromhome;
     public double latitude;
     public double longitude;
@@ -20,7 +20,12 @@ public class LocationLog extends ReminderLog {
         this.latitude = latitude;
         this.longitude = longitude;
     }
-    public static String getType() {
-        return type;
+    @Override
+    public String getType() {
+        return LocationLog.type;
+    }
+    public String toString(){
+        return super.toString()+", Type: "+type+ ", metersfromhome: "+metersfromhome
+                +", latitude: "+latitude+", longitude: "+longitude;
     }
 }

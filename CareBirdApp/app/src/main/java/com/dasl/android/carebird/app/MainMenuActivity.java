@@ -63,6 +63,7 @@ public class MainMenuActivity extends Activity {
         TextView schedulesButton = (TextView) findViewById(R.id.Schedules);
         TextView careGiversButton = (TextView) findViewById(R.id.CareGivers);
         TextView settingsButton = (TextView) findViewById(R.id.QRcode);
+        TextView settings = (TextView) findViewById(R.id.button_settings);
 
         // Loading Font Face
         Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
@@ -71,6 +72,7 @@ public class MainMenuActivity extends Activity {
         schedulesButton.setTypeface(tf);
         careGiversButton.setTypeface(tf);
         settingsButton.setTypeface(tf);
+        settings.setTypeface(tf);
 
         PhoneCallListener phoneListener = new PhoneCallListener();
         TelephonyManager telephonyManager = (TelephonyManager) this
@@ -180,6 +182,10 @@ public class MainMenuActivity extends Activity {
             case R.id.action_contacts:
                 Intent i1 = new Intent(this, ContactActivity.class);
                 startActivity(i1);
+                return true;
+            case R.id.action_test:
+                Intent i2 = new Intent(this, TestLocationLog.class);
+                startActivity(i2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

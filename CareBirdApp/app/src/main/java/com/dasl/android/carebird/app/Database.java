@@ -308,10 +308,11 @@ public class Database {
 
     /**
      * This method will return the desired logs for the specified patient.
+     * User me MUST contain a valid SessionToken
      * 'type' can either be: glucose, location, or pill
      * 'limit' N restricts the number of values returned to not exceed N
      */
-    public static ArrayList<ReminderLog> getlogs(User patient, String type, int limit)throws IOException {
+    public static ArrayList<ReminderLog> getLogs(User me, User patient, String type, int limit)throws IOException {
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/getLogs.php");
 
@@ -341,12 +342,20 @@ public class Database {
     }
 
     /**
+     * This method will return the desired logs for 'patient'.
+     * 'type' can either be: glucose, location, or pill
+     * 'limit' N restricts the number of values returned to not exceed N
+     */
+    public static ArrayList<ReminderLog> getLogs(User patient, String type, int limit)throws IOException {
+        return getLogs(me,patient, type, limit);
+    }
+    /**
      * This method will return the desired logs for yourself.
      * 'type' can either be: glucose, location, or pill
      * 'limit' N restricts the number of values returned to not exceed N
      */
-    public static ArrayList<ReminderLog> getlogs(String type, int limit)throws IOException {
-        return getlogs(me, type, limit);
+    public static ArrayList<ReminderLog> getLogs(String type, int limit)throws IOException {
+        return getLogs(me,me, type, limit);
     }
 
     /**
@@ -356,6 +365,7 @@ public class Database {
      * this method adds any of the three types of logs
      */
     public static Status addLog(ReminderLog log)throws IOException{
+        Log.v("Database.addLog: Log: ",log.toString());
         HttpClient client = new DefaultHttpClient();
         HttpPost post = new HttpPost(BASE_URL + "/addLog.php");
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
@@ -363,18 +373,21 @@ public class Database {
         urlParameters.add(new BasicNameValuePair("type", log.getType()));
         urlParameters.add(new BasicNameValuePair("logtime", String.valueOf(log.logtime)));
         urlParameters.add(new BasicNameValuePair("originalalerttime", String.valueOf(log.originalalerttime)));
+
         Log.v("------------- type of log: ", log.getType());
-        if(log.getType().equals(LocationLog.getType())){
+        if(log.getType().equals(LocationLog.type)){
             urlParameters.add(new BasicNameValuePair("metersfromhome",String.valueOf(((LocationLog)log).metersfromhome)));
             urlParameters.add(new BasicNameValuePair("latitude", String.valueOf(((LocationLog)log).latitude)));
             urlParameters.add(new BasicNameValuePair("longitude", String.valueOf(((LocationLog)log).longitude)));
-        } else if(log.getType().equals(PillLog.getType())){
+        } else if(log.getType().equals(PillLog.type)){
             urlParameters.add(new BasicNameValuePair("message", (  (PillLog) log  ).message));
             urlParameters.add(new BasicNameValuePair("actiontaken", (  (PillLog) log  ).actiontaken));
-        } else if(log.getType().equals(GlucoseLog.getType())){
+        } else if(log.getType().equals(GlucoseLog.type)){
             urlParameters.add(new BasicNameValuePair("glucosevalue", String.valueOf((  (GlucoseLog) log  ).glucosevalue)));
             urlParameters.add(new BasicNameValuePair("actiontaken", (  (GlucoseLog) log  ).actiontaken));
         }
+        String postString = EntityUtils.toString(new UrlEncodedFormEntity(urlParameters));
+        Log.v("Database.addLog: postString: ",postString);
         post.setEntity(new UrlEncodedFormEntity(urlParameters));
         HttpResponse response = client.execute(post);
 

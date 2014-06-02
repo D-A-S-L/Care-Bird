@@ -3,11 +3,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="8dp">
+    android:background="#03c6d8">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_gps"
+        android:id="@+id/title_GPS"
         android:layout_gravity="center_horizontal"
         android:textSize="25sp"/>
     <View
@@ -35,16 +36,20 @@
     <Button
         android:id="@+id/address_btn"
         android:layout_marginTop="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/button_address"/>
+        android:text="@string/button_address"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:background="@drawable/button"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
         <TextView
             android:layout_marginLeft="20dp"
+            android:id="@+id/meters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_radius"
@@ -67,6 +72,7 @@
         android:textOff="@string/gps_off"
         android:layout_gravity="center_horizontal"/>
     <TextView
+        android:id="@+id/wifi"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,9 +101,12 @@
     <Button
         android:id="@+id/button_ssid"
         android:text="@string/text_button_ssid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal" />
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button"/>
     <ToggleButton
         android:id="@+id/button_wifi"
         android:layout_width="wrap_content"
