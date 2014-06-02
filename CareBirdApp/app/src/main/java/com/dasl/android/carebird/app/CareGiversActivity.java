@@ -76,6 +76,8 @@ public class CareGiversActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final ListView listView = getListView();
+        listView.setBackgroundColor(Color.parseColor("#03c7d8"));
         new getCG().execute(((GlobalApplication) getApplication()).getMe());
         /*
         try {
