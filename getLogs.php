@@ -92,6 +92,18 @@ if(!$loggedIn){
 							where UName='$CRName' and type='$type';
 				";
 			}
+			else if ($type=='glucose'){
+				// Not yet implemented in the database
+				$query="		
+						select
+						glucosevalue
+						,actionTaken
+						,originalalerttime
+						,logtime
+						from Logs
+							where UName='$CRName' and type='$type';
+				";
+			}
 			$response=pg_query($conn,$query);
 			
 			if(pg_affected_rows($response)<1){
