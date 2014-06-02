@@ -301,26 +301,48 @@ public class ReminderListActivity extends Activity {
 
         Set<String> s = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).getStringSet("ALARMS", new HashSet<String>());
         Object[] sArr = s.toArray();
+        HashSet<String> newSet = new HashSet<String>();
         System.out.println("Shared prefs loaded: " + sArr.length);
 
         for (int i = 0; i < sArr.length; i++) {
+            boolean contains = false;
             System.out.println("Contents of alarms: " + sArr[i]);
 
-            if (!toView.contains((String) sArr[i])) {
+            for (int j = 0; j < toView.size() && toView.get(j) != null; j++) {
+                if (("" + toView.get(j).getKey()).equals((String) sArr[i]))
+                    contains = true;
+            }
+
+            if (!contains) {
+                System.out.println("Removing: " + sArr[i]);
                 removeFromAlarms(Integer.parseInt((String) sArr[i]));
                 s.remove((String) sArr[i]);
             }
         }
 
+        sArr = s.toArray();
+
         for (int i = 0; i < toView.size() && toView.get(i) != null; i++) {
-            if (!s.contains(toView.get(i))) {
+            boolean contains = false;
+
+            for (int j = 0; j < sArr.length; j++) {
+                System.out.println("." + sArr[j] + ". should be equal to ." + toView.get(i).getKey() + ".");
+
+                if (((String) (sArr[j])).trim().equals(("" + toView.get(i).getKey()).trim()))
+                    contains = true;
+           }
+
+            //if (!s.contains("" + toView.get(i).getKey())) {
+            if (!contains) {
                 addToAlarms(toView.get(i));
-                s.add("" + toView.get(i).getKey());
+                //newSet.add("" + toView.get(i).getKey());
             }
+
+            newSet.add("" + toView.get(i).getKey());
         }
 
         SharedPreferences.Editor editor = getSharedPreferences("BOOT_PREF", MODE_PRIVATE).edit();//.putStringSet("ALARMS", s);
-        editor.putStringSet("ALARMS", s);
+        editor.putStringSet("ALARMS", newSet);
         editor.commit();
 
         // adding items that have been added to database's list
@@ -365,9 +387,12 @@ public class ReminderListActivity extends Activity {
 
         long timeToSet = cal.getTimeInMillis();
 
-        while (schedule.getInterval() <= ReminderSchedule.DAILY && timeToSet < System.currentTimeMillis()) {
+        /*while (schedule.getInterval() <= ReminderSchedule.DAILY && timeToSet < System.currentTimeMillis()) {
             timeToSet += AlarmManager.INTERVAL_DAY;
-        }
+        } */
+
+        //System.out.println("Adding alarm: " + timeToSet + " every " + schedule.getInterval());
+        System.out.println("I am adding: " + schedule.getKey());
 
         if (schedule.getInterval() != 0) {
             keeperOfAlarms.setRepeating(AlarmManager.RTC_WAKEUP, timeToSet,

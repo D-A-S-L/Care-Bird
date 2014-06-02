@@ -330,13 +330,45 @@ public class Database {
         Log.v("Database.getLogs responseString: ",responseString);
         //if (!responseString.equals("false")) {
         if(response.getStatusLine().getStatusCode() == 202){
-            ReminderLog[] logs = new Gson().fromJson(responseString, ReminderLog[].class);
+            // lType == 1 means PillLogs
+            if (type.equals(PillLog.type)) {
+                PillLog[] logs = new Gson().fromJson(responseString, PillLog[].class);
+
+                ArrayList<ReminderLog> temp = new ArrayList<ReminderLog>();
+                for(PillLog log:logs) {
+                    temp.add(log);
+                    Log.v("Database.getLogs log: ",log.toString());
+                }
+                return temp;
+            // lType == 2 means GlucoseLogs
+            } else if (type.equals(GlucoseLog.type)) {
+                GlucoseLog[] logs = new Gson().fromJson(responseString, GlucoseLog[].class);
+
+                ArrayList<ReminderLog> temp = new ArrayList<ReminderLog>();
+                for(GlucoseLog log:logs) {
+                    temp.add(log);
+                    Log.v("Database.getLogs log: ",log.toString());
+                }
+                return temp;
+            } else {
+                LocationLog[] logs = new Gson().fromJson(responseString, LocationLog[].class);
+
+                ArrayList<ReminderLog> temp = new ArrayList<ReminderLog>();
+                for(LocationLog log:logs) {
+                    temp.add(log);
+                    Log.v("Database.getLogs log: ",log.toString());
+                }
+                return temp;
+            }
+
+
+            /*ReminderLog[] logs = new Gson().fromJson(responseString, ReminderLog[].class);
             ArrayList<ReminderLog> temp = new ArrayList<ReminderLog>();
             for(ReminderLog log:logs) {
                 temp.add(log);
                 Log.v("Database.getLogs log: ",log.toString());
             }
-            return temp;
+            return temp;*/
         }
         return new ArrayList<ReminderLog>();
     }
@@ -354,7 +386,7 @@ public class Database {
      * 'type' can either be: glucose, location, or pill
      * 'limit' N restricts the number of values returned to not exceed N
      */
-    public static ArrayList<ReminderLog> getLogs(String type, int limit)throws IOException {
+    public static ArrayList<ReminderLog> getLogs(String type, int limit, int lType)throws IOException {
         return getLogs(me,me, type, limit);
     }
 
