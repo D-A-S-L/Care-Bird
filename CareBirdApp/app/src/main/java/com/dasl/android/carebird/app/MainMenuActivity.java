@@ -63,6 +63,7 @@ public class MainMenuActivity extends Activity {
         TextView schedulesButton = (TextView) findViewById(R.id.Schedules);
         TextView careGiversButton = (TextView) findViewById(R.id.CareGivers);
         TextView settingsButton = (TextView) findViewById(R.id.QRcode);
+        TextView settings = (TextView) findViewById(R.id.button_settings);
 
         // Loading Font Face
         Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
@@ -71,6 +72,7 @@ public class MainMenuActivity extends Activity {
         schedulesButton.setTypeface(tf);
         careGiversButton.setTypeface(tf);
         settingsButton.setTypeface(tf);
+        settings.setTypeface(tf);
 
         PhoneCallListener phoneListener = new PhoneCallListener();
         TelephonyManager telephonyManager = (TelephonyManager) this

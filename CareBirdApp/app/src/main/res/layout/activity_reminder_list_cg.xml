@@ -2,7 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -26,26 +27,34 @@
 
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+New"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:text="Add New"
         android:id="@+id/add_button"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button2"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
         android:text="Refresh"
         android:id="@+id/sync_button"
         android:layout_alignBottom="@+id/add_button"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button2"/>
 
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
         android:minWidth="100dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -56,6 +65,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/spinner2"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
         android:minWidth="100dp"
         android:layout_below="@+id/sync_button"
         android:layout_alignParentLeft="true"

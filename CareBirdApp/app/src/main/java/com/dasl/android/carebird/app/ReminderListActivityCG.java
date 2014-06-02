@@ -2,6 +2,7 @@ package com.dasl.android.carebird.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +13,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -297,7 +301,8 @@ public class ReminderListActivityCG extends Activity {
             }
         });
 
-        ArrayAdapter<String> viewTypes = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+        ArrayAdapter<String> viewTypes = new ArrayAdapter<String>(this, R.layout.spinner_item);
+        viewTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewTypes.add("Reminders");
         viewTypes.add("Medication Logs");
         viewTypes.add("Glucose Logs");
@@ -319,7 +324,8 @@ public class ReminderListActivityCG extends Activity {
             }
         });
 
-        ArrayAdapter<String> sAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line);
+        ArrayAdapter<String> sAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item);
+        sAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         for (int i = 0; careReceivers != null && i < careReceivers.size() && careReceivers.get(i) != null; i++) {
             sAdapter.add(careReceivers.get(i).getUserName());
@@ -328,7 +334,7 @@ public class ReminderListActivityCG extends Activity {
         spinner.setAdapter(sAdapter);
 
         ListView remList = (ListView) findViewById(R.id.listView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item);
 
         deleteOpt = new PopupMenu(this, remList);
         deleteOpt.getMenu().add("Delete Reminder");
