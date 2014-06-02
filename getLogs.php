@@ -78,7 +78,7 @@ if(!$loggedIn){
 						,originalalerttime
 						,logtime
 						from Logs
-							where UName='$CRName';
+							where UName='$CRName' and type='$type';
 				";
 			}
 			else if ($type=='pill'){
@@ -89,7 +89,7 @@ if(!$loggedIn){
 						,originalalerttime
 						,logtime
 						from Logs
-							where UName='$CRName';
+							where UName='$CRName' and type='$type';
 				";
 			}
 			$response=pg_query($conn,$query);
