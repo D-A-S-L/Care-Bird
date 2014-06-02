@@ -61,7 +61,7 @@ if(!$loggedIn){
 			";
 		}
 		// is Pill log?
-		else if( isset($_POST["message"]) && isset($_POST["actiontaken"])){
+		else if( true || isset($_POST["message"]) && isset($_POST["actiontaken"])){
 			// Type is location log
 			$goodInput=true;
 			$message=$_POST["message"];
