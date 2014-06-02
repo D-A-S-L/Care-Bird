@@ -363,6 +363,7 @@ public class Database {
         urlParameters.add(new BasicNameValuePair("type", log.getType()));
         urlParameters.add(new BasicNameValuePair("logtime", String.valueOf(log.logtime)));
         urlParameters.add(new BasicNameValuePair("originalalerttime", String.valueOf(log.originalalerttime)));
+        Log.v("------------- type of log: ", log.getType());
         if(log.getType().equals(LocationLog.getType())){
             urlParameters.add(new BasicNameValuePair("metersfromhome",String.valueOf(((LocationLog)log).metersfromhome)));
             urlParameters.add(new BasicNameValuePair("latitude", String.valueOf(((LocationLog)log).latitude)));
