@@ -81,7 +81,7 @@ if(!$loggedIn){
 							where UName='$CRName';
 				";
 			}
-			else if (type=='pill'){
+			else if ($type=='pill'){
 				$query="		
 						select
 						 message
